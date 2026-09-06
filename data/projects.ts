@@ -148,7 +148,7 @@ export const advancedProjects: Project[] = [
       "Microservice pipeline with PyTorch, DVC and MLflow for reproducible training; containerized FastAPI + Streamlit stack for high-concurrency inference and human-in-the-loop verification; Prometheus/Grafana monitoring with Pytest checks on schemas, endpoints and model degradation.",
     methods: ["PyTorch", "FastAPI", "Streamlit", "DVC", "MLflow", "Prometheus", "Grafana", "Pytest"],
     result: "End-to-end reproducible MLOps pipeline for automated casting-defect detection.",
-    repo: { url: null, note: "Slug unverified — confirm exact repo name" },
+    repo: { url: "https://github.com/Charukhesh/QualityCast-MLOPs.git" },
     hasCaseStudy: false
   },
   {
@@ -164,7 +164,7 @@ export const advancedProjects: Project[] = [
       "Shared VGG16 encoder with task-specific heads for fine-grained multi-task recognition across 37 classes; U-Net-style decoder with skip connections trained with IoU and Dice losses for dense segmentation.",
     methods: ["PyTorch", "VGG16", "U-Net", "IoU/Dice loss"],
     result: "Single backbone serving recognition, localization and segmentation heads.",
-    repo: { url: null, note: "Slug unverified — confirm exact repo name" },
+    repo: { url: "https://github.com/Charukhesh/multitask-vision-pipeline.git" },
     hasCaseStudy: false
   },
   {
@@ -180,7 +180,7 @@ export const advancedProjects: Project[] = [
       "Original Transformer architecture implemented in PyTorch with 8-head attention, causal masking and sinusoidal positional encoding; custom WordPiece tokenizer with label smoothing, tuned to a compact 256-dim model for limited-data training.",
     methods: ["PyTorch", "WordPiece", "Attention"],
     result: "From-scratch encoder-decoder Transformer for German-English translation.",
-    repo: { url: null, note: "Slug unverified — confirm exact repo name" },
+    repo: { url: "https://github.com/Charukhesh/pure-pytorch-transformer-nmt.git" },
     hasCaseStudy: false
   },
   {
