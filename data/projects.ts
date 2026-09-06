@@ -261,17 +261,6 @@ export const advancedProjects: Project[] = [
   }
 ];
 
-// ---------------------------------------------------------------------------
-// OTHER WORK — lighter-weight course/independent projects, tag-only display
-// ---------------------------------------------------------------------------
-export const otherWork: string[] = [
-  "Multi-Modal Return Forecasting (OHLCV + fundamentals + macro + FinBERT sentiment)",
-  "Portfolio Optimization — Ledoit-Wolf shrinkage + Hierarchical Risk Parity",
-  "Physics-Data Reconciliation — four-tank digital twin in Simulink",
-  "Hierarchical 3D Scene-Graph Planner (course implementation)",
-  "Edge HIL Control for Precision Drone Spraying — EF Group, UTM–RP"
-];
-
 export const allProjects = [...flagshipProjects, ...advancedProjects];
 
 export function getProjectBySlug(slug: string): Project | undefined {
