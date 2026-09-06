@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @import "katex/dist/katex.min.css";
-
+body {
+  font-family: Calibri, "Segoe UI", Arial, sans-serif;
+}
 html {
   scroll-behavior: smooth;
 }
