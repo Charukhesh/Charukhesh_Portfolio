@@ -28,10 +28,29 @@ export default function ProjectPanel({ project, index }: { project: Project; ind
           <span className="text-accent">{String(index).padStart(2, "0")}</span>
           <StatusDot status={project.status} />
         </div>
-        <h3 className="mb-2 font-display text-2xl font-semibold leading-snug text-[#f2f4f6] sm:text-[28px]">
+        <h3 className="mb-1 font-display text-2xl font-semibold leading-snug text-[#f2f4f6] sm:text-[28px]">
           {project.title}
         </h3>
+
+        {project.repo.url ? (
+          <a
+            href={project.repo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-4 inline-block font-mono text-xs text-accent2 underline decoration-dotted underline-offset-4"
+          >
+            GitHub ↗
+          </a>
+        ) : (
+          <span className="mb-4 inline-block font-mono text-xs text-muted">
+            {project.repo.note}
+          </span>
+        )}
+
         <div className="mb-4 font-mono text-xs text-accent2">
+          {project.institution}
+          {project.advisor ? ` · ${project.advisor}` : ""}
+        </div>
           {project.institution}
           {project.advisor ? ` · ${project.advisor}` : ""}
         </div>
@@ -54,20 +73,7 @@ export default function ProjectPanel({ project, index }: { project: Project; ind
               EXPLORE PROJECT →
             </Link>
           )}
-          {project.repo.url ? (
-            <a
-              href={project.repo.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs text-accent2 underline decoration-dotted underline-offset-4"
-            >
-              GitHub ↗
-            </a>
-          ) : (
-            <span className="font-mono text-xs text-muted">{project.repo.note}</span>
-          )}
         </div>
-      </div>
     </motion.div>
   );
 }
