@@ -12,30 +12,51 @@ interface Node {
 }
 
 const NODES: Node[] = [
-  { id: "ai", label: "MACHINE LEARNING", x: 50, y: 8, connections: ["robot", "generative", "llm", "cv"], projects: [] },
+  {
+    id: "ai",
+    label: "MACHINE LEARNING",
+    x: 50,
+    y: 8,
+    connections: ["robot", "generative", "llm", "cv", "prob", "quant"],
+    projects: [
+      "Flow-Latent MPC",
+      "LLM Scene-Graph Planner",
+      "Unified Multi-Task Vision",
+      "Embedding Quality + MoE",
+      "Plutus Market Maker",
+    ],
+  },
   {
     id: "robot",
     label: "ROBOT LEARNING",
     x: 14,
     y: 32,
     connections: ["ai", "control"],
-    projects: ["Flow-Latent MPC", "LLM Scene-Graph Planner"]
+    projects: [
+      "Flow-Latent MPC",
+      "LLM Scene-Graph Planner",
+      "Risk-Aware Stochastic MPC",
+    ],
   },
   {
     id: "generative",
     label: "GENERATIVE MODELS",
     x: 38,
     y: 32,
-    connections: ["ai", "control"],
-    projects: ["Flow-Latent MPC (V-JEPA world model)"]
+    connections: ["ai", "robot", "control"],
+    projects: [
+      "Flow-Latent MPC",
+    ],
   },
   {
     id: "llm",
     label: "LLM PLANNING",
     x: 62,
     y: 32,
-    connections: ["ai", "state"],
-    projects: ["LLM Scene-Graph Planner"]
+    connections: ["ai", "robot", "state"],
+    projects: [
+      "LLM Scene-Graph Planner",
+    ],
   },
   {
     id: "cv",
@@ -43,7 +64,10 @@ const NODES: Node[] = [
     x: 86,
     y: 32,
     connections: ["ai", "state"],
-    projects: ["Unified Multi-Task Vision", "QualityCast-MLOps"]
+    projects: [
+      "Unified Multi-Task Vision",
+      "QualityCast-MLOps",
+    ],
   },
   {
     id: "control",
@@ -51,32 +75,75 @@ const NODES: Node[] = [
     x: 24,
     y: 58,
     connections: ["robot", "generative", "state", "auto"],
-    projects: ["Risk-Aware Stochastic MPC", "M.Tech Thesis", "HRES Optimization"]
+    projects: [
+      "Risk-Aware Stochastic MPC",
+      "M.Tech Thesis",
+      "HRES Optimization",
+      "Thrust-Limited Sliding-Mode Guidance",
+    ],
   },
   {
     id: "state",
     label: "STATE ESTIMATION",
     x: 62,
     y: 58,
-    connections: ["llm", "cv", "control", "prob", "auto"],
-    projects: ["Adaptive Kalman Filtering + RLS", "SINDy-RLS", "M.Tech Thesis"]
+    connections: ["llm", "cv", "control", "prob", "sysid", "auto"],
+    projects: [
+      "Adaptive Kalman Filtering + RLS",
+      "SINDy-RLS",
+      "M.Tech Thesis",
+    ],
   },
   {
     id: "prob",
     label: "PROBABILISTIC MODELING",
     x: 86,
     y: 58,
-    connections: ["state"],
-    projects: ["HRES Optimization", "Embedding Quality + MoE"]
+    connections: ["state", "ai", "quant"],
+    projects: [
+      "HRES Optimization",
+      "Embedding Quality + MoE",
+      "Risk-Aware Stochastic MPC",
+      "Plutus Market Maker",
+    ],
+  },
+  {
+    id: "sysid",
+    label: "SYSTEM IDENTIFICATION",
+    x: 28,
+    y: 84,
+    connections: ["state", "control", "auto"],
+    projects: [
+      "SINDy-RLS",
+      "Adaptive Kalman Filtering + RLS",
+      "Data-Driven Model Order Reduction",
+    ],
   },
   {
     id: "auto",
     label: "AUTONOMOUS SYSTEMS",
-    x: 43,
+    x: 55,
     y: 84,
-    connections: ["control", "state"],
-    projects: ["Flow-Latent MPC", "LLM Scene-Graph Planner"]
-  }
+    connections: ["control", "state", "robot"],
+    projects: [
+      "Flow-Latent MPC",
+      "LLM Scene-Graph Planner",
+      "Risk-Aware Stochastic MPC",
+      "Thrust-Limited Sliding-Mode Guidance",
+    ],
+  },
+  {
+    id: "quant",
+    label: "QUANTITATIVE SYSTEMS",
+    x: 82,
+    y: 84,
+    connections: ["ai", "prob"],
+    projects: [
+      "Plutus Market Maker",
+      "Multi-Dimensional Return Forecasting",
+      "Advanced Portfolio Optimization",
+    ],
+  },
 ];
 
 export default function ResearchMap() {

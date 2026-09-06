@@ -5,7 +5,7 @@ import AdvancedItem from "@/components/AdvancedItem";
 import Timeline from "@/components/Timeline";
 import { Tag } from "@/components/Tag";
 import { profile } from "@/data/profile";
-import { flagshipProjects, advancedProjects, otherWork } from "@/data/projects";
+import { flagshipProjects, advancedProjects } from "@/data/projects";
 import { publications } from "@/data/publications";
 
 export default function HomePage() {
@@ -33,7 +33,7 @@ export default function HomePage() {
             </p>
             <div className="animate-rise flex flex-wrap gap-3" style={{ animationDelay: "0.2s" }}>
               <a
-                href="#projects"
+                href="#research"
                 className="rounded-full border border-accent bg-accent px-4 py-2 font-mono text-xs tracking-wide text-bg transition-colors hover:bg-transparent hover:text-accent"
               >
                 VIEW RESEARCH →
@@ -76,7 +76,7 @@ export default function HomePage() {
       {/* ============ PROJECTS ============ */}
       <section id="projects" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
         <div className="mx-auto max-w-wide">
-          <SectionHeading num="02" title="Flagship research" note={`${flagshipProjects.length} projects`} />
+          <SectionHeading num="02" title="Selected research & systems" note={`${flagshipProjects.length} projects`} />
           <div>
             {flagshipProjects.map((p, i) => (
               <ProjectPanel key={p.slug} project={p} index={i + 1} />
@@ -86,22 +86,15 @@ export default function HomePage() {
           <div className="mt-20">
             <h3 className="mb-2 font-display text-xl font-semibold text-[#f2f4f6]">Advanced engineering</h3>
             <p className="mb-6 max-w-[62ch] text-ink-dim">
-              Systems-level work spanning MLOps, computer vision, sequence modeling, control and estimation —
-              implemented end-to-end rather than notebook-only.
+              Supporting work spanning computer vision, sequence modeling, estimation,
+              control and quantitative systems — implemented end-to-end rather than
+              notebook-only.
             </p>
             {advancedProjects.map((p) => (
               <AdvancedItem key={p.slug} project={p} />
             ))}
           </div>
 
-          <div className="mt-14">
-            <h3 className="mb-4 font-display text-lg font-semibold text-[#f2f4f6]">Other work</h3>
-            <div className="flex flex-wrap gap-2.5">
-              {otherWork.map((w) => (
-                <Tag key={w}>{w}</Tag>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
