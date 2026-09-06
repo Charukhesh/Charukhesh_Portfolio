@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Charukhesh B R — AI/ML Research Engineer",
   description:
     "Charukhesh B R — AI/ML Research Engineer. Robot learning, generative models, stochastic control and state estimation. IIT Madras.",
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL("https://charukhesh.github.io/Charukhesh_Portfolio/"),
   openGraph: {
     title: "Charukhesh B R — AI/ML Research Engineer",
     description:
