@@ -45,8 +45,8 @@ export const flagshipProjects: Project[] = [
   {
     slug: "flow-latent-mpc",
     title: "Flow-Latent MPC for Fast, Precise Robotic Manipulation",
-    institution: "Purdue SURF",
-    advisor: "Prof. Raghunathan S",
+    institution: "Purdue — Summer Undergraduate Research Fellowship (SURF)",
+    advisor: "Prof. Aniket Bera",
     category: ["Robotics", "Robot Learning"],
     type: "Research",
     status: "validated",
@@ -61,14 +61,14 @@ export const flagshipProjects: Project[] = [
     ],
     result:
       "16 candidate 7D trajectories scored per step against latent-space goal predictions; short-horizon rollouts mitigate autoregressive drift, validated on Robomimic manipulation tasks.",
-    repo: { url: null, note: "Institutional (Purdue SURF) — not publicly released" },
+    repo: { url: "https://github.com/Charukhesh/flow-latentWM-mpc.git"},
     hasCaseStudy: true
   },
   {
     slug: "llm-scene-planner",
     title: "LLM Planner over 3D Scene Graphs for Long-Horizon Manipulation",
-    institution: "NUS IRIS",
-    advisor: "Prof. Guillaume A S",
+    institution: "National University of Singapore — Internships & Research Immersion @ Singapore",
+    advisor: "Prof. Guillaume Adrien Sartoretti",
     category: ["Robotics", "LLM/NLP"],
     type: "Research",
     status: "validated",
@@ -83,14 +83,14 @@ export const flagshipProjects: Project[] = [
     ],
     result:
       "Spatially consistent, multi-step action plans generated from natural-language instructions and executed autonomously in simulation.",
-    repo: { url: null, note: "Institutional (NUS IRIS) — not publicly released" },
+    repo: { url: "https://github.com/Charukhesh/Hierarchical_SGPlanner.git" },
     hasCaseStudy: true
   },
   {
     slug: "thesis-tail-risk",
     title: "Dynamic Tail-Risk Hedging & Stochastic Control for Non-Stationary Energy Systems",
-    institution: "IIT Madras — M.Tech Thesis (ongoing)",
-    advisor: "Prof. Raghunathan R",
+    institution: "IIT Madras — Master's Thesis (ongoing)",
+    advisor: "Prof. Raghunathan Rengaswamy",
     category: ["Control", "State Estimation", "Finance"],
     type: "Research",
     status: "active",
@@ -103,14 +103,14 @@ export const flagshipProjects: Project[] = [
       "sequential Bayesian inference over latent risk states"
     ],
     result: "Ongoing thesis work — forecast and parameter updates via sequential Bayesian inference.",
-    repo: { url: null, note: "Ongoing thesis — no repository yet" },
+    repo: { url: null, note: "Ongoing Master's thesis" },
     hasCaseStudy: true
   },
   {
     slug: "hres-optimization",
     title: "Contractual & Resource-Aware Capacity Optimization for Hybrid Renewable Energy Systems",
     institution: "IIT Madras, with Hero Future Energies",
-    advisor: "Prof. Raghunathan R",
+    advisor: "Prof. Raghunathan Rengaswamy",
     category: ["Optimization", "Finance"],
     type: "Research",
     status: "industry",
