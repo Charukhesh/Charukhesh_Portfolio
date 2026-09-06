@@ -1,0 +1,66 @@
+---
+title: "Contractual & Resource-Aware HRES Capacity Optimization"
+subtitle: "With Hero Future Energies · Under review, Applied Energy · Energy Systems"
+badges: ["Validated — Monte Carlo simulation", "Industry collaboration (Hero Future Energies)"]
+---
+
+## Overview
+
+Sizing a hybrid renewable-plus-storage plant is usually optimized against a levelized-cost objective that ignores
+contract structure. This project embeds the actual commercial terms — IRR targets, PPA shortfall penalties, tax
+shields, and asset degradation — directly into the sizing optimization, and stress-tests reliability with a
+long-horizon Monte Carlo simulation rather than a single design-year estimate.
+
+## Problem formulation
+
+The sizing problem is posed as a multi-objective optimization over capacity decisions $x$ (solar, wind, storage):
+
+$$
+\max_{x} \; \text{IRR}(x) \quad \text{s.t.} \quad \mathbb{E}[\text{PPA shortfall penalty}(x)] \le \epsilon, \;\; \text{Reliability}(x) \ge \Delta R
+$$
+
+Renewable generation is not sampled from historical traces directly, but from a Delta-Distribution Mixture of
+Gaussians fit to produce noise-free synthetic profiles, with candidate mixtures compared via KL-divergence to
+check statistical convergence to the empirical distribution.
+
+## Architecture
+
+<div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
+  <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
+    <g fill="none" stroke="#3a4048" strokeWidth="1.3">
+      <rect x="20" y="45" width="170" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="240" y="45" width="170" height="70" rx="3" />
+      <rect x="460" y="45" width="180" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="690" y="45" width="180" height="70" rx="3" />
+    </g>
+    <g stroke="#5a6068" strokeWidth="1.2">
+      <line x1="190" y1="80" x2="238" y2="80" />
+      <line x1="410" y1="80" x2="458" y2="80" />
+      <line x1="640" y1="80" x2="688" y2="80" />
+    </g>
+    <text x="35" y="75" fill="#5fb8b0">Delta-Dist. Mixture</text>
+    <text x="35" y="90" fill="#767f8b">of Gaussians (synthetic gen.)</text>
+    <text x="255" y="75" fill="#dde2e7">Cond. Probabilistic</text>
+    <text x="255" y="90" fill="#767f8b">Clustering</text>
+    <text x="475" y="75" fill="#d7a24a">Multi-objective</text>
+    <text x="475" y="90" fill="#767f8b">HRES sizing (IRR, PPA, tax)</text>
+    <text x="705" y="75" fill="#dde2e7">25-yr Monte Carlo</text>
+    <text x="705" y="90" fill="#767f8b">reliability + KL check</text>
+  </svg>
+</div>
+
+## Results
+
+Manuscript titled *"Contractual and resource-aware capacity optimization for hybrid renewable energy systems
+(HRES) with storage"* is currently under review at *Applied Energy* (Elsevier); the associated work was accepted
+for presentation at the SGAI Conference, Lisbon, Portugal, 2026.
+
+## Industrial application
+
+| | |
+|---|---|
+| **Industry** | Energy, independent power producers, renewable project finance |
+| **Problem** | Sizing hybrid renewable + storage assets against real contractual and financial exposure, not just levelized cost |
+| **How it helps** | Directly optimizing IRR net of PPA penalties and tax shields under long-horizon Monte Carlo reliability constraints gives asset owners a sizing decision that reflects actual downside risk, not an idealized average year |
+| **Deployment path** | Industry collaboration (Hero Future Energies) → Monte Carlo validation → operational sizing tool |
+| **Who cares** | Energy asset developers, project-finance teams, renewable IPPs sizing hybrid plants |

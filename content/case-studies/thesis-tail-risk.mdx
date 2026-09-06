@@ -1,0 +1,31 @@
+---
+title: "Dynamic Tail-Risk Hedging & Stochastic Control (M.Tech Thesis)"
+subtitle: "Ongoing · Stochastic Control · State Estimation"
+badges: ["In progress"]
+---
+
+## Overview
+
+Physical assets exposed to non-stationary risk (e.g. energy assets under shifting weather/market regimes) need
+controllers that hedge tail outcomes, not just expected cost. This ongoing thesis develops a real-time control loop
+that couples a CVaR-constrained MPC formulation with sequential Bayesian state estimation, so the risk model itself
+adapts as the underlying regime shifts.
+
+## Problem formulation
+
+$$
+\min_{u_{0:T}} \; \mathbb{E}\Big[\sum_{k=0}^{T} c(x_k,u_k)\Big] \quad \text{s.t.} \quad \text{CVaR}_\alpha\big(L(x_{0:T})\big) \le \gamma
+$$
+
+where the latent risk state is tracked online via sequential Bayesian updates as new observations arrive, rather
+than assumed fixed at design time.
+
+## Approach so far
+
+Adaptive state-space models with sequential Bayesian inference are used to estimate latent risk states and update
+forecasts, feeding a CVaR-constrained MPC layer that re-solves the control problem as new information arrives.
+
+## Limitations
+
+> This is ongoing thesis work — results, benchmarks and final control formulation are not yet finalized and are
+> intentionally not quantified here.

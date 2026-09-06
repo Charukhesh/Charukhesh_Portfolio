@@ -1,0 +1,792 @@
+## REDESIGN THE EXISTING PORTFOLIO — DO NOT REBUILD FROM SCRATCH
+
+You are modifying my **already-built portfolio website**. The existing `index.html` contains the complete content, projects, research, experience, case studies, technical details, links, equations, and responsive behavior.
+
+**Do NOT throw away the existing content or rebuild the portfolio from zero.**
+
+Instead, completely redesign the **visual language, layout, interactions, animations, and presentation** to closely match the style and experience of this reference:
+
+**Reference:** https://alexbuildstech.github.io/portfolio/
+
+The reference should be treated as the primary visual/interaction inspiration. Preserve my identity and technical/research content while transforming the website into a much more **immersive, experimental, interactive robotics/AI portfolio**.
+
+---
+
+# 1. CORE DESIGN DIRECTION
+
+Move away from the current:
+
+> academic research document / technical CV
+
+toward:
+
+> **interactive robotics laboratory × AI research portfolio × futuristic engineering interface**
+
+The website should immediately feel like the portfolio of someone who builds **intelligent physical systems**, rather than a conventional student website.
+
+It should feel:
+
+* technical
+* futuristic
+* highly polished
+* experimental
+* immersive
+* sophisticated
+* engineering-focused
+* visually memorable
+
+But **NOT**:
+
+* generic SaaS
+* cyberpunk gamer UI
+* neon-heavy
+* cheesy "AI brain" aesthetic
+* generic 3D developer portfolio
+* excessive glassmorphism
+* template-like cards everywhere
+
+The visual identity should communicate **robotics, autonomous systems, machine learning, control, perception and simulation**.
+
+---
+
+# 2. PRESERVE ALL EXISTING CONTENT
+
+The current website already contains my real portfolio information.
+
+Preserve and improve:
+
+* Name
+* IIT Madras education
+* AI/ML Research Engineer positioning
+* Research interests
+* Purdue SURF project
+* NUS IRIS project
+* M.Tech thesis
+* HRES / Hero Future Energies project
+* Advanced engineering projects
+* MLOps project
+* Computer vision projects
+* Transformer project
+* stochastic MPC
+* Kalman/RLS
+* SINDy
+* sliding-mode control
+* experience timeline
+* publications
+* GitHub links
+* LinkedIn
+* ResearchGate
+* equations
+* technical explanations
+* industrial application sections
+* project results
+* limitations
+* deployment status
+
+Do not invent achievements, metrics, publications, deployments or technologies.
+
+The existing content is the source of truth.
+
+---
+
+# 3. TRANSFORM THE HERO COMPLETELY
+
+The current hero is too much like a conventional academic portfolio.
+
+Replace it with a visually dominant **interactive robotics/AI hero experience** inspired by the reference.
+
+The first screen should immediately communicate:
+
+**CHARUKHESH B R**
+
+**AI / ML RESEARCH ENGINEER**
+
+and a concise positioning statement around:
+
+**Robotics · Machine Learning · Control · Intelligent Systems**
+
+But the visual centerpiece should be an **interactive technical 3D/2D system**, not a text-heavy hero.
+
+Possible visual concept:
+
+### "Autonomous System Simulation"
+
+Create an abstract robotic/autonomous-system visualization consisting of:
+
+* a robotic/drone-like agent
+* trajectory/path planning
+* sensor rays
+* target/objective
+* coordinate grid
+* particles
+* subtle environment geometry
+* trajectory prediction
+* state vectors
+* control signals
+* small technical labels
+
+The visual should subtly react to:
+
+* mouse movement
+* cursor position
+* scrolling
+
+It should feel like a **live simulation**, not an illustration.
+
+Do NOT use a generic humanoid robot.
+
+Prefer a visual language inspired by:
+
+* robot motion planning
+* latent-space trajectories
+* UAV navigation
+* sensor fusion
+* control systems
+* simulation environments
+
+---
+
+# 4. INTRO / LOADING EXPERIENCE
+
+Create a short, polished initial loading sequence.
+
+Example concept:
+
+```text
+INITIALIZING SYSTEM
+↓
+LOADING RESEARCH
+↓
+LOADING MODELS
+↓
+LOADING SIMULATION
+↓
+CHARUKHESH B R
+```
+
+Keep it extremely short and skippable.
+
+Do not create a long loading screen that annoys visitors.
+
+Respect:
+
+```css
+prefers-reduced-motion
+```
+
+---
+
+# 5. NAVIGATION
+
+Replace the current conventional navigation with a more immersive navigation system.
+
+It should remain simple and usable.
+
+Potential structure:
+
+```text
+CBR
+01 / RESEARCH
+02 / PROJECTS
+03 / EXPERIENCE
+04 / PUBLICATIONS
+05 / ABOUT
+```
+
+Use a compact floating/sticky navigation.
+
+As the visitor scrolls, the active section should update.
+
+Include a persistent GitHub link.
+
+Navigation should feel like a **mission-control / research-interface**, but remain elegant.
+
+---
+
+# 6. PROJECTS MUST BECOME THE MAIN VISUAL EXPERIENCE
+
+This is the most important change.
+
+The current project presentation is mostly text rows.
+
+Transform the flagship projects into **large interactive visual project experiences**.
+
+Each project should have:
+
+* large visual area
+* project number
+* title
+* research/institution label
+* short description
+* technical tags
+* industrial application
+* GitHub / paper / case-study links where available
+
+Projects should visually react to hover.
+
+Examples:
+
+### Flow-Latent MPC
+
+Visualize:
+
+```text
+Observation
+      ↓
+Latent State
+      ↓
+16 Candidate Trajectories
+      ↓
+V-JEPA Prediction
+      ↓
+Verification
+      ↓
+Optimal Trajectory
+      ↓
+Robot
+```
+
+Animate the candidate trajectories and highlight the selected trajectory.
+
+### LLM + 3D Scene Graph
+
+Visualize:
+
+```text
+RGB-D Scene
+     ↓
+3D Scene Graph
+     ↓
+LLM Planner
+     ↓
+Subgoals
+     ↓
+Robot Actions
+```
+
+Objects/nodes should subtly connect and reorganize.
+
+### Stochastic Control
+
+Visualize:
+
+* state trajectory
+* uncertainty envelope
+* control horizon
+* risk boundary
+* predicted states
+
+### HRES
+
+Visualize:
+
+* solar
+* wind
+* battery
+* load
+* optimization landscape
+* Monte Carlo trajectories
+
+The visuals should be **derived from the actual project concepts**, not decorative random graphics.
+
+---
+
+# 7. USE LARGE VISUAL PROJECT CARDS / PANELS
+
+Do not use a grid of tiny generic cards.
+
+Instead, make flagship projects feel like major exhibits.
+
+Think:
+
+```text
+┌──────────────────────────────────────────────┐
+│                                              │
+│        INTERACTIVE TECHNICAL VISUAL          │
+│                                              │
+│                                              │
+├──────────────────────────────────────────────┤
+│ 01                                           │
+│ FLOW-LATENT MPC                              │
+│                                              │
+│ Purdue SURF                                  │
+│ Robot Learning · World Models · MPC          │
+│                                              │
+│ [EXPLORE PROJECT]                            │
+└──────────────────────────────────────────────┘
+```
+
+Use alternating layouts so the page does not become repetitive.
+
+---
+
+# 8. PROJECT INTERACTION
+
+When a visitor clicks a flagship project, do NOT simply jump to a block of text.
+
+Open a sophisticated project experience:
+
+* fullscreen/large modal OR
+* expanding panel OR
+* dedicated in-page immersive section
+
+Show:
+
+### 01 — OVERVIEW
+
+What problem was solved?
+
+### 02 — SYSTEM
+
+Architecture / pipeline
+
+### 03 — TECHNICAL METHOD
+
+Mathematical formulation
+
+### 04 — EXPERIMENT
+
+Simulation / benchmark / data
+
+### 05 — RESULT
+
+Actual result and metrics
+
+### 06 — INDUSTRIAL APPLICATION
+
+Where this technology matters in industry.
+
+### 07 — IMPLEMENTATION
+
+Relevant GitHub files / repository
+
+### 08 — LIMITATIONS
+
+What did not work / remaining limitations.
+
+Keep the current technical depth. The redesign is primarily visual and interactive.
+
+---
+
+# 9. INDUSTRIAL APPLICATION MUST REMAIN PROMINENT
+
+Every project should communicate:
+
+**Research → Engineering → Industrial relevance**
+
+Use a visually distinct section such as:
+
+```text
+INDUSTRIAL APPLICATION
+
+ROBOTICS & AUTOMATION
+
+Problem:
+...
+
+Engineering value:
+...
+
+Deployment:
+Simulation → Hardware → Production
+
+Potential users:
+...
+```
+
+Do not falsely claim deployment.
+
+Maintain the current distinctions:
+
+* Deployed
+* Industry collaboration
+* Validated
+* Industrial application
+* Potential future application
+
+---
+
+# 10. ADD TECHNICAL VISUALIZATION THROUGHOUT
+
+Replace unnecessary decorative graphics with visuals related to my actual work.
+
+Use:
+
+* trajectory plots
+* state-space diagrams
+* control loops
+* uncertainty distributions
+* scene graphs
+* latent-space representations
+* optimization landscapes
+* robot geometry
+* sensor rays
+* Monte Carlo simulations
+* attention maps
+* architecture diagrams
+* neural network representations
+* particle systems
+
+The site should visually communicate:
+
+**"This person actually builds these systems."**
+
+---
+
+# 11. SCROLL EXPERIENCE
+
+Make scrolling feel intentional.
+
+Use subtle scroll-driven transitions:
+
+* project visuals moving at different rates
+* trajectory drawing
+* objects appearing progressively
+* numbers/counts animating
+* technical labels revealing themselves
+* diagrams assembling
+* section transitions
+* slight parallax
+
+Avoid excessive animation.
+
+Animation should communicate **system behavior**, not simply decoration.
+
+---
+
+# 12. PROJECT STATUS INDICATORS
+
+Use a visual status language:
+
+```text
+● ACTIVE
+● COMPLETED
+● VALIDATED
+● INDUSTRY COLLABORATION
+● RESEARCH
+```
+
+Make these feel like system metadata rather than conventional badges.
+
+---
+
+# 13. GITHUB INTEGRATION
+
+GitHub should become a first-class part of the project experience.
+
+For every project with a public repository:
+
+```text
+IMPLEMENTATION
+GitHub Repository →
+
+Source
+Experiments
+Models
+Results
+```
+
+Where possible, link directly to meaningful repository files.
+
+Do NOT fabricate repository URLs.
+
+Use my existing GitHub:
+
+https://github.com/Charukhesh
+
+The existing website already contains several repository links; preserve them and improve their presentation.
+
+---
+
+# 14. TYPOGRAPHY
+
+Move toward the typography of a high-end experimental engineering portfolio.
+
+Use:
+
+* strong modern sans-serif for large titles
+* monospace for technical metadata
+* clean readable body typography
+
+Avoid making the entire website look like an academic paper.
+
+Use typography hierarchy aggressively.
+
+Large titles should feel confident.
+
+Small technical labels should feel like instrumentation data.
+
+---
+
+# 15. COLOR SYSTEM
+
+Keep the site dark, but evolve the existing palette.
+
+Use:
+
+* near-black background
+* off-white text
+* muted gray
+* one primary accent
+* one secondary technical accent
+
+Avoid rainbow gradients.
+
+Avoid excessive neon.
+
+Accent colors should be used for:
+
+* trajectories
+* active states
+* important numbers
+* system status
+* links
+* interactive elements
+
+---
+
+# 16. 3D / CANVAS / WEBGL
+
+You may use:
+
+* Three.js
+* React Three Fiber
+* WebGL
+* Canvas
+* SVG
+* GSAP
+* Framer Motion / Motion
+
+if appropriate.
+
+However:
+
+**Do not add 3D simply because it is possible.**
+
+The 3D/interactive elements must reinforce my technical identity.
+
+Good:
+
+* robot trajectory
+* UAV flight path
+* latent-space particles
+* sensor visualization
+* scene graph
+* control-system visualization
+
+Bad:
+
+* random floating cubes
+* generic galaxy
+* generic AI brain
+* random glowing sphere
+* meaningless 3D model
+
+---
+
+# 17. EXPERIENCE SECTION
+
+Turn the existing timeline into a more visual technical timeline.
+
+Show:
+
+```text
+2026
+│
+├── M.Tech Thesis
+│
+├── Hero Future Energies
+│
+├── Purdue SURF
+│
+├── NUS IRIS
+│
+└── ...
+```
+
+Each node should expand/reveal its technical contribution.
+
+Keep the actual content.
+
+---
+
+# 18. RESEARCH SECTION
+
+Make the research interests feel like an interconnected research map rather than a list of tags.
+
+For example:
+
+```text
+                 MACHINE LEARNING
+                       │
+          ┌────────────┼────────────┐
+          ↓            ↓            ↓
+    ROBOT LEARNING   WORLD       PROBABILISTIC
+                     MODELS       MODELING
+          │                         │
+          ↓                         ↓
+      CONTROL  ←────────────→  STATE ESTIMATION
+          │
+          ↓
+    AUTONOMOUS SYSTEMS
+```
+
+This can be interactive.
+
+Hovering over a research area should reveal the projects connected to it.
+
+---
+
+# 19. ABOUT SECTION
+
+Keep the current information but make it much more compact.
+
+The visitor should not need to read a large biography.
+
+Show:
+
+* IIT Madras
+* B.Tech Aerospace + M.Tech Data Science
+* 9.14 CGPA
+* research interests
+* key achievements
+* links
+
+Then provide:
+
+**DOWNLOAD RESUME**
+
+---
+
+# 20. FOOTER
+
+End with a strong technical statement rather than a generic:
+
+> "Thanks for visiting."
+
+Something closer to:
+
+```text
+BUILDING INTELLIGENT SYSTEMS
+FOR THE PHYSICAL WORLD.
+
+CHARUKHESH B R
+IIT MADRAS
+
+GitHub · LinkedIn · ResearchGate · Resume
+```
+
+---
+
+# 21. RESPONSIVENESS
+
+The redesign must work beautifully on:
+
+* desktop
+* laptop
+* tablet
+* mobile
+
+On mobile:
+
+* simplify 3D
+* reduce animation
+* preserve project hierarchy
+* maintain readable technical content
+* use a proper mobile navigation
+* avoid horizontal overflow
+
+---
+
+# 22. PERFORMANCE
+
+Do not destroy the existing performance by adding unnecessary libraries.
+
+Prioritize:
+
+* lazy loading
+* lightweight SVG where possible
+* compressed assets
+* GPU-friendly animation
+* requestAnimationFrame where appropriate
+* no unnecessary continuous animations
+* reduced-motion support
+
+If WebGL is used, provide a graceful fallback.
+
+---
+
+# 23. IMPORTANT: DO NOT CHANGE MY CONTENT JUST TO MAKE IT FIT THE DESIGN
+
+The redesign should adapt the interface around the content.
+
+Do NOT:
+
+* delete technical details
+* simplify research into generic buzzwords
+* remove equations
+* remove industrial applications
+* remove project limitations
+* remove GitHub links
+* invent project images
+* invent deployment claims
+* invent metrics
+
+The goal is:
+
+**same technical credibility + dramatically better visual experience.**
+
+---
+
+# 24. FINAL QUALITY BAR
+
+Before finishing, inspect the entire website as if you were:
+
+1. An AI/ML research scientist
+2. A robotics researcher
+3. A hiring manager at an advanced AI company
+4. A robotics/AI PhD admissions committee
+5. A technical recruiter
+
+Within the first **10 seconds**, the visitor should understand:
+
+**Who I am → What I work on → Why the work is technically interesting**
+
+Within **30 seconds**:
+
+**They should see evidence that I actually implement and evaluate intelligent systems.**
+
+Within **2 minutes**:
+
+**They should be able to inspect my research, implementation, experiments and industrial relevance.**
+
+The final result should feel like:
+
+> **an interactive research laboratory built by an AI/robotics engineer**
+
+—not a conventional personal website.
+
+---
+
+## IMPLEMENTATION RULE
+
+First inspect the existing `index.html`, CSS and JavaScript structure.
+
+Then modify the existing implementation rather than replacing it blindly.
+
+Preserve working functionality wherever possible.
+
+After implementation:
+
+* check every navigation link
+* check every GitHub link
+* check every case study
+* check KaTeX rendering
+* check mobile layout
+* check animations
+* check console errors
+* check accessibility
+* check performance
+* check that no existing project content has accidentally disappeared
+
+The redesign is successful only when the **existing technical portfolio remains intact while the visual/interactive experience is transformed to match the reference's level of creativity and immersion.**

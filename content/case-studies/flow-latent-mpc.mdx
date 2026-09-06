@@ -1,0 +1,104 @@
+---
+title: "Flow-Latent MPC — Robotic Manipulation with Flow Matching + V-JEPA"
+subtitle: "Purdue SURF · Robot Learning · Generative Models"
+badges: ["Validated — Robomimic simulation", "Industrial application"]
+---
+
+## Overview
+
+Model-free imitation policies for manipulation are fast but brittle under distribution shift, while pixel-space
+world models are expensive to plan through at control frequency. This project builds a planner that generates
+candidate action sequences with a flow-matching policy and verifies them against a compact latent world model
+(V-JEPA) instead of pixels — trading dense visual reconstruction for a latent goal-consistency check that is
+cheap enough to run inside a receding-horizon loop.
+
+## Problem formulation
+
+The action generator learns a time-dependent velocity field transporting a noise prior to the action distribution
+conditioned on the current latent state:
+
+$$
+\dot{a}_t = v_\theta(a_t, t \mid z_s), \qquad a_0 \sim \mathcal{N}(0, I), \quad a_1 \sim \pi(a \mid z_s)
+$$
+
+At each control step, $N=16$ candidate 7-DoF trajectories are sampled and scored against a predicted latent goal
+$\hat{z}_g$ from the V-JEPA world model, and the receding-horizon plan is re-solved every $H$ steps to bound drift:
+
+$$
+a^{*}_{t:t+H} = \arg\min_{a^{(i)}_{t:t+H},\, i=1..N} \; \big\lVert f_\phi\big(z_t, a^{(i)}_{t:t+H}\big) - \hat{z}_g \big\rVert_2^2
+$$
+
+## Architecture
+
+<div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
+  <svg viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
+    <g fill="none" stroke="#3a4048" strokeWidth="1.3">
+      <rect x="20" y="60" width="130" height="70" rx="3" />
+      <rect x="200" y="60" width="150" height="70" rx="3" />
+      <rect x="400" y="20" width="160" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="400" y="110" width="160" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="610" y="60" width="150" height="70" rx="3" />
+      <rect x="810" y="60" width="70" height="70" rx="3" />
+    </g>
+    <g stroke="#5a6068" strokeWidth="1.2">
+      <line x1="150" y1="95" x2="198" y2="95" />
+      <line x1="350" y1="80" x2="398" y2="55" />
+      <line x1="350" y1="110" x2="398" y2="140" />
+      <line x1="560" y1="55" x2="608" y2="90" />
+      <line x1="560" y1="140" x2="608" y2="100" />
+      <line x1="760" y1="95" x2="808" y2="95" />
+    </g>
+    <text x="35" y="100" fill="#dde2e7">Observation</text>
+    <text x="215" y="90" fill="#dde2e7">Encoder</text>
+    <text x="215" y="105" fill="#767f8b">z_s</text>
+    <text x="415" y="50" fill="#d7a24a">Flow Matching</text>
+    <text x="415" y="65" fill="#767f8b">candidate actions</text>
+    <text x="415" y="140" fill="#5fb8b0">V-JEPA world model</text>
+    <text x="415" y="155" fill="#767f8b">latent goal ẑ_g</text>
+    <text x="625" y="90" fill="#dde2e7">Flow-Latent MPC</text>
+    <text x="625" y="105" fill="#767f8b">verify + select</text>
+    <text x="825" y="100" fill="#dde2e7">Robot</text>
+  </svg>
+</div>
+
+## Technical approach
+
+**Representation.** The current observation is encoded into a latent state used both to condition the
+flow-matching sampler and as the input to the V-JEPA predictor.
+
+**Generation.** A flow-matching model samples a batch of candidate 7D action trajectories per step rather than a
+single mode, preserving multi-modality that diffusion/behavior-cloning baselines tend to average away.
+
+**Verification.** Each candidate is rolled forward through the V-JEPA latent dynamics model and scored by distance
+to a predicted latent goal, replacing pixel-space reconstruction loss with a representation that is both cheaper
+and less sensitive to visual nuisance variation.
+
+**Drift control.** Because latent rollouts compound error autoregressively, the plan is executed and re-verified
+over short horizons rather than open-loop for the full episode.
+
+## Experiments
+
+Evaluated on manipulation tasks in the Robomimic benchmark suite, comparing short-horizon receding re-planning
+against longer open-loop rollouts of the same generator/verifier pair.
+
+## Failure modes / limitations
+
+> Latent rollout error compounds with horizon length — this is the reason short-horizon re-planning was necessary
+> rather than optional, and is the main limitation of relying on a learned world model instead of ground-truth
+> simulation.
+
+## Insights
+
+Verifying candidate plans in a learned latent space is only as reliable as the world model's own predictive
+horizon — the practical lesson from this project was that receding-horizon control isn't just a performance
+optimization here, it's what keeps latent-space MPC honest.
+
+## Industrial application
+
+| | |
+|---|---|
+| **Industry** | Robotics & automation, warehouse/logistics manipulation, manufacturing pick-and-place |
+| **Problem** | Sample-efficient, robust manipulation policies that generalize past narrow demonstration distributions without expensive pixel-space planning at control frequency |
+| **How it helps** | Latent-space verification is cheaper than pixel-space model-based planning, enabling higher-frequency re-planning and better robustness to unmodeled disturbances than open-loop imitation |
+| **Deployment path** | Simulation (Robomimic) → hardware-in-the-loop → real-world manipulation testing (future stages, not yet demonstrated) |
+| **Who cares** | Robotic manipulation teams, industrial automation groups building learned pick-and-place systems |

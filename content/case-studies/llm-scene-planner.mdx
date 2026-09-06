@@ -1,0 +1,59 @@
+---
+title: "LLM Planner over 3D Scene Graphs — Long-Horizon Manipulation"
+subtitle: "NUS IRIS · LLM Planning · Computer Vision"
+badges: ["Validated — RoboCasa simulation", "Industrial application"]
+---
+
+## Overview
+
+Long-horizon manipulation instructions ("clear the counter and load the dishwasher") require grounding language in
+*structure*, not just objects — what's on top of what, what's reachable, what depends on what. This project builds
+hierarchical 3D scene graphs from ground-truth depth scans and uses them as the grounding layer an LLM planner
+reasons over.
+
+## Architecture
+
+<div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
+  <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
+    <g fill="none" stroke="#3a4048" strokeWidth="1.3">
+      <rect x="20" y="45" width="150" height="70" rx="3" />
+      <rect x="220" y="45" width="180" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="450" y="45" width="160" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="660" y="45" width="150" height="70" rx="3" />
+    </g>
+    <g stroke="#5a6068" strokeWidth="1.2">
+      <line x1="170" y1="80" x2="218" y2="80" />
+      <line x1="400" y1="80" x2="448" y2="80" />
+      <line x1="610" y1="80" x2="658" y2="80" />
+    </g>
+    <text x="35" y="75" fill="#dde2e7">Depth scan</text>
+    <text x="35" y="90" fill="#767f8b">RGB-D, ground truth</text>
+    <text x="235" y="75" fill="#5fb8b0">Hierarchical 3D</text>
+    <text x="235" y="90" fill="#5fb8b0">scene graph</text>
+    <text x="465" y="75" fill="#d7a24a">LLM planner</text>
+    <text x="465" y="90" fill="#767f8b">MobiPi-derived</text>
+    <text x="675" y="75" fill="#dde2e7">Action plan</text>
+    <text x="675" y="90" fill="#767f8b">RoboCasa exec.</text>
+  </svg>
+</div>
+
+## Technical approach
+
+Ground-truth depth scans are converted into hierarchical, semantically labeled 3D scene graphs (containment,
+support and spatial-adjacency relations between objects and surfaces). Natural-language instructions are
+decomposed by the LLM planner into sub-goals grounded against nodes in this graph, converting the MobiPi framework
+to operate over graph-structured state rather than flat object lists, and executed step-by-step inside RoboCasa.
+
+## Results
+
+Produced spatially consistent multi-step action plans from natural-language instructions, executed autonomously in
+the RoboCasa simulator.
+
+## Industrial application
+
+| | |
+|---|---|
+| **Industry** | Home/service robotics, warehouse automation, logistics |
+| **Problem** | Executing long-horizon, language-specified tasks that require spatial and relational reasoning beyond single-step pick/place |
+| **How it helps** | Structured scene graphs give the planner explicit relational grounding, reducing ambiguity in what "clear the counter" or "load the dishwasher" concretely requires |
+| **Deployment path** | RoboCasa simulation → real depth-sensor pipeline → physical robot deployment (future stages) |
