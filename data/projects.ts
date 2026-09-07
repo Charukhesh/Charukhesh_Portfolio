@@ -291,130 +291,24 @@ export const flagshipProjects: Project[] = [
 
 // ADVANCED ENGINEERING — compact projects without dedicated case studies
 export const advancedProjects: Project[] = [
-  {
-    slug: "unified-multitask-vision",
-    title: "Unified Multi-Task Vision — recognition, localization & segmentation",
-    institution: "Course project — Deep Learning",
-    advisor: "Prof. Ganapathy S",
-    category: ["Computer Vision"],
-    type: "Course",
-    status: "completed",
-    featured: false,
-    summary:
-      "Shared VGG16 encoder with task-specific heads for fine-grained multi-task recognition across 37 classes; U-Net-style decoder with skip connections trained with IoU and Dice losses for dense segmentation.",
-    methods: ["PyTorch", "VGG16", "U-Net", "IoU/Dice loss"],
-    result:
-      "Single backbone serving recognition, localization and segmentation heads.",
-    repo: {
-      url: "https://github.com/Charukhesh/multitask-vision-pipeline.git"
-    },
-    hasCaseStudy: false
-  },
-
-  {
-    slug: "transformer-from-scratch",
-    title: "Transformer from Scratch — German→English NMT",
-    institution: "Course project — Deep Learning",
-    advisor: "Prof. Ganapathy S",
-    category: ["LLM/NLP"],
-    type: "Course",
-    status: "completed",
-    featured: false,
-    summary:
-      "Original Transformer architecture implemented in PyTorch with 8-head attention, causal masking and sinusoidal positional encoding; custom WordPiece tokenizer with label smoothing, tuned to a compact 256-dim model for limited-data training.",
-    methods: ["PyTorch", "WordPiece", "Attention"],
-    result:
-      "From-scratch encoder-decoder Transformer for German-English translation.",
-    repo: {
-      url: "https://github.com/Charukhesh/pure-pytorch-transformer-nmt.git"
-    },
-    hasCaseStudy: false
-  },
-
-  {
-    slug: "embedding-quality-moe",
-    title: "Embedding-Based Quality Prediction + Mixture-of-Experts",
-    institution: "Course project — Data Analytics Laboratory",
-    advisor: "Prof. Sudarsan S",
-    category: ["MLOps"],
-    type: "Course",
-    status: "completed",
-    featured: false,
-    summary:
-      "Negative sampling across four embedding modalities to generate score labels from response-metric cosine similarity; calibrated gated Mixture-of-Experts with regime-specific regressors, and cross-validated LightGBM baselines with gate calibration for the final score.",
-    methods: ["LightGBM", "Mixture-of-Experts", "Embeddings"],
-    result:
-      "Calibrated gated MoE ensemble outperforming single-regressor baselines.",
-    repo: {
-      url: "https://github.com/Charukhesh/MetricLearning"
-    },
-    hasCaseStudy: false
-  },
-
-  {
-    slug: "smc-landing",
-    title: "Thrust-Limited Sliding-Mode Guidance — landing",
-    institution: "Independent / coursework",
-    category: ["Control", "Aerospace"],
-    type: "Personal",
-    status: "completed",
-    featured: false,
-    summary:
-      "Sliding-mode guidance law for a thrust-limited powered-descent/landing problem, implemented and simulated in MATLAB.",
-    methods: ["Sliding-Mode Control", "MATLAB"],
-    result:
-      "Guidance law simulated for a constrained powered-descent landing scenario.",
-    repo: {
-      url: "https://github.com/Charukhesh/SMC_Landing"
-    },
-    hasCaseStudy: false
-  },
-
-  {
-    slug: "multimodal-return-forecasting",
-    title:
-      "Multi-Dimensional Return Forecasting & Dynamic Portfolio Management",
-    institution: "Course project — Data Science & AI in Finance",
-    category: ["Finance"],
-    type: "Course",
-    status: "completed",
-    featured: false,
-    summary:
-      "Multi-modal return forecasting framework combining market, fundamental, macroeconomic and financial-news sentiment signals for systematic portfolio construction and out-of-sample evaluation.",
-    methods: [
-      "OHLCV features",
-      "Fundamental signals",
-      "Macroeconomic variables",
-      "FinBERT sentiment",
-      "Walk-forward backtesting"
-    ],
-    result:
-      "Leakage-aware multi-modal forecasting and portfolio construction evaluated using out-of-sample risk-adjusted performance.",
-    repo: {
-      url: "https://github.com/Charukhesh/multimodal-return-forecasting.git"
-    },
-    hasCaseStudy: false
-  },
-
+  // --- DEFAULT VISIBLE (TOP 3) ---
   {
     slug: "shrinkage-hrp-portfolio",
-    title:
-      "Advanced Portfolio Optimization — Statistical & Structural Regularization",
+    title: "Advanced Portfolio Optimization | Statistical & Structural Regularization",
     institution: "Course project — Data Science & AI in Finance",
     category: ["Finance", "Optimization"],
     type: "Course",
     status: "completed",
     featured: false,
     summary:
-      "Robust portfolio-construction study combining Ledoit-Wolf covariance shrinkage with Hierarchical Risk Parity to reduce covariance estimation error and improve allocation stability.",
+      "Implemented a robust portfolio allocation framework that mitigates covariance estimation error by integrating Ledoit-Wolf shrinkage with Hierarchical Risk Parity (HRP).",
     methods: [
       "Ledoit-Wolf covariance shrinkage",
-      "Bootstrap resampling",
       "Hierarchical Risk Parity",
-      "Out-of-sample evaluation"
+      "Bootstrap resampling"
     ],
     result:
-      "Compared covariance stability, turnover and out-of-sample behavior against conventional Markowitz optimization.",
+      "Demonstrated superior out-of-sample stability and lower portfolio turnover compared to standard Markowitz mean-variance optimization.",
     repo: {
       url: "https://github.com/Charukhesh/shrinkage-hrp-portfolio.git"
     },
@@ -422,18 +316,122 @@ export const advancedProjects: Project[] = [
   },
 
   {
+    slug: "transformer-from-scratch",
+    title: "Transformer from Scratch | German → English NMT",
+    institution: "Course project — Deep Learning",
+    advisor: "Prof. Ganapathy S",
+    category: ["LLM/NLP"],
+    type: "Course",
+    status: "completed",
+    featured: false,
+    summary:
+      "Built the original 'Attention Is All You Need' architecture purely in PyTorch, featuring custom 8-head causal/cross attention, sinusoidal positional encodings, and a WordPiece tokenizer.",
+    methods: ["PyTorch", "Multi-Head Attention", "WordPiece Tokenizer"],
+    result:
+      "Trained a compact 256-dimensional encoder-decoder model achieving stable cross-entropy convergence for German-to-English translation.",
+    repo: {
+      url: "https://github.com/Charukhesh/pure-pytorch-transformer-nmt.git"
+    },
+    hasCaseStudy: false
+  },
+
+  {
+    slug: "smc-landing",
+    title: "Thrust-Limited Sliding-Mode Guidance for safe & precision landing",
+    institution: "Independent / coursework",
+    category: ["Control", "Aerospace"],
+    type: "Personal",
+    status: "completed",
+    featured: false,
+    summary:
+      "Developed a nonlinear Sliding-Mode Control (SMC) guidance law for planetary powered-descent, explicitly handling strict actuator thrust-saturation constraints.",
+    methods: ["Sliding-Mode Control", "Nonlinear Dynamics", "MATLAB"],
+    result:
+      "Simulated in MATLAB to achieve precision pinpoint landing with zero terminal velocity and zero altitude steady-state error.",
+    repo: {
+      url: "https://github.com/Charukhesh/SMC_Landing"
+    },
+    hasCaseStudy: false
+  },
+
+  // --- HIDDEN BEHIND DROPDOWN ---
+  {
+    slug: "unified-multitask-vision",
+    title: "Unified Multi-Task Vision | recognition, localization & segmentation",
+    institution: "Course project — Deep Learning",
+    advisor: "Prof. Ganapathy S",
+    category: ["Computer Vision"],
+    type: "Course",
+    status: "completed",
+    featured: false,
+    summary:
+      "Architected a single-backbone vision model using a shared VGG16 encoder branched into multiple specialized heads for 37-class recognition, bounding-box localization, and U-Net style dense segmentation.",
+    methods: ["PyTorch", "VGG16", "U-Net", "IoU/Dice loss"],
+    result:
+      "Optimized a joint loss function (Cross-Entropy, MSE, and IoU/Dice) to achieve efficient multi-task inference without separate networks.",
+    repo: {
+      url: "https://github.com/Charukhesh/multitask-vision-pipeline.git"
+    },
+    hasCaseStudy: false
+  },
+
+  {
+    slug: "embedding-quality-moe",
+    title: "Embedding-Based Quality Prediction | Mixture-of-Experts",
+    institution: "Course project — Data Analytics Laboratory",
+    advisor: "Prof. Sudarsan S",
+    category: ["MLOps"],
+    type: "Course",
+    status: "completed",
+    featured: false,
+    summary:
+      "Engineered a response-metric quality predictor by generating negative samples across multi-modal embeddings using cosine similarity thresholds.",
+    methods: ["LightGBM", "Mixture-of-Experts", "Embeddings"],
+    result:
+      "Trained a calibrated, gated Mixture-of-Experts (MoE) ensemble of LightGBM regressors, outperforming single global baselines.",
+    repo: {
+      url: "https://github.com/Charukhesh/MetricLearning"
+    },
+    hasCaseStudy: false
+  },
+
+  {
+    slug: "multimodal-return-forecasting",
+    title: "Multi-Dimensional Return Forecasting & Dynamic Portfolio Management",
+    institution: "Course project — Data Science & AI in Finance",
+    category: ["Finance"],
+    type: "Course",
+    status: "completed",
+    featured: false,
+    summary:
+      "Constructed a systematic trading strategy leveraging OHLCV momentum, macro-economic indicators, and FinBERT-extracted news sentiment.",
+    methods: [
+      "OHLCV features",
+      "Macroeconomic signals",
+      "FinBERT sentiment",
+      "Walk-forward backtesting"
+    ],
+    result:
+      "Evaluated alpha generation using walk-forward backtesting to ensure strict avoidance of look-ahead bias and data leakage.",
+    repo: {
+      url: "https://github.com/Charukhesh/multimodal-return-forecasting.git"
+    },
+    hasCaseStudy: false
+  },
+
+  {
     slug: "ensemble-learning",
-    title: "Ensemble Learning",
+    title: "Ensemble Regression for Bike Share Demand",
     institution: "Course / independent project",
     category: ["Finance"],
     type: "Personal",
     status: "completed",
     featured: false,
     summary:
-      "Comparative implementation and evaluation of ensemble-learning methods for predictive modeling.",
-    methods: ["Ensemble Learning", "Python"],
+      "Modeled highly seasonal urban mobility demand by evaluating advanced tree-based ensemble regressors (Random Forest, Gradient Boosting, XGBoost).",
+    methods: ["Ensemble Learning", "XGBoost", "Python"],
     result:
-      "Implemented and evaluated ensemble-based predictive models.",
+      "Captured nonlinear temporal features and weather interactions to minimize cross-validated RMSE against linear baselines.",
     repo: {
       url: "https://github.com/Charukhesh/EnsembleLearning.git"
     },
@@ -442,17 +440,17 @@ export const advancedProjects: Project[] = [
 
   {
     slug: "roc-prc-analysis",
-    title: "ROC / PRC Analysis",
+    title: "Landsat Classification | ROC & PRC Analysis",
     institution: "Course / independent project",
     category: ["Computer Vision"],
     type: "Personal",
     status: "completed",
     featured: false,
     summary:
-      "Evaluation framework for binary classification models using ROC and Precision-Recall analysis across operating thresholds.",
+      "Built an evaluation pipeline for remote sensing (Landsat) binary classification, analyzing operational threshold sensitivity via ROC and Precision-Recall characteristics.",
     methods: ["ROC curves", "Precision-Recall curves", "Threshold analysis"],
     result:
-      "Systematic threshold-based comparison of classifier operating characteristics.",
+      "Quantified model trade-offs in highly imbalanced spatial datasets where standard accuracy metrics fail.",
     repo: {
       url: "https://github.com/Charukhesh/ROC_PRC_Analysis.git"
     },
@@ -461,17 +459,17 @@ export const advancedProjects: Project[] = [
 
   {
     slug: "manifold-learning",
-    title: "Manifold Learning",
+    title: "Manifold Learning on Yeast Gene Expression",
     institution: "Course / independent project",
     category: ["Computer Vision"],
     type: "Personal",
     status: "completed",
     featured: false,
     summary:
-      "Implementation and exploration of nonlinear dimensionality-reduction techniques for discovering low-dimensional structure in high-dimensional data.",
+      "Applied nonlinear dimensionality reduction (PCA, t-SNE, ISOMAP, LLE) to high-dimensional genomic expression datasets.",
     methods: ["Manifold Learning", "Dimensionality Reduction", "Python"],
     result:
-      "Visual and structural comparison of manifold-based representations.",
+      "Extracted underlying low-dimensional topological manifolds to discover localized functional gene clusters.",
     repo: {
       url: "https://github.com/Charukhesh/ManifoldLearning.git"
     },
@@ -480,17 +478,17 @@ export const advancedProjects: Project[] = [
 
   {
     slug: "gmm-based-sampling",
-    title: "GMM-Based Sampling",
+    title: "GMM-Based Synthetic Sampling for Fraud Detection",
     institution: "Course / independent project",
     category: ["Optimization"],
     type: "Personal",
     status: "completed",
     featured: false,
     summary:
-      "Gaussian Mixture Model-based sampling framework for representing and generating samples from multimodal distributions.",
+      "Addressed severe class imbalance in financial fraud datasets by fitting Expectation-Maximization Gaussian Mixture Models (GMM) to minority distributions.",
     methods: ["Gaussian Mixture Models", "Probabilistic Sampling", "Python"],
     result:
-      "Generated samples capturing multimodal distribution structure using fitted mixture models.",
+      "Generated statistically coherent synthetic fraud samples to stabilize downstream classifier decision boundaries.",
     repo: {
       url: "https://github.com/Charukhesh/GMMbasedSampling.git"
     },
@@ -499,21 +497,21 @@ export const advancedProjects: Project[] = [
 
   {
     slug: "data-driven-mor",
-    title: "Data-Driven Model Order Reduction Techniques for Dynamic Systems",
+    title: "Data-Driven Model Order Reduction for Dynamic Systems",
     institution: "Course / independent project",
     category: ["Control", "System Identification", "Optimization"],
     type: "Personal",
     status: "completed",
     featured: false,
     summary:
-      "Data-driven model-order reduction study for extracting compact dynamic representations from higher-order system behavior.",
+      "Extracted compact, low-dimensional dynamic representations from high-order systems using data-driven subspace identification and Proper Orthogonal Decomposition (POD).",
     methods: [
       "Data-driven model reduction",
       "Dynamic-system identification",
-      "Reduced-order modeling"
+      "Proper Orthogonal Decomposition"
     ],
     result:
-      "Constructed reduced-order representations while preserving relevant system dynamics.",
+      "Preserved dominant transient dynamics and frequency responses while drastically reducing computational simulation complexity.",
     repo: {
       url: "https://github.com/Charukhesh/DataDrivenMORs.git"
     },

@@ -5,7 +5,7 @@ export default function AdvancedItem({ project }: { project: Project }) {
     <div className="grid grid-cols-1 items-center gap-4 border-b border-border-soft py-5 sm:grid-cols-[1fr_auto]">
       <div>
         <div className="text-[16.5px] text-[#f2f4f6]">{project.title}</div>
-        <div className="mt-1.5 max-w-[62ch] text-[14.5px] text-ink-dim">{project.summary}</div>
+        <div className="mt-1.5 max-w-full text-[14.5px] text-ink-dim">{project.summary}</div>
         <div className="mt-1.5 font-mono text-[11.5px] text-muted">{project.methods.join(" · ")}</div>
       </div>
       {project.repo.url ? (
