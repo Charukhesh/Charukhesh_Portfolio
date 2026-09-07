@@ -1,0 +1,67 @@
+# Adaptive Kalman Filtering + RLS
+
+This project is a Python-based estimation and filtering research study that replicates and extends the adaptive Kalman filter formulation proposed by Lai & Bernstein (2024). It bridges the gap between conventional Kalman filtering (KF) and Recursive Least Squares (RLS) forgetting-factor algorithms to handle severe, unmodeled physical disturbances.
+
+## Problem
+
+Standard state estimators rely heavily on an accurate dynamic model. If a system undergoes an abrupt, unmodeled physical event—such as an impulsive collision—there is a sudden and severe mismatch between the assumed dynamics and reality. 
+
+In this setup, a mass-spring-damper system experiences an unmodeled impulsive wall collision at $z = 2$. The true velocity reverses essentially instantaneously. Because the filter is not explicitly informed of this collision, a standard Kalman filter with a fixed process covariance ($Q_k$) will fail to adapt quickly, leading to large estimation errors and slow recovery.
+
+## System Intuition
+
+The system physics dictate that while position remains continuous during a collision, velocity is highly discontinuous. The intuition driving the solution is:
+
+**Predicted state $\rightarrow$ Unexpected collision $\rightarrow$ Innovation spike $\rightarrow$ Increased velocity uncertainty $\rightarrow$ Faster recovery.**
+
+If an estimator detects that its predictions are suddenly wildly incorrect (an innovation spike), it should temporarily "forget" its confidence in the dynamic model (specifically the velocity state) and trust new measurements until it stabilizes.
+
+## Methodology
+
+The project evaluates three distinct estimators against the ground-truth physics engine:
+
+1. **Standard KF:** Uses a fixed process covariance $Q_k$, assuming relatively stationary model uncertainty.
+2. **Adaptive KF (KF*):** Uses an RLS-inspired variable forgetting factor $\lambda_k$. Large innovations cause the filter to globally increase process uncertainty, adapting when the assumed dynamics become unreliable.
+3. **Targeted Injection KF (TI-KF):** A physics-informed extension that uses a $\chi^2$ (chi-squared) innovation hypothesis test to detect the collision event explicitly.
+
+## Key Technical Components
+
+### Targeted Uncertainty Injection
+The TI-KF explicitly monitors the innovation sequence. When a collision is detected via the chi-squared test, it selectively injects massive uncertainty into the velocity state while leaving the position state confidence relatively intact. 
+
+The covariance update takes the form:
+
+$$
+P_k \leftarrow P_k + Q_{\text{inject}}
+$$
+
+Where the targeted injection matrix focuses purely on velocity:
+
+$$
+Q_{\text{inject}} = 
+\begin{bmatrix} 
+0 & 0 \\ 
+0 & \text{uncertainty} 
+\end{bmatrix}
+$$
+
+## Results / Findings
+
+Simulation results show that **TI-KF recovers substantially faster** after the collision and exhibits **less overshoot** compared to both the Standard KF and the purely mathematical Adaptive KF. By injecting uncertainty exactly where the physics dictate it belongs (velocity), the estimator rapidly corrects its trajectory.
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python |
+| Computation | NumPy |
+| Visualization | Matplotlib |
+| Theory | Kalman Filtering, Adaptive Filtering, RLS Forgetting Factors, $\chi^2$ Testing |
+
+## Engineering Considerations
+
+The project uses an object-oriented filter implementation (`filters.py`) strictly decoupled from the ground-truth physics engine (`simulation.py`). This prevents the filters from accidentally leaking ground-truth data into the estimation process, forcing them to rely purely on noisy observations and innovation analysis.
+
+## Takeaway
+
+While pure mathematical adaptation (RLS forgetting factors) improves estimator resilience, injecting structural, physics-informed priors into the adaptation logic (TI-KF) yields vastly superior recovery dynamics during unmodeled impulsive events.

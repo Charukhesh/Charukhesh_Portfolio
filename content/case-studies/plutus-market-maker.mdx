@@ -1,0 +1,58 @@
+# Plutus — Algorithmic Market Maker for Binary Event Contracts
+
+Plutus is an algorithmic market-making system developed for the 2026 Akuna Capital Quantitative Trading Challenge. The system was designed to trade binary event contracts linked to the Fed Funds Rate and the valuations of two private AI companies (AJR and THR) across 20 adversarial simulation stages with continuous bankruptcy constraints.
+
+## Problem
+
+A binary contract pays a fixed amount if an event occurs and zero otherwise. While pricing a binary contract fundamentally revolves around estimating the probability of that event, fair value alone is vastly insufficient for a market maker. 
+
+To survive continuous order flow without going bankrupt, the system must jointly reason about the statistical fair value, estimate uncertainty, evaluate trade toxicity, manage accumulating inventory, limit capital utilization, and ensure solvency at all times.
+
+## System Intuition
+
+The system operates as a continuous risk-assessment engine:
+
+**Market observations $\rightarrow$ Probability distribution $\rightarrow$ Fair binary value $\rightarrow$ Inventory/risk adjustment $\rightarrow$ Quote execution.**
+
+If the system accumulates too much inventory on one side of a contract, it dynamically skews its quotes (lowering both bid and ask) to incentivize the market to buy from it, thereby neutralizing its position. Every trade is strictly bounded by Kelly-inspired risk limits to prevent catastrophic capital lock-up.
+
+## Architecture & Workflow
+
+| Stage | Method | Purpose |
+|---|---|---|
+| 1. Warm-Up | Covariance/variance analysis | Estimate AI-company rate betas and sector volatility. |
+| 2. Pricing | Monte Carlo simulation | Compute stochastic price paths to find statistical fair value. |
+| 3. Toxicity Check | FOK filtering | Reject Fill-or-Kill orders that exceed variance or capital limits. |
+| 4. Skewing | Avellaneda–Stoikov skew | Adjust theoretical fair value based on current inventory. |
+| 5. Quoting | Capital-aware RFQ | Size Request-For-Quote responses based on uncommitted capital (max 85%). |
+
+## Key Technical Components
+
+### Monte Carlo Pricing & Caching
+To evaluate the binary outcomes, the system generates 1,000 future stochastic price paths. Because computing these paths continuously during heavy flow would induce unacceptable latency, Plutus implements a daily memory cache that eliminates redundant simulations, allowing millisecond-scale pricing.
+
+### Inventory-Aware Quoting
+Plutus adapts Avellaneda–Stoikov-inspired inventory skewing. The theoretical fair price is adjusted based on the current net position. As inventory grows, bid/offer quotes are proactively shifted to encourage rebalancing.
+
+### Solvency Management
+Maximum potential losses are evaluated immediately. The system utilizes multiple execution protections, including price and quantity clamping, strict `Bid < Offer` formatting, and a hard stop preventing capital utilization from exceeding 85%.
+
+## Results / Findings
+
+Plutus successfully survived all 20 adversarial simulation stages without breaching bankruptcy constraints, demonstrating robust capital preservation in highly toxic simulated market conditions.
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python |
+| Core Modeling | Monte Carlo simulation, Statistical estimation, Covariance analysis |
+| Execution Logic | RFQ/FOK filtering, Inventory-aware quoting, Solvency clamping |
+
+## Engineering Considerations
+
+Latency and memory management are critical when managing continuous order flow. The decision to cache daily Monte Carlo distributions rather than recalculating them per tick was the defining engineering tradeoff, sacrificing microscopic intrabar precision for execution speed and system stability. 
+
+## Takeaway
+
+Algorithmic market making is a risk-management problem, not just a pricing problem. System survival depends on strictly coupling statistical probability estimation with inventory constraints and continuous solvency limits.

@@ -1,0 +1,57 @@
+# QualityCast-MLOps — Production-Grade Casting-Defect Detection
+
+QualityCast-MLOps is an industrial-grade, production-oriented computer vision platform engineered for real-time casting-defect detection. Rather than merely training a standalone classifier, this project implements a comprehensive end-to-end Machine Learning Operations (MLOps) lifecycle.
+
+## Problem
+
+In industrial automation, training a model to detect defects in a static Jupyter Notebook is only a small fraction of the engineering challenge. An industrial vision model is only valuable if it can be consistently reproduced, versioned against changing data, rigorously validated, served via low-latency APIs, monitored for data drift, and seamlessly updated. 
+
+The core challenge is architecting a system where the ML model exists as just one component inside a resilient, reproducible production pipeline.
+
+## System Intuition
+
+The system treats the defect-detection process as an automated lifecycle governed by continuous feedback:
+
+**Industrial image $\rightarrow$ Preprocessing $\rightarrow$ Model $\rightarrow$ PASS/REJECT decision $\rightarrow$ Monitoring $\rightarrow$ Human feedback $\rightarrow$ Retraining.**
+
+When an operator visually overrides a model's edge-case prediction, that feedback is systematically logged and eventually triggers an automated retraining pipeline, allowing the model to adapt to new defect signatures over time.
+
+## Architecture
+
+QualityCast follows a microservices-oriented Clean Architecture, strictly separating orchestration, ML logic, data engineering, API serving, and observability.
+
+| Component | Technology | Purpose |
+|---|---|---|
+| **Orchestration** | Apache Airflow | Triggers raw-data validation, augmentation, and training. |
+| **Data Versioning** | DVC | Manages dataset lineage and reproducible preprocessing. |
+| **Experiment Tracking** | MLflow | Handles model registry, artifact management, and versioning. |
+| **Serving** | FastAPI | High-concurrency REST inference (`/health`, `/ready` endpoints). |
+| **Operator UI** | Streamlit | Single-image/batch inspection, confidence charts, and feedback logic. |
+| **Monitoring** | Prometheus / Grafana | Tracks inference latency, throughput, and defect-rate KPIs. |
+| **Validation** | Pytest | Confirms data schemas and API liveness checkpoints. |
+
+## Methodology
+
+1. **Ingestion & Versioning:** Raw industrial data is ingested and tracked via DVC.
+2. **Automated Training Pipeline:** Airflow orchestrates PyTorch training scripts. MLflow automatically tracks metrics (loss, accuracy) and registers the final trained artifact into the model registry.
+3. **Inference API:** The FastAPI service pulls the latest registered model version. It exposes REST endpoints optimized for rapid inference.
+4. **Human-in-the-Loop:** Factory operators interact with a Streamlit dashboard. They can inspect batches (via `.zip`), view defect confidence intervals, and submit corrections via `feedback_log.csv`.
+5. **Observability:** Prometheus scrapes API metrics, visualizing them on Grafana to ensure system latency and throughput remain healthy.
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| ML Framework | Python, PyTorch |
+| MLOps & Orchestration | Apache Airflow, MLflow, DVC |
+| Serving & UI | FastAPI, Streamlit |
+| Infrastructure | Docker, Docker Compose, Pytest |
+| Observability | Prometheus, Grafana |
+
+## Engineering Considerations
+
+A key engineering decision was deploying the entire stack locally via Docker Compose rather than relying on managed cloud services. This "no-cloud" constraint mirrors strict industrial environments where data privacy and factory-floor latency dictate on-premise deployments. 
+
+## Takeaway
+
+Production machine learning is ultimately a systems engineering discipline. By unifying orchestration, versioning, serving, and monitoring, an ML model transforms from a static mathematical artifact into a resilient, adaptive industrial system.

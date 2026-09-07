@@ -1,0 +1,63 @@
+# Risk-Aware MPC for UAV Motion Planning
+
+This project implements a Python-based UAV motion planning and control system, replicating and extending the hierarchical planning framework of Bui et al. (2024). The system tightly integrates local perception, occupancy-grid mapping, A* global reference planning, and nonlinear Model Predictive Control (MPC) while introducing probabilistic collision-risk constraints to handle perception uncertainty dynamically.
+
+## Problem
+
+A conventional deterministic planner generally treats obstacle locations as if they were known accurately. However, real perception systems are noisy. If obstacle detections are uncertain, the standard approach is to add a large, fixed safety margin. This deterministic approach is overly conservative—it can unnecessarily increase path length, cause suboptimal routing, and delay completion time. 
+
+The core technical challenge is dynamically scaling the safety margin based on the statistical uncertainty of the perception system, effectively replacing rigid safety boundaries with probabilistic guarantees.
+
+## System Intuition
+
+The system physical intuition follows a continuous uncertainty-to-action pipeline:
+
+**Noisy obstacle observation $\rightarrow$ Uncertainty distribution $\rightarrow$ Risk-aware clearance $\rightarrow$ Safe trajectory execution.**
+
+When the UAV's sensors detect an obstacle with high uncertainty (e.g., distant or noisy readings), the system enforces a larger safety clearance. As the UAV approaches or the sensor readings become more reliable, the uncertainty decreases, allowing the MPC to dynamically shrink the unnecessary safety margin. The result is probabilistic safety rather than purely deterministic conservatism.
+
+## Methodology
+
+The pipeline operates in a receding-horizon fashion, constantly updating based on new local observations.
+
+1. **Perception & Mapping:** Local perception receives noisy obstacle observations, which are converted into a discrete occupancy grid classifying space into *free*, *occupied*, or *unknown* states.
+2. **Global Planning:** An A* algorithm operates over the occupancy grid to generate a global reference path toward the target.
+3. **Local Control (NMPC):** A nonlinear MPC tracks the A* reference path. The optimizer penalizes path tracking error, target speed deviation, collision risks, and high jerk (to ensure control smoothness).
+4. **Execution & Replanning:** The MPC respects strict velocity and acceleration constraints, computing a multi-step trajectory but only executing the first optimal action before replanning.
+
+## Key Technical Components
+
+### Probabilistic Chance Constraints
+Instead of fixed physical margins, obstacle detections are modeled with Gaussian uncertainty. A probabilistic chance constraint imposes an approximately 1% collision-risk threshold:
+
+$$
+P(\text{collision}) \le 0.01
+$$
+
+The required clearance margin is continuously computed based on the obstacle's spatial uncertainty and the UAV's view geometry. 
+
+## Results / Findings
+
+In simulated corridor navigation environments subjected to anisotropic sensor noise, the risk-aware stochastic MPC demonstrated significant efficiency improvements over a conservatively tuned deterministic baseline:
+- Approximately **12% lower completion time**
+- Approximately **20% lower control effort**
+
+Crucially, these efficiency gains were achieved while strictly maintaining the intended 1% probabilistic safety constraint.
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python 3.13.5 |
+| Environment | Conda / pip |
+| Core Algorithms | Nonlinear MPC, A*, Occupancy Grids |
+| Mathematics | Gaussian Uncertainty, Probabilistic Chance Constraints |
+| Validation | Simulated environment & MP4 Visualization |
+
+## Engineering Considerations
+
+The primary engineering tradeoff is the computational cost of nonlinear MPC. Solving chance-constrained optimization problems online requires careful tuning of the prediction horizon to maintain a real-time control frequency. The modular architecture separates the `PerceptionModule`, global planner, and `RiskAwareMPCOptimizer` to allow isolated testing and benchmarking against the deterministic `MPCOptimizer`.
+
+## Takeaway
+
+By explicitly modeling perception noise and integrating chance constraints into the MPC formulation, it is possible to achieve tighter, more aggressive trajectory tracking without sacrificing quantifiable safety limits.
