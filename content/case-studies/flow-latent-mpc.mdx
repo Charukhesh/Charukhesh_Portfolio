@@ -1,7 +1,7 @@
 ---
-title: "Flow-Latent MPC — Robotic Manipulation with Flow Matching + V-JEPA"
+title: "Flow-Latent MPC ,  Robotic Manipulation with Flow Matching + V-JEPA"
 subtitle: "Purdue SURF · Robot Learning · Generative Models"
-badges: ["Validated — Robomimic simulation", "Industrial application"]
+badges: ["Validated ,  Robomimic simulation", "Industrial application"]
 ---
 
 ## Overview
@@ -9,7 +9,7 @@ badges: ["Validated — Robomimic simulation", "Industrial application"]
 Model-free imitation policies for manipulation are fast but brittle under distribution shift, while pixel-space
 world models are expensive to plan through at control frequency. This project builds a planner that generates
 candidate action sequences with a flow-matching policy and verifies them against a compact latent world model
-(V-JEPA) instead of pixels — trading dense visual reconstruction for a latent goal-consistency check that is
+(V-JEPA) instead of pixels ,  trading dense visual reconstruction for a latent goal-consistency check that is
 cheap enough to run inside a receding-horizon loop.
 
 ## Problem formulation
@@ -83,14 +83,14 @@ against longer open-loop rollouts of the same generator/verifier pair.
 
 ## Failure modes / limitations
 
-> Latent rollout error compounds with horizon length — this is the reason short-horizon re-planning was necessary
+> Latent rollout error compounds with horizon length, this is the reason short-horizon re-planning was necessary
 > rather than optional, and is the main limitation of relying on a learned world model instead of ground-truth
 > simulation.
 
 ## Insights
 
 Verifying candidate plans in a learned latent space is only as reliable as the world model's own predictive
-horizon — the practical lesson from this project was that receding-horizon control isn't just a performance
+horizon, the practical lesson from this project was that receding-horizon control isn't just a performance
 optimization here, it's what keeps latent-space MPC honest.
 
 ## Industrial application

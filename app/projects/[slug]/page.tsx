@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { getCaseStudySource, getAllCaseStudySlugs } from "@/lib/case-studies";
@@ -61,7 +62,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           components={mdxComponents}
           options={{
             mdxOptions: {
-              remarkPlugins: [remarkMath],
+              remarkPlugins: [remarkMath, remarkGfm],
               rehypePlugins: [rehypeKatex]
             }
           }}
