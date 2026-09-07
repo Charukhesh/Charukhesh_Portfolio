@@ -1,104 +1,112 @@
-# Charukhesh B R — Portfolio (v2, redesigned)
+# Charukhesh B R | Portfolio Repository 🚀
 
-Next.js 14 (App Router) + TypeScript + Tailwind + Framer Motion. Single-page scroll
-experience (interactive robotics-lab aesthetic) with dedicated case-study pages per
-flagship project. All real content is unchanged from v1 — this pass is visual/interaction
-only, per the redesign brief in `Prompt.txt`.
+This is the source code for my personal portfolio, built for high performance, static deployment, and rich technical storytelling. It is designed to bridge the gap between academic research and software engineering.
 
-## What changed from v1
+**Live Site:** [charukhesh.github.io/Charukhesh_Portfolio](https://charukhesh.github.io/Charukhesh_Portfolio/)
 
-- **Hero** → `components/HeroSim.tsx`, a canvas-based "autonomous system simulation"
-  (agent, trajectory trail, predicted path, sensor rays, particles) that gently follows
-  the cursor. Renders a static frame under `prefers-reduced-motion`.
-- **Intro** → `components/Loader.tsx`, a ~1s skippable boot sequence, shown once per
-  session, skipped entirely for reduced-motion users.
-- **Navigation** → `components/Nav.tsx`, floating pill nav with scroll-spy (`01 / RESEARCH`
-  … `05 / ABOUT`), persistent GitHub link, mobile drawer.
-- **Research** → `components/ResearchMap.tsx`, an interactive node-link diagram; hovering
-  a research area highlights its edges and lists the connected projects.
-- **Projects** → `components/ProjectPanel.tsx` + `components/ProjectVisual.tsx`: each
-  flagship project is now a large alternating-layout panel with its own animated,
-  concept-accurate SVG diagram (trajectory rollouts for Flow-Latent MPC, scene-graph
-  nodes connecting for the LLM planner, uncertainty envelope for the stochastic-control
-  thesis, source→optimization→Monte-Carlo for HRES) plus a system-style status dot
-  (`ACTIVE` / `VALIDATED` / `INDUSTRY COLLABORATION` / …).
-- **Case studies** (`/projects/[slug]`) now auto-number their `##` headings via a CSS
-  counter (`.case-study-body` in `globals.css`) instead of hand-edited numbering — so
-  the MDX content itself was **not rewritten**, only restyled.
-- **Experience** → `components/Timeline.tsx` is now click-to-expand per node.
-- **Site structure** → consolidated from separate `/research`, `/projects`, `/about`,
-  `/publications` routes into anchor sections on the single home page (`app/page.tsx`),
-  matching the nav's scroll-spy behavior. `/projects/[slug]` remains a dedicated page
-  per flagship case study.
-- **Typography** → Space Grotesk (display/headings) + Inter (body) + IBM Plex Mono
-  (technical labels/metadata/status), replacing the all-serif academic-paper look.
-- **Footer** → closing statement ("BUILDING INTELLIGENT SYSTEMS FOR THE PHYSICAL WORLD")
-  instead of a generic sign-off.
+---
 
-Nothing about the underlying facts changed: no new metrics, deployments, repos, or
-publications were invented. `data/*.ts` and `content/case-studies/*.mdx` carry the same
-information as v1 — see those files' own history if you want to diff.
+## 🛠 Tech Stack
+- **Framework:** [Next.js 14](https://nextjs.org/) (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Animations:** Framer Motion & HTML5 Canvas
+- **Content:** MDX (via `next-mdx-remote/rsc` with LaTeX & Math support)
+- **Deployment:** GitHub Pages (Static HTML Export)
 
-## Getting started
+---
 
-```bash
-npm install
-npm run dev
+## 💻 Quick Start (Local Development)
+
+If you are cloning this from scratch to work on it on your local machine:
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Run the local development server:**
+   ```bash
+   npm run dev
+   ```
+3. **View the site:** Open `http://localhost:3000/Charukhesh_Portfolio/` in your browser.
+
+> ⚠️ **IMPORTANT LOCALHOST NOTE:** Because this site is configured for GitHub Pages under the repository name `Charukhesh_Portfolio`, Next.js automatically applies a `basePath`. To view your site locally, you **must** go to `localhost:3000/Charukhesh_Portfolio/` (not just `localhost:3000`).
+
+---
+
+## 📂 Project Architecture (Where everything lives)
+
+- `/app` → Page routing, layouts, and SEO configurations (`page.tsx`, `layout.tsx`).
+- `/components` → React components (Nav, HeroSim, ProjectPanel, SuasSection, etc.).
+- `/data` → **(EDIT THIS MOST OFTEN)** TypeScript files containing profile info, text, and project lists.
+- `/content/case-studies` → The `.mdx` files containing the deep-dive technical articles for flagship projects.
+- `/public` → Static assets (Images, PDFs, Logos).
+
+---
+
+## 📝 How to Update the Portfolio
+
+### 1. Updating General Profile Info & Text
+If you get a new degree, join a new company, or want to change your bio, do not hunt through the UI components.
+* Go to **`data/profile.ts`**.
+* Edit your statement, institution, links, and achievements there. The whole website will update automatically.
+
+### 2. Adding a New "Advanced Engineering" Project
+To add a small project (without a dedicated case-study page):
+1. Open **`data/projects.ts`**.
+2. Scroll to the `advancedProjects` array.
+3. Add a new object following the existing format. It will automatically populate in the dropdown on the homepage!
+
+### 3. Adding a New "Flagship" Project (With a Case Study)
+To add a massive research project that gets its own dedicated page (e.g., `projects/my-new-research`):
+
+**Step 1:** Add the metadata to `data/projects.ts` under the `flagshipProjects` array.
+```typescript
+{
+  slug: "my-new-research", // IMPORTANT: Remember this slug!
+  title: "My New Research Project",
+  hasCaseStudy: true,
+  // ... fill out the rest of the fields
+}
 ```
 
-Open http://localhost:3000.
+**Step 2:** Create the MDX content file.
+* Go to `content/case-studies/`.
+* Create a new file named EXACTLY after your slug: **`my-new-research.mdx`**.
+* Write your content using standard Markdown, HTML, or LaTeX (e.g., `$x^2$`).
 
-```bash
-npm run build && npm run start   # production build
-```
+### 4. Adding Images
+If you want to add a new image to the site (like a new profile photo or a diagram for an MDX file):
+1. Drop the image into the **`public/`** folder (e.g., `new-chart.png`).
+2. When referencing it in code or Markdown, you **MUST** include the base path:
+   ```html
+   <!-- Correct -->
+   <img src="/Charukhesh_Portfolio/new-chart.png" alt="Chart" />
+   
+   <!-- Incorrect (Will break on GitHub Pages) -->
+   <img src="/new-chart.png" alt="Chart" />
+   ```
 
-## Project structure
+---
 
-```
-app/
-  layout.tsx                root layout: fonts, Loader, Nav, Footer
-  page.tsx                  single-page scroll experience — hero, research map,
-                             flagship panels, advanced/other work, timeline,
-                             publications, compact about
-  projects/[slug]/page.tsx  MDX case-study reader (auto-numbered sections)
-components/
-  Loader.tsx                intro boot sequence
-  Nav.tsx                   floating scroll-spy navigation
-  HeroSim.tsx               canvas autonomous-system hero visualization
-  ResearchMap.tsx           interactive research interconnection map
-  ProjectPanel.tsx          large alternating-layout flagship project panel
-  ProjectVisual.tsx         per-project animated SVG diagrams (switch on slug)
-  AdvancedItem.tsx          compact advanced-engineering list row
-  Timeline.tsx              expandable experience timeline
-  Tag.tsx                   Tag + Badge (tags, status colors)
-  StatusDot.tsx             system-metadata status indicator
-  mdx-components.tsx        MDX styling overrides (headings, tables, math, code)
-  Footer.tsx
-data/                       structured content — profile.ts, projects.ts (now
-                             includes `status` per project), experience.ts,
-                             publications.ts
-content/case-studies/       one .mdx file per flagship project (unchanged content)
-lib/case-studies.ts         MDX file loader
-```
+## 🎨 Interactive Components
 
-## Editing content
+* **Hero Simulation (`HeroSim.tsx`):** A custom HTML5 Canvas rendering mathematical path-tracing algorithms (Spiderman vs. Batman) with MPC rollouts, PD control, and adaptive Kalman filter covariance spikes on click.
+* **Research Map (`ResearchMap.tsx`):** An interactive SVG/HTML node graph powered by `lucide-react` icons. Hovering nodes highlights connections and dynamically filters associated project work.
+* **SUAS Section (`SuasSection.tsx`):** A `framer-motion` powered automated slideshow showcasing robotics leadership.
 
-Same as v1 — everything non-case-study lives in `data/*.ts`; flagship case studies are
-`content/case-studies/*.mdx`. Section numbering in case studies is automatic (CSS
-counter on `.case-study-body h2`), so just add/remove `##` headings in the MDX and the
-numbering re-flows — no manual renumbering needed.
+---
 
-## Known TODOs before shipping
+## 🌐 Deployment & SEO
 
-1. **`metadataBase`** in `app/layout.tsx` is a placeholder (`https://example.com`) —
-   set the real domain.
-2. **Resume PDF** — `profile.links.resume` is `null`. Host the PDF (e.g.
-   `/public/resume.pdf`) and set the link; the "DOWNLOAD RESUME" button and footer link
-   activate automatically once it's non-null.
-3. **Unverified repo slugs** — `qualitycast-mlops`, `unified-multitask-vision`,
-   `transformer-from-scratch` in `data/projects.ts` have `repo.url: null` pending
-   confirmation of exact GitHub repo names.
-4. Add `app/sitemap.ts` / `app/robots.ts` once the domain is set.
-5. This build hasn't been run through `npm install && npm run build` in this
-   environment (no network access to verify) — run it locally before deploying and
-   watch for any TypeScript/ESLint nits, per the brief's own QA checklist.
+### Deploying to GitHub Pages
+This project uses `"output": "export"` in `next.config.mjs`. 
+To deploy an update:
+1. Push your changes to the `main` branch on GitHub.
+2. Ensure you have a GitHub Actions workflow setup for Next.js (usually under `.github/workflows/nextjs.yml`). GitHub will automatically build and deploy the static HTML to your `.github.io` domain!
+
+### SEO (Google Search)
+The site is optimized for Google Search via:
+- Metadata in `app/layout.tsx`
+- Auto-generated `sitemap.ts` and `robots.ts`
+*If you change your base URL, remember to update the URL in `layout.tsx` and `sitemap.ts` and resubmit to Google Search Console.*
