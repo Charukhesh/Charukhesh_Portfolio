@@ -9,19 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0a0c0f",
-        panel: "#12151a",
-        panel2: "#0f1216",
-        border: "#242a32",
-        "border-soft": "#1a1f26",
-        ink: "#dde2e7",
-        "ink-dim": "#aeb6c0",
-        muted: "#767f8b",
-        accent: "#d7a24a",
-        "accent-soft": "#d7a24a1a",
-        accent2: "#5fb8b0",
-        "accent2-soft": "#5fb8b01a",
-        limit: "#c17b6f"
+        bg: "#000000",             // True black
+        panel: "#111111",          // Very dark gray for cards
+        panel2: "#1a1a1a",         // Slightly lighter for hover states
+        "border-soft": "#222222",  // Thin, barely visible borders
+        border: "#333333",         
+        ink: "#ffffff",            // Primary text
+        "ink-dim": "#888888",      // Muted text
+        muted: "#555555",          // Deeply muted text
+        accent: "#f59e0b",         // Amber / Gold!
+        accent2: "#ef4444",        // Red
       },
       fontFamily: {
         sans: ["Calibri", "Segoe UI", "Arial", "sans-serif"],

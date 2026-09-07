@@ -359,7 +359,7 @@ export default function HeroSim() {
 
   return (
     // Updated aspect ratio to `aspect-video` (16:9) to make it much wider horizontally
-    <div className="relative aspect-[4/3] sm:aspect-video w-full overflow-hidden rounded-lg border border-border-soft bg-panel2 group cursor-crosshair">
+    <div className="relative aspect-[5/4] w-full min-h-[350px] sm:min-h-[420px] overflow-hidden rounded-lg border border-border-soft bg-panel2 group cursor-crosshair">
       <canvas ref={canvasRef} className="block h-full w-full" />
       
       <div className="pointer-events-none absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-wider text-muted">
