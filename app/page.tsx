@@ -21,10 +21,9 @@ export default function HomePage() {
           
           {/* Top Left: IIT Madras Logo (Bigger) */}
           <img 
-            src="/Charukhesh_Portfolio/iitmlogo.png" 
-            alt="IIT Madras" 
-            className="animate-rise h-16 w-auto opacity-80 sm:h-40 grayscale invert brightness-200 mix-blend-screen"
-            style={{ animationDelay: "0.0s" }}
+              src="/Charukhesh_Portfolio/iitmlogo.png" 
+              alt="IIT Madras" 
+              className="h-10 w-auto opacity-100 sm:h-40"
           />
           
           {/* Top Right: Profile Photo (Bigger, Full Color) */}
