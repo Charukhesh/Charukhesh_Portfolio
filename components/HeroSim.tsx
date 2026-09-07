@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * "Autonomous System Simulation"
+ * "Spiderman chasing Batman"
  * Demonstrates: PD Control, MPC Trajectory Rollouts, Kalman Covariance, and Impulsive Disturbances.
  */
 export default function HeroSim() {
@@ -32,7 +32,7 @@ export default function HeroSim() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Goal tracking (Mouse)
+    // Goal tracking (Batman / Mouse)
     let mouse = { x: width * 0.72, y: height * 0.32 };
     let targetMouse = { ...mouse };
     
@@ -42,7 +42,7 @@ export default function HeroSim() {
     }
     canvas.addEventListener("mousemove", onMove);
 
-    // Agent Physics State
+    // Agent Physics State (Spiderman)
     let t = 0;
     let covariance = 0; // Represents state uncertainty (P matrix trace)
     const agent = {
@@ -52,7 +52,7 @@ export default function HeroSim() {
       vy: 0,
     };
 
-    // Apply Impulsive Disturbance on Click (Adaptive KF project intuition)
+    // Apply Impulsive Disturbance on Click
     function onClick() {
       agent.vx += (Math.random() - 0.5) * 80;
       agent.vy += (Math.random() - 0.5) * 80;
@@ -62,11 +62,13 @@ export default function HeroSim() {
 
     const trail: { x: number; y: number }[] = [];
     
-    // Background Particles
-    const particles = Array.from({ length: 26 }, () => ({
+    // Background Avengers/Objects
+    // 🤖=Iron Man, 🛡️=Cap, 🔨=Thor, ⚡=Flash, 🦾=Bucky
+    const avengers = ['🤖', '🛡️', '🔨', '⚡', '🦾'];
+    const particles = Array.from({ length: 20 }, () => ({
       x: Math.random(),
       y: Math.random(),
-      r: 0.6 + Math.random() * 1.4,
+      icon: avengers[Math.floor(Math.random() * avengers.length)],
       s: 0.05 + Math.random() * 0.12,
     }));
 
@@ -88,22 +90,29 @@ export default function HeroSim() {
       }
     }
 
+    // Helper to draw emojis centered
+    function drawEmoji(emoji: string, x: number, y: number, size: number, alpha = 1) {
+      ctx!.globalAlpha = alpha;
+      ctx!.font = `${size}px Arial`;
+      ctx!.textAlign = "center";
+      ctx!.textBaseline = "middle";
+      ctx!.fillText(emoji, x, y);
+      ctx!.globalAlpha = 1;
+    }
+
     function frame() {
       ctx!.clearRect(0, 0, width, height);
       drawGrid();
 
-      // Ease mouse target
+      // Ease mouse target (Batman dodging)
       mouse.x += (targetMouse.x - mouse.x) * 0.05;
       mouse.y += (targetMouse.y - mouse.y) * 0.05;
 
-      // Draw background particles
-      ctx!.fillStyle = "#5fb8b033";
+      // Draw background items (Iron Man, Cap, Thor passing through)
       particles.forEach((p) => {
         p.y -= p.s * 0.002;
         if (p.y < 0) p.y = 1;
-        ctx!.beginPath();
-        ctx!.arc(p.x * width, p.y * height, p.r, 0, Math.PI * 2);
-        ctx!.fill();
+        drawEmoji(p.icon, p.x * width, p.y * height, 16, 0.3);
       });
 
       // --- DYNAMICS & CONTROL ---
@@ -115,7 +124,7 @@ export default function HeroSim() {
       const targetX = nominalX + (mouse.x - nominalX) * 0.25;
       const targetY = nominalY + (mouse.y - nominalY) * 0.25;
 
-      // 3. PD Controller pulling agent to target
+      // 3. PD Controller pulling Spiderman to target
       agent.vx += (targetX - agent.x) * 0.015; // Proportional gain
       agent.vy += (targetY - agent.y) * 0.015;
       agent.vx *= 0.88; // Damping (Derivative constraint)
@@ -132,10 +141,10 @@ export default function HeroSim() {
 
       // --- RENDERING ---
 
-      // 1. MPC Candidate Rollouts (Flow-Latent MPC / Risk-Aware MPC)
+      // 1. MPC Candidate Rollouts (Web lines checking paths)
       ctx!.lineWidth = 1;
       for (let i = -3; i <= 3; i++) {
-        if (i === 0) continue; // Skip optimal, drawn later
+        if (i === 0) continue; 
         ctx!.beginPath();
         ctx!.moveTo(agent.x, agent.y);
         const cpX = agent.x + (mouse.x - agent.x) * 0.5 + (i * 25 * Math.sin(t));
@@ -145,7 +154,7 @@ export default function HeroSim() {
         ctx!.stroke();
       }
 
-      // 2. Trajectory Trail (Past States)
+      // 2. Trajectory Trail (Golden web behind Spidey)
       ctx!.beginPath();
       trail.forEach((p, i) => {
         if (i === 0) ctx!.moveTo(p.x, p.y);
@@ -167,13 +176,12 @@ export default function HeroSim() {
       ctx!.stroke();
       ctx!.setLineDash([]);
 
-      // 4. 360° LiDAR Scan
+      // 4. 360° LiDAR Scan (Spidey Sense)
       ctx!.strokeStyle = "rgba(118, 127, 139, 0.2)";
       ctx!.lineWidth = 1;
       const scanOffset = t * 4;
       for (let i = 0; i < 32; i++) {
         const ang = scanOffset + (i / 32) * Math.PI * 2;
-        // Fake depth variance based on angle
         const len = 35 + Math.sin(ang * 3) * 10 + Math.cos(ang * 5) * 5;
         ctx!.beginPath();
         ctx!.moveTo(agent.x, agent.y);
@@ -184,46 +192,42 @@ export default function HeroSim() {
       // 5. Covariance Ellipse (State Uncertainty)
       ctx!.beginPath();
       const angle = Math.atan2(agent.vy, agent.vx);
-      ctx!.ellipse(agent.x, agent.y, 14 + covariance, 9 + covariance * 0.4, angle, 0, Math.PI * 2);
+      ctx!.ellipse(agent.x, agent.y, 20 + covariance, 15 + covariance * 0.4, angle, 0, Math.PI * 2);
       ctx!.strokeStyle = `rgba(215, 162, 74, ${0.3 + covariance / 100})`;
       ctx!.lineWidth = 1;
       ctx!.stroke();
-      // Fill flash on impulse
       if (covariance > 5) {
         ctx!.fillStyle = `rgba(215, 162, 74, ${covariance / 400})`;
         ctx!.fill();
       }
 
-      // 6. Goal Marker
+      // 6. Goal Marker (Batman)
+      drawEmoji("🦇", mouse.x, mouse.y, 24);
       ctx!.beginPath();
-      ctx!.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
-      ctx!.strokeStyle = "#5fb8b0";
+      ctx!.arc(mouse.x, mouse.y, 20 + Math.sin(t * 5) * 2, 0, Math.PI * 2);
+      ctx!.strokeStyle = "rgba(95, 184, 176, 0.4)";
       ctx!.lineWidth = 1.5;
       ctx!.stroke();
-      ctx!.beginPath();
-      ctx!.arc(mouse.x, mouse.y, 12 + Math.sin(t * 5) * 2, 0, Math.PI * 2);
-      ctx!.strokeStyle = "rgba(95, 184, 176, 0.4)";
-      ctx!.stroke();
 
-      // 7. Agent Core
+      // 7. Agent Core (Spiderman)
+      drawEmoji("🕷️", agent.x, agent.y, 24);
       ctx!.beginPath();
-      ctx!.arc(agent.x, agent.y, 4.5, 0, Math.PI * 2);
-      ctx!.fillStyle = "#f2f4f6";
-      ctx!.fill();
-      ctx!.beginPath();
-      ctx!.arc(agent.x, agent.y, 8.5, 0, Math.PI * 2);
+      ctx!.arc(agent.x, agent.y, 16, 0, Math.PI * 2);
       ctx!.strokeStyle = "#d7a24a";
       ctx!.lineWidth = 1.5;
       ctx!.stroke();
 
-      // 8. Technical Telemetry Labels
+      // 8. Technical Telemetry Labels (Reset text alignment)
+      ctx!.textAlign = "left";
+      ctx!.textBaseline = "alphabetic";
+      
       ctx!.fillStyle = "#767f8b";
       ctx!.font = "10px 'IBM Plex Mono', monospace";
-      ctx!.fillText(`v=[${agent.vx.toFixed(1)}, ${agent.vy.toFixed(1)}]`, agent.x + 18, agent.y - 18);
-      ctx!.fillText(`cov: ${(covariance).toFixed(1)}`, agent.x + 18, agent.y - 6);
+      ctx!.fillText(`v=[${agent.vx.toFixed(1)}, ${agent.vy.toFixed(1)}]`, agent.x + 22, agent.y - 18);
+      ctx!.fillText(`cov: ${(covariance).toFixed(1)}`, agent.x + 22, agent.y - 6);
       
       ctx!.fillStyle = "#5fb8b0";
-      ctx!.fillText("goal ẑ", mouse.x + 14, mouse.y - 12);
+      ctx!.fillText("target", mouse.x + 22, mouse.y - 12);
 
       t += 0.016; // Time step
       raf = requestAnimationFrame(frame);
@@ -232,14 +236,8 @@ export default function HeroSim() {
     let raf = 0;
     if (reducedMotion) {
       drawGrid();
-      ctx!.fillStyle = "#e7e9ec";
-      ctx!.beginPath();
-      ctx!.arc(width * 0.32, height * 0.6, 6, 0, Math.PI * 2);
-      ctx!.fill();
-      ctx!.strokeStyle = "#5fb8b0";
-      ctx!.beginPath();
-      ctx!.arc(width * 0.7, height * 0.32, 6, 0, Math.PI * 2);
-      ctx!.stroke();
+      drawEmoji("🕷️", width * 0.32, height * 0.6, 24);
+      drawEmoji("🦇", width * 0.7, height * 0.32, 24);
     } else {
       raf = requestAnimationFrame(frame);
     }
@@ -258,7 +256,7 @@ export default function HeroSim() {
       
       {/* Footer Text */}
       <div className="pointer-events-none absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-wider text-muted">
-        MPC & Estimation · SIMULATION
+        Spiderman chasing Batman
       </div>
       
       {/* Interactive Hint */}
