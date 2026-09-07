@@ -154,9 +154,6 @@ export const flagshipProjects: Project[] = [
     hasCaseStudy: true
   },
 
-  // -------------------------------------------------------------------------
-  // RISK-AWARE STOCHASTIC MPC
-  // -------------------------------------------------------------------------
   {
     slug: "risk-aware-stochastic-mpc",
     title: "Risk-Aware MPC for UAV Motion Planning",
@@ -184,9 +181,6 @@ export const flagshipProjects: Project[] = [
     hasCaseStudy: true
   },
 
-  // -------------------------------------------------------------------------
-  // ADAPTIVE KALMAN FILTERING + RLS
-  // -------------------------------------------------------------------------
   {
     slug: "adaptive-kalman-rls",
     title: "Adaptive Kalman Filtering + RLS",
@@ -214,9 +208,6 @@ export const flagshipProjects: Project[] = [
     hasCaseStudy: true
   },
 
-  // -------------------------------------------------------------------------
-  // SINDY-RLS
-  // -------------------------------------------------------------------------
   {
     slug: "sindy-rls-cart-pendulum",
     title: "SINDy-RLS — Data-Driven Discovery under Feedback Control",
@@ -244,9 +235,6 @@ export const flagshipProjects: Project[] = [
     hasCaseStudy: true
   },
 
-  // -------------------------------------------------------------------------
-  // PLUTUS
-  // -------------------------------------------------------------------------
   {
     slug: "plutus-market-maker",
     title: "Plutus — Algorithmic Market Maker for Binary Options",
@@ -273,9 +261,6 @@ export const flagshipProjects: Project[] = [
     hasCaseStudy: true
   },
 
-  // -------------------------------------------------------------------------
-  // QUALITYCAST MLOPS
-  // -------------------------------------------------------------------------
   {
     slug: "qualitycast-mlops",
     title: "QualityCast-MLOps — Production-Grade Casting-Defect Detection",
@@ -306,9 +291,7 @@ export const flagshipProjects: Project[] = [
   }
 ];
 
-// ---------------------------------------------------------------------------
 // ADVANCED ENGINEERING — compact projects without dedicated case studies
-// ---------------------------------------------------------------------------
 export const advancedProjects: Project[] = [
   {
     slug: "unified-multitask-vision",
