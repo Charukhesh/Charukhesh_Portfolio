@@ -1,58 +1,55 @@
-# Plutus — Algorithmic Market Maker for Binary Event Contracts
+---
+title: "Plutus Algorithmic Market Maker"
+subtitle: "Quantitative Finance · Stochastic Calculus · Algorithmic Trading"
+badges: ["Akuna Capital Challenge", "Stochastic Simulation"]
+---
 
-Plutus is an algorithmic market-making system developed for the 2026 Akuna Capital Quantitative Trading Challenge. The system was designed to trade binary event contracts linked to the Fed Funds Rate and the valuations of two private AI companies (AJR and THR) across 20 adversarial simulation stages with continuous bankruptcy constraints.
+## Overview
 
-## Problem
+Plutus is an algorithmic market making system developed for the 2026 Akuna Capital Quantitative Trading Challenge. It prices and trades binary event contracts linked to the Fed Funds Rate and private AI company valuations, successfully navigating adversarial simulation stages with continuous bankruptcy constraints.
 
-A binary contract pays a fixed amount if an event occurs and zero otherwise. While pricing a binary contract fundamentally revolves around estimating the probability of that event, fair value alone is vastly insufficient for a market maker. 
+## Architecture
 
-To survive continuous order flow without going bankrupt, the system must jointly reason about the statistical fair value, estimate uncertainty, evaluate trade toxicity, manage accumulating inventory, limit capital utilization, and ensure solvency at all times.
+<div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
+  <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
+    <g fill="none" stroke="#3a4048" strokeWidth="1.3">
+      <rect x="20" y="45" width="160" height="70" rx="3" />
+      <rect x="210" y="45" width="180" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="420" y="45" width="190" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="640" y="45" width="160" height="70" rx="3" />
+    </g>
+    <g stroke="#5a6068" strokeWidth="1.2">
+      <line x1="180" y1="80" x2="208" y2="80" />
+      <line x1="390" y1="80" x2="418" y2="80" />
+      <line x1="610" y1="80" x2="638" y2="80" />
+    </g>
+    <text x="35" y="75" fill="#dde2e7">Market data</text>
+    <text x="35" y="90" fill="#767f8b">Rate and valuation</text>
+    
+    <text x="225" y="75" fill="#5fb8b0">Monte Carlo</text>
+    <text x="225" y="90" fill="#5fb8b0">Stochastic pricing</text>
+    
+    <text x="435" y="75" fill="#d7a24a">Risk Filter</text>
+    <text x="435" y="90" fill="#767f8b">Inventory & FOK skew</text>
+    
+    <text x="655" y="75" fill="#dde2e7">RFQ Quote</text>
+    <text x="655" y="90" fill="#767f8b">Sized by capital</text>
+  </svg>
+</div>
 
-## System Intuition
+## Technical approach
 
-The system operates as a continuous risk-assessment engine:
+The system first infers rate betas and sector volatility via covariance analysis of daily log returns. It uses Monte Carlo simulation with a daily memory cache to achieve millisecond scale stochastic pricing during heavy order flow. Fill-or-Kill (FOK) orders are evaluated against variance limits and a Kelly inspired capital utilization penalty. Request-For-Quote (RFQ) sizing is strictly bounded by available capital, and quotes are skewed based on current inventory using an Avellaneda-Stoikov inspired model to enforce continuous rebalancing.
 
-**Market observations $\rightarrow$ Probability distribution $\rightarrow$ Fair binary value $\rightarrow$ Inventory/risk adjustment $\rightarrow$ Quote execution.**
+## Results
 
-If the system accumulates too much inventory on one side of a contract, it dynamically skews its quotes (lowering both bid and ask) to incentivize the market to buy from it, thereby neutralizing its position. Every trade is strictly bounded by Kelly-inspired risk limits to prevent catastrophic capital lock-up.
+The system survived all 20 adversarial simulation stages without breaching bankruptcy constraints while keeping capital utilization strictly below the 85% limit.
 
-## Architecture & Workflow
+## Industrial application
 
-| Stage | Method | Purpose |
-|---|---|---|
-| 1. Warm-Up | Covariance/variance analysis | Estimate AI-company rate betas and sector volatility. |
-| 2. Pricing | Monte Carlo simulation | Compute stochastic price paths to find statistical fair value. |
-| 3. Toxicity Check | FOK filtering | Reject Fill-or-Kill orders that exceed variance or capital limits. |
-| 4. Skewing | Avellaneda–Stoikov skew | Adjust theoretical fair value based on current inventory. |
-| 5. Quoting | Capital-aware RFQ | Size Request-For-Quote responses based on uncommitted capital (max 85%). |
-
-## Key Technical Components
-
-### Monte Carlo Pricing & Caching
-To evaluate the binary outcomes, the system generates 1,000 future stochastic price paths. Because computing these paths continuously during heavy flow would induce unacceptable latency, Plutus implements a daily memory cache that eliminates redundant simulations, allowing millisecond-scale pricing.
-
-### Inventory-Aware Quoting
-Plutus adapts Avellaneda–Stoikov-inspired inventory skewing. The theoretical fair price is adjusted based on the current net position. As inventory grows, bid/offer quotes are proactively shifted to encourage rebalancing.
-
-### Solvency Management
-Maximum potential losses are evaluated immediately. The system utilizes multiple execution protections, including price and quantity clamping, strict `Bid < Offer` formatting, and a hard stop preventing capital utilization from exceeding 85%.
-
-## Results / Findings
-
-Plutus successfully survived all 20 adversarial simulation stages without breaching bankruptcy constraints, demonstrating robust capital preservation in highly toxic simulated market conditions.
-
-## Stack
-
-| Layer | Technology |
+| | |
 |---|---|
-| Language | Python |
-| Core Modeling | Monte Carlo simulation, Statistical estimation, Covariance analysis |
-| Execution Logic | RFQ/FOK filtering, Inventory-aware quoting, Solvency clamping |
-
-## Engineering Considerations
-
-Latency and memory management are critical when managing continuous order flow. The decision to cache daily Monte Carlo distributions rather than recalculating them per tick was the defining engineering tradeoff, sacrificing microscopic intrabar precision for execution speed and system stability. 
-
-## Takeaway
-
-Algorithmic market making is a risk-management problem, not just a pricing problem. System survival depends on strictly coupling statistical probability estimation with inventory constraints and continuous solvency limits.
+| **Industry** | Quantitative finance, algorithmic trading, market making |
+| **Problem** | Pricing binary options is insufficient alone; a market maker must jointly optimize fair value, inventory risk, toxicity, and solvency under continuous order flow. |
+| **How it helps** | Coupling statistical probability estimation with strict inventory constraints and continuous solvency limits prevents catastrophic capital lockup. |
+| **Deployment path** | Adversarial exchange simulation → Live market connectivity |

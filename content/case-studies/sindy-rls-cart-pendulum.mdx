@@ -1,61 +1,55 @@
-# SINDy-RLS — Data-Driven Discovery under Feedback Control
+---
+title: "SINDy-RLS for Data-Driven Discovery"
+subtitle: "System Identification · Control Theory · Machine Learning"
+badges: ["Algorithmic Research", "Closed-Loop Identification"]
+---
 
-This research project introduces a hybrid system-identification framework combining Sparse Identification of Nonlinear Dynamics (SINDy) and Recursive Least Squares (RLS). Tested on a simulated inverted pendulum-on-cart, it isolates physical plant dynamics from controller behavior in tightly coupled closed-loop systems.
+## Overview
 
-## Problem
+This project introduces a hybrid system identification framework combining Sparse Identification of Nonlinear Dynamics (SINDy) and Recursive Least Squares (RLS). It successfully isolates physical plant dynamics from active controller behavior in tightly coupled closed-loop systems, solving the persistent "Ghost Controller" problem in data driven discovery.
 
-Sparse system-identification methods are highly effective on open-loop data, but they struggle with closed-loop observations. When a controller (like LQR) is active, the observed data contains entangled plant and controller dynamics. 
+## Architecture
 
-A conventional sparse discovery algorithm will often absorb the controller's behavior into its learned physical model. This creates the "Ghost Controller" problem: the model achieves near-zero prediction error on the controlled dataset by learning nonphysical damping effects that completely vanish when the actual controller is removed.
+<div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
+  <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
+    <g fill="none" stroke="#3a4048" strokeWidth="1.3">
+      <rect x="20" y="45" width="160" height="70" rx="3" />
+      <rect x="210" y="45" width="180" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="420" y="45" width="190" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="640" y="45" width="160" height="70" rx="3" />
+    </g>
+    <g stroke="#5a6068" strokeWidth="1.2">
+      <line x1="180" y1="80" x2="208" y2="80" />
+      <line x1="390" y1="80" x2="418" y2="80" />
+      <line x1="610" y1="80" x2="638" y2="80" />
+    </g>
+    <text x="35" y="75" fill="#dde2e7">Closed-loop data</text>
+    <text x="35" y="90" fill="#767f8b">Plant & controller</text>
+    
+    <text x="225" y="75" fill="#5fb8b0">Implicit SINDy</text>
+    <text x="225" y="90" fill="#5fb8b0">Structural discovery</text>
+    
+    <text x="435" y="75" fill="#d7a24a">RLS Decoupling</text>
+    <text x="435" y="90" fill="#767f8b">Parameter isolation</text>
+    
+    <text x="655" y="75" fill="#dde2e7">Physical model</text>
+    <text x="655" y="90" fill="#767f8b">True dynamics</text>
+  </svg>
+</div>
 
-## System Intuition
+## Technical approach
 
-To recover the true physics, we must decouple the controller from the plant. 
+The system uses an inverted pendulum on a cart controlled by LQR. First, implicit SINDy with two-pass Sequential Threshold Ridge Regression is applied to rich open-loop excitation data to discover the sparse structural forms of the inertial equations. Next, the closed-loop force balance is reformulated mathematically. RLS is deployed on the closed-loop data to simultaneously estimate the hidden LQR gains and the true physical cart friction, decoupling the software policy from the hardware physics.
 
-**Closed-loop observations $\rightarrow$ Plant + controller entanglement $\rightarrow$ Sparse structural discovery $\rightarrow$ Parameter decoupling $\rightarrow$ True physical model.**
+## Results
 
-By utilizing implicit SINDy on rich open-loop excitation, we first learn the pure structural forms of the inertial equations. Then, by applying RLS on closed-loop data, we can separate the hidden LQR control gains from the plant's internal friction.
+Controller gains converged to true values within seconds with under 4% identification error. The resulting physical model successfully predicted uncontrolled chaotic pendulum motion rather than reproducing ghost controller artifacts.
 
-## Methodology
+## Industrial application
 
-The framework utilizes a two-stage hybrid approach:
-
-### Stage 1: Implicit SINDy Structural Discovery
-We construct a nonlinear implicit library $\Theta(x, \dot{x}, \ddot{x}, u)$ and use SINDy-PI with a two-pass Sequential Threshold Ridge Regression (STLSQ). The goal is to find sparse null-space vectors $\xi$ such that:
-
-$$
-\Theta \xi \approx 0
-$$
-
-By applying rich sinusoidal open-loop excitation, this stage successfully recovers the coupled inertial equations for both cart acceleration and pendulum angular acceleration.
-
-### Stage 2: Closed-Loop Decoupling via RLS
-With the structural form known, we reformulate the closed-loop force balance to isolate the unknown friction and controller gains:
-
-$$
-F_{\text{inertial}} = u_{\text{control}} - F_{\text{friction}}
-$$
-
-RLS is then deployed on the closed-loop data to simultaneously estimate the cart friction coefficient $b$ and the hidden LQR gains $K$, despite the fact that they act simultaneously on the system.
-
-## Results / Findings
-
-- The decoupled **controller gains converged to their true values within seconds**.
-- The overall system-identification error remained **under 4%**.
-- Crucially, the resulting decoupled physical model successfully predicted uncontrolled, large-angle chaotic pendulum motion, proving it escaped the Ghost Controller artifact.
-
-## Stack
-
-| Layer | Technology |
+| | |
 |---|---|
-| Language | Python |
-| Core Algorithms | SINDy / SINDy-PI, STLSQ, RLS, LQR |
-| Computation | NumPy, SciPy (Nonlinear ODE Simulation) |
-
-## Engineering Considerations
-
-A major engineering challenge in SINDy is designing the implicit library $\Theta$. If the library is too large, STLSQ becomes computationally unstable and prone to spurious terms; if too small, it misses the true dynamics. The two-pass STLSQ approach serves as an effective regularization mechanism to enforce extreme sparsity.
-
-## Takeaway
-
-Data-driven discovery on autonomous systems requires more than simple regression. Explicitly separating the structural discovery of inertial physics from the parameter estimation of control forces prevents algorithms from conflating software-defined policies with hardware-defined physics.
+| **Industry** | Control systems, digital twins, mechanical engineering |
+| **Problem** | Conventional sparse discovery algorithms absorb active controller behavior into the learned physical model when trained on closed-loop data. |
+| **How it helps** | Explicitly separating the structural discovery of inertial physics from the parameter estimation of control forces yields highly accurate digital twins. |
+| **Deployment path** | Simulated ODE validation → Physical robotic manipulator identification |

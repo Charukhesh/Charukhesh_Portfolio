@@ -1,30 +1,68 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import Loader from "@/components/Loader";
+import { profile } from "@/data/profile";
 
-export const metadata: Metadata = {
-  title: "Charukhesh B R — AI/ML Research Engineer",
-  description:
-    "Charukhesh B R — AI/ML Research Engineer. Robot learning, generative models, stochastic control and state estimation. IIT Madras.",
-  metadataBase: new URL("https://charukhesh.github.io/Charukhesh_Portfolio/"),
-  openGraph: {
-    title: "Charukhesh B R — AI/ML Research Engineer",
-    description:
-      "Research and engineering at the intersection of robotics, machine learning and real-world systems.",
-    type: "website"
-  }
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Charukhesh B R",
+  alternateName: ["Charukhesh", "Charukhesh Balaji Rakesh"],
+  url: "https://charukhesh.github.io/Charukhesh_Portfolio/",
+  jobTitle: "AI/ML Research Engineer",
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: "Indian Institute of Technology Madras",
+    alternateName: "IIT Madras",
+  },
+  sameAs: [
+    profile.links.github,
+    profile.links.linkedin,
+    profile.links.researchGate,
+  ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: {
+    default: "Charukhesh B R | AI/ML Research Engineer",
+    template: "%s | Charukhesh B R",
+  },
+  description:
+    "Charukhesh B R — AI/ML Research Engineer at IIT Madras working on robotics, machine learning, autonomous systems, and intelligent control.",
+  metadataBase: new URL(
+    "https://charukhesh.github.io/Charukhesh_Portfolio/"
+  ),
+  alternates: {
+    canonical: "./",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Charukhesh B R | AI/ML Research Engineer",
+    description:
+      "AI/ML Research Engineer at IIT Madras working on robotics, machine learning, autonomous systems, and intelligent control.",
+    url: "https://charukhesh.github.io/Charukhesh_Portfolio/",
+    siteName: "Charukhesh B R",
+    type: "website",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <body className="bg-bg font-sans text-[16.5px] leading-relaxed text-ink antialiased">
-        <Loader />
-        <Nav />
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personSchema),
+          }}
+        />
+
         {children}
-        <Footer />
       </body>
     </html>
   );

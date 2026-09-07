@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://charukhesh.github.io/Charukhesh_Portfolio/sitemap.xml

@@ -1,63 +1,55 @@
-# Risk-Aware MPC for UAV Motion Planning
+---
+title: "Risk-Aware MPC for UAV Motion Planning"
+subtitle: "Motion Planning · Nonlinear Control · Probabilistic Safety"
+badges: ["Validated in Simulation", "Hierarchical Planning"]
+---
 
-This project implements a Python-based UAV motion planning and control system, replicating and extending the hierarchical planning framework of Bui et al. (2024). The system tightly integrates local perception, occupancy-grid mapping, A* global reference planning, and nonlinear Model Predictive Control (MPC) while introducing probabilistic collision-risk constraints to handle perception uncertainty dynamically.
+## Overview
 
-## Problem
+This project implements a Python based UAV motion planning and control system that replicates and extends the hierarchical planning framework of Bui et al. (2024). The system tightly integrates local perception, occupancy grid mapping, A* global reference planning, and nonlinear Model Predictive Control (MPC) while introducing probabilistic collision risk constraints to handle perception uncertainty dynamically.
 
-A conventional deterministic planner generally treats obstacle locations as if they were known accurately. However, real perception systems are noisy. If obstacle detections are uncertain, the standard approach is to add a large, fixed safety margin. This deterministic approach is overly conservative—it can unnecessarily increase path length, cause suboptimal routing, and delay completion time. 
+## Architecture
 
-The core technical challenge is dynamically scaling the safety margin based on the statistical uncertainty of the perception system, effectively replacing rigid safety boundaries with probabilistic guarantees.
+<div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
+  <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
+    <g fill="none" stroke="#3a4048" strokeWidth="1.3">
+      <rect x="20" y="45" width="160" height="70" rx="3" />
+      <rect x="210" y="45" width="180" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="420" y="45" width="190" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="640" y="45" width="160" height="70" rx="3" />
+    </g>
+    <g stroke="#5a6068" strokeWidth="1.2">
+      <line x1="180" y1="80" x2="208" y2="80" />
+      <line x1="390" y1="80" x2="418" y2="80" />
+      <line x1="610" y1="80" x2="638" y2="80" />
+    </g>
+    <text x="35" y="75" fill="#dde2e7">Local perception</text>
+    <text x="35" y="90" fill="#767f8b">Noisy obstacle obs</text>
+    
+    <text x="225" y="75" fill="#5fb8b0">Grid & A* Planner</text>
+    <text x="225" y="90" fill="#5fb8b0">Global reference</text>
+    
+    <text x="435" y="75" fill="#d7a24a">Risk-Aware NMPC</text>
+    <text x="435" y="90" fill="#767f8b">Probabilistic limit</text>
+    
+    <text x="655" y="75" fill="#dde2e7">Action plan</text>
+    <text x="655" y="90" fill="#767f8b">Safe trajectory</text>
+  </svg>
+</div>
 
-## System Intuition
+## Technical approach
 
-The system physical intuition follows a continuous uncertainty-to-action pipeline:
+Obstacle detections are modeled with Gaussian uncertainty. Instead of relying on fixed physical margins, a probabilistic chance constraint limits collision risk to approximately 1%. The required clearance margin continuously scales based on the obstacle's spatial uncertainty and the UAV's view geometry. The nonlinear MPC tracks the A* reference path while respecting strict velocity and acceleration constraints, replanning in a receding horizon fashion.
 
-**Noisy obstacle observation $\rightarrow$ Uncertainty distribution $\rightarrow$ Risk-aware clearance $\rightarrow$ Safe trajectory execution.**
+## Results
 
-When the UAV's sensors detect an obstacle with high uncertainty (e.g., distant or noisy readings), the system enforces a larger safety clearance. As the UAV approaches or the sensor readings become more reliable, the uncertainty decreases, allowing the MPC to dynamically shrink the unnecessary safety margin. The result is probabilistic safety rather than purely deterministic conservatism.
+Achieved 12% lower completion time and 20% lower control effort compared to a conservatively tuned deterministic baseline in simulated corridor navigation with anisotropic sensor noise.
 
-## Methodology
+## Industrial application
 
-The pipeline operates in a receding-horizon fashion, constantly updating based on new local observations.
-
-1. **Perception & Mapping:** Local perception receives noisy obstacle observations, which are converted into a discrete occupancy grid classifying space into *free*, *occupied*, or *unknown* states.
-2. **Global Planning:** An A* algorithm operates over the occupancy grid to generate a global reference path toward the target.
-3. **Local Control (NMPC):** A nonlinear MPC tracks the A* reference path. The optimizer penalizes path tracking error, target speed deviation, collision risks, and high jerk (to ensure control smoothness).
-4. **Execution & Replanning:** The MPC respects strict velocity and acceleration constraints, computing a multi-step trajectory but only executing the first optimal action before replanning.
-
-## Key Technical Components
-
-### Probabilistic Chance Constraints
-Instead of fixed physical margins, obstacle detections are modeled with Gaussian uncertainty. A probabilistic chance constraint imposes an approximately 1% collision-risk threshold:
-
-$$
-P(\text{collision}) \le 0.01
-$$
-
-The required clearance margin is continuously computed based on the obstacle's spatial uncertainty and the UAV's view geometry. 
-
-## Results / Findings
-
-In simulated corridor navigation environments subjected to anisotropic sensor noise, the risk-aware stochastic MPC demonstrated significant efficiency improvements over a conservatively tuned deterministic baseline:
-- Approximately **12% lower completion time**
-- Approximately **20% lower control effort**
-
-Crucially, these efficiency gains were achieved while strictly maintaining the intended 1% probabilistic safety constraint.
-
-## Stack
-
-| Layer | Technology |
+| | |
 |---|---|
-| Language | Python 3.13.5 |
-| Environment | Conda / pip |
-| Core Algorithms | Nonlinear MPC, A*, Occupancy Grids |
-| Mathematics | Gaussian Uncertainty, Probabilistic Chance Constraints |
-| Validation | Simulated environment & MP4 Visualization |
-
-## Engineering Considerations
-
-The primary engineering tradeoff is the computational cost of nonlinear MPC. Solving chance-constrained optimization problems online requires careful tuning of the prediction horizon to maintain a real-time control frequency. The modular architecture separates the `PerceptionModule`, global planner, and `RiskAwareMPCOptimizer` to allow isolated testing and benchmarking against the deterministic `MPCOptimizer`.
-
-## Takeaway
-
-By explicitly modeling perception noise and integrating chance constraints into the MPC formulation, it is possible to achieve tighter, more aggressive trajectory tracking without sacrificing quantifiable safety limits.
+| **Industry** | Autonomous drones, aerospace, robotic navigation |
+| **Problem** | Fixed safety margins in deterministic planners are too conservative when sensor noise is high, causing inefficient routing and delayed completion times. |
+| **How it helps** | Dynamically adjusting safety margins based on statistical uncertainty allows tighter trajectory tracking without sacrificing quantifiable safety. |
+| **Deployment path** | Simulated Python environment → Real time C++ formulation → Hardware UAV deployment |

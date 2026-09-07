@@ -22,11 +22,10 @@ export default function HomePage() {
               className="animate-rise mb-5 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-[#f2f4f6] sm:text-6xl"
               style={{ animationDelay: "0.05s" }}
             >
-              CHARUKHESH
-              <br />B R
+              CHARUKHESH B R
             </h1>
             <div className="animate-rise mb-6 font-mono text-base text-ink-dim" style={{ animationDelay: "0.1s" }}>
-              AI / ML RESEARCH ENGINEER
+              AI / ML RESEARCH ENGINEER · IIT MADRAS
             </div>
             <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.15s" }}>
               {profile.statement}
@@ -45,6 +44,14 @@ export default function HomePage() {
                 className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
               >
                 GITHUB
+              </a>
+              <a
+                href={profile.links.researchGate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
+              >
+                RESEARCH GATE
               </a>
               <a
                 href={profile.links.linkedin}
