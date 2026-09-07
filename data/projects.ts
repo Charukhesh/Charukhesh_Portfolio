@@ -181,7 +181,7 @@ export const flagshipProjects: Project[] = [
 
   {
     slug: "adaptive-kalman-rls",
-    title: "Adaptive Kalman Filtering + RLS",
+    title: "An Adaptive Kalman Filter Integrating RLS-Inspired and Physics-Informed Methods",
     institution: "IIT Madras",
     advisor: "Prof. Srikrishna B",
     category: ["State Estimation", "Control"],

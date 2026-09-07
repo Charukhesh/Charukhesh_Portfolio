@@ -1,7 +1,8 @@
 import HeroSim from "@/components/HeroSim";
 import ResearchMap from "@/components/ResearchMap";
 import ProjectPanel from "@/components/ProjectPanel";
-import AdvancedItem from "@/components/AdvancedItem";
+// 1. Swap AdvancedItem for the new toggle component
+import AdvancedProjectsToggle from "@/components/AdvancedProjectsToggle"; 
 import Timeline from "@/components/Timeline";
 import { Tag } from "@/components/Tag";
 import { profile } from "@/data/profile";
@@ -97,11 +98,11 @@ export default function HomePage() {
               control and quantitative systems — implemented end-to-end rather than
               notebook-only.
             </p>
-            {advancedProjects.map((p) => (
-              <AdvancedItem key={p.slug} project={p} />
-            ))}
+            
+            {/* 2. Use the new client component here */}
+            <AdvancedProjectsToggle projects={advancedProjects} />
+            
           </div>
-
         </div>
       </section>
 
