@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     "Robotics", 
     "SUAS IITM"
   ],
+  verification: {
+    google: "kqIvk6ZgSmfjGbzXXXO4uIHjmE4uIiHOXpuIpTpCGfA",
+  },
   openGraph: {
     title: "Charukhesh B R | AI / ML Research Engineer",
     description: "Building intelligent systems at the intersection of robotics, machine learning, and control.",
