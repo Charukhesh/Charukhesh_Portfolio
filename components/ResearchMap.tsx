@@ -44,9 +44,7 @@ const NODES: Node[] = [
     x: 38,
     y: 32,
     connections: ["ai", "robot", "control"],
-    projects: [
-      "Flow-Latent MPC",
-    ],
+    projects: ["Flow-Latent MPC"],
   },
   {
     id: "llm",
@@ -54,9 +52,7 @@ const NODES: Node[] = [
     x: 62,
     y: 32,
     connections: ["ai", "robot", "state"],
-    projects: [
-      "LLM Scene-Graph Planner",
-    ],
+    projects: ["LLM Scene-Graph Planner"],
   },
   {
     id: "cv",
@@ -150,18 +146,40 @@ export default function ResearchMap() {
   const [hover, setHover] = useState<string | null>(null);
 
   const hoveredNode = NODES.find((n) => n.id === hover);
-  const activeSet = new Set(hover ? [hover, ...NODES.find((n) => n.id === hover)!.connections] : []);
+
+  const activeSet = new Set(
+    hover
+      ? [
+          hover,
+          ...NODES.find((n) => n.id === hover)!.connections,
+        ]
+      : []
+  );
 
   function isEdgeActive(a: Node, b: Node) {
     if (!hover) return false;
-    return (a.id === hover || b.id === hover) && (a.connections.includes(b.id) || b.connections.includes(a.id));
+
+    return (
+      (a.id === hover || b.id === hover) &&
+      (a.connections.includes(b.id) ||
+        b.connections.includes(a.id))
+    );
   }
 
   const edges: [Node, Node][] = [];
+
   NODES.forEach((n) => {
     n.connections.forEach((cId) => {
       const target = NODES.find((x) => x.id === cId);
-      if (target && !edges.some(([a, b]) => (a === n && b === target) || (a === target && b === n))) {
+
+      if (
+        target &&
+        !edges.some(
+          ([a, b]) =>
+            (a === n && b === target) ||
+            (a === target && b === n)
+        )
+      ) {
         edges.push([n, target]);
       }
     });
@@ -169,8 +187,13 @@ export default function ResearchMap() {
 
   return (
     <div className="relative">
-      <div className="relative aspect-[16/11] w-full rounded-lg border border-border-soft bg-panel2 sm:aspect-[16/9]">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+      <div className="relative aspect-[16/11] w-full rounded-lg border border-[#d9dee7] bg-white sm:aspect-[16/9]">
+        {/* Connection graph */}
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full"
+        >
           {edges.map(([a, b], i) => (
             <line
               key={i}
@@ -178,16 +201,28 @@ export default function ResearchMap() {
               y1={a.y}
               x2={b.x}
               y2={b.y}
-              stroke={isEdgeActive(a, b) ? "#d7a24a" : "#242a32"}
-              strokeWidth={isEdgeActive(a, b) ? 0.5 : 0.3}
+              stroke={
+                isEdgeActive(a, b)
+                  ? "#d97706"
+                  : "#cbd5e1"
+              }
+              strokeWidth={
+                isEdgeActive(a, b) ? 0.8 : 0.45
+              }
+              opacity={
+                isEdgeActive(a, b) ? 1 : 0.8
+              }
               vectorEffect="non-scaling-stroke"
             />
           ))}
         </svg>
 
+        {/* Research nodes */}
         {NODES.map((n) => {
           const isActive = hover === n.id;
-          const isDimmed = hover !== null && !activeSet.has(n.id);
+          const isDimmed =
+            hover !== null && !activeSet.has(n.id);
+
           return (
             <button
               key={n.id}
@@ -195,13 +230,16 @@ export default function ResearchMap() {
               onMouseLeave={() => setHover(null)}
               onFocus={() => setHover(n.id)}
               onBlur={() => setHover(null)}
-              style={{ left: `${n.x}%`, top: `${n.y}%` }}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border px-2.5 py-1.5 font-mono text-[9.5px] tracking-wide transition-all sm:text-[10.5px] ${
+              style={{
+                left: `${n.x}%`,
+                top: `${n.y}%`,
+              }}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border px-4 py-2.5 font-mono text-[11px] tracking-wide transition-all sm:px-5 sm:py-3 sm:text-[12px] ${
                 isActive
-                  ? "border-accent bg-accent-soft text-accent"
+                  ? "border-[#d97706] bg-[#fff7ed] text-[#b45309] shadow-sm"
                   : isDimmed
-                    ? "border-border-soft text-muted opacity-40"
-                    : "border-border text-ink-dim"
+                    ? "border-[#e2e8f0] bg-white text-[#94a3b8] opacity-40"
+                    : "border-[#cbd5e1] bg-white text-[#334155] shadow-[0_1px_3px_rgba(15,23,42,0.04)]"
               }`}
             >
               {n.label}
@@ -210,14 +248,19 @@ export default function ResearchMap() {
         })}
       </div>
 
-      <div className="mt-4 min-h-[2rem] font-mono text-[12.5px] text-ink-dim">
+      {/* Linked project information */}
+      <div className="mt-4 min-h-[2rem] font-mono text-[12.5px] text-slate-500">
         {hoveredNode && hoveredNode.projects.length > 0 ? (
           <>
-            <span className="text-accent2">linked work → </span>
+            <span className="text-[#b45309]">
+              linked work →{" "}
+            </span>
             {hoveredNode.projects.join(" · ")}
           </>
         ) : (
-          <span className="text-muted">Hover a node to see connected work.</span>
+          <span className="text-slate-400">
+            Hover a node to see connected work.
+          </span>
         )}
       </div>
     </div>
