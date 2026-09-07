@@ -14,85 +14,92 @@ export default function HomePage() {
     <main>
       {/* ============ HERO ============ */}
       <section className="border-b border-border-soft px-6 pb-16 pt-32 sm:pt-40">
-        {/* Changed grid ratio to give the right side (simulation + photo) more width (1.15fr) */}
-        <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
+        <div className="mx-auto max-w-wide">
           
-          {/* LEFT COLUMN: Text & Buttons */}
-          <div>
-            <div className="animate-rise mb-4 font-mono text-[13px] tracking-widest text-accent">
-              ROBOTICS · MACHINE LEARNING · CONTROL · INTELLIGENT SYSTEMS
-            </div>
-            <h1
-              className="animate-rise mb-5 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-[#f2f4f6] sm:text-6xl"
-              style={{ animationDelay: "0.05s" }}
-            >
-              CHARUKHESH B R
-            </h1>
-            <div className="animate-rise mb-6 font-mono text-base text-ink-dim" style={{ animationDelay: "0.1s" }}>
-              AI / ML RESEARCH ENGINEER · IIT MADRAS
-            </div>
-            <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.15s" }}>
-              {profile.statement}
-            </p>
-            
-            {/* Buttons including Email and ResearchGate */}
-            <div className="animate-rise flex flex-wrap gap-3" style={{ animationDelay: "0.2s" }}>
-              <a
-                href="#research"
-                className="rounded-full border border-accent bg-accent px-4 py-2 font-mono text-xs tracking-wide text-bg transition-colors hover:bg-transparent hover:text-accent"
-              >
-                VIEW RESEARCH →
-              </a>
-              <a
-                href="mailto:ae22b028@smail.iitm.ac.in"
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-[#f2f4f6] hover:border-accent hover:text-accent"
-              >
-                EMAIL
-              </a>
-              <a
-                href={profile.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
-              >
-                GITHUB
-              </a>
-              <a
-                href={profile.links.researchGate}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
-              >
-                RESEARCH GATE
-              </a>
-              <a
-                href={profile.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
-              >
-                LINKEDIN
-              </a>
-            </div>
+          {/* TOP ROW: Logos & Avatars */}
+          <div className="animate-rise mb-12 flex items-center justify-between" style={{ animationDelay: "0.0s" }}>
+            {/* Top Left: IIT Madras Logo */}
+            <img 
+              src="/Charukhesh_Portfolio/iitm-logo.jpg" 
+              alt="IIT Madras" 
+              className="h-10 w-auto opacity-90 sm:h-12"
+            />
+            {/* Top Right: Profile Photo */}
+            <img 
+              src="/Charukhesh_Portfolio/photo.jpeg" 
+              alt="Charukhesh B R" 
+              className="h-14 w-14 rounded-full border border-border-soft object-cover grayscale transition-all duration-500 hover:grayscale-0 sm:h-16 sm:w-16"
+            />
           </div>
 
-          {/* RIGHT COLUMN: Streamlined 2-Box Layout */}
-          <div className="animate-rise grid w-full grid-cols-1 gap-4 sm:grid-cols-5 sm:h-[340px]" style={{ animationDelay: "0.3s" }}>
+          {/* MAIN HERO GRID */}
+          {/* Changed grid to give the left side slightly more room so buttons fit on one line */}
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             
-            {/* Box 1: HeroSim (Takes up 60% of the space) */}
-            <div className="col-span-1 sm:col-span-3 rounded-2xl border border-border-soft bg-panel p-4 flex items-center justify-center overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center">
-                <HeroSim />
+            {/* LEFT COLUMN: Text & Buttons */}
+            <div>
+              <div className="animate-rise mb-4 font-mono text-[13px] tracking-widest text-accent" style={{ animationDelay: "0.05s" }}>
+                ROBOTICS · MACHINE LEARNING · CONTROL · INTELLIGENT SYSTEMS
+              </div>
+              <h1
+                className="animate-rise mb-5 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-[#f2f4f6] sm:text-6xl"
+                style={{ animationDelay: "0.1s" }}
+              >
+                CHARUKHESH B R
+              </h1>
+              <div className="animate-rise mb-6 font-mono text-base text-ink-dim" style={{ animationDelay: "0.15s" }}>
+                AI / ML RESEARCH ENGINEER · IIT MADRAS
+              </div>
+              <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.2s" }}>
+                {profile.statement}
+              </p>
+              
+              {/* BUTTONS: Optimized padding & sizing to fit on one line on desktop */}
+              <div className="animate-rise flex flex-wrap items-center gap-2 xl:flex-nowrap xl:gap-3" style={{ animationDelay: "0.25s" }}>
+                <a
+                  href="#research"
+                  className="whitespace-nowrap rounded-full border border-accent bg-accent px-3 py-2 font-mono text-[11px] tracking-wide text-bg transition-colors hover:bg-transparent hover:text-accent sm:px-4 sm:text-xs"
+                >
+                  VIEW RESEARCH →
+                </a>
+                <a
+                  href="mailto:ae22b028@smail.iitm.ac.in"
+                  className="whitespace-nowrap rounded-full border border-border px-3 py-2 font-mono text-[11px] tracking-wide text-[#f2f4f6] hover:border-accent hover:text-accent sm:px-4 sm:text-xs"
+                >
+                  EMAIL
+                </a>
+                <a
+                  href={profile.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whitespace-nowrap rounded-full border border-border px-3 py-2 font-mono text-[11px] tracking-wide text-ink-dim hover:border-accent hover:text-accent sm:px-4 sm:text-xs"
+                >
+                  GITHUB
+                </a>
+                <a
+                  href={profile.links.researchGate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whitespace-nowrap rounded-full border border-border px-3 py-2 font-mono text-[11px] tracking-wide text-ink-dim hover:border-accent hover:text-accent sm:px-4 sm:text-xs"
+                >
+                  RESEARCH GATE
+                </a>
+                <a
+                  href={profile.links.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whitespace-nowrap rounded-full border border-border px-3 py-2 font-mono text-[11px] tracking-wide text-ink-dim hover:border-accent hover:text-accent sm:px-4 sm:text-xs"
+                >
+                  LINKEDIN
+                </a>
               </div>
             </div>
-            
-            {/* Box 2: Photo (Takes up 40% of the space) */}
-            <div className="col-span-1 sm:col-span-2 rounded-2xl border border-border-soft overflow-hidden relative group min-h-[250px] sm:min-h-full">
-              <img 
-                src="/Charukhesh_Portfolio/photo.jpg" 
-                alt="Charukhesh B R" 
-                className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
-              />
+
+            {/* RIGHT COLUMN: HeroSim Simulation (Untouched & perfectly visible) */}
+            <div className="animate-rise relative" style={{ animationDelay: "0.3s" }}>
+              <div className="flex min-h-[300px] w-full items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-panel p-4 sm:min-h-[340px]">
+                <HeroSim />
+              </div>
             </div>
 
           </div>
