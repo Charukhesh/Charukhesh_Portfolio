@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const images = [
-  "/Charukhesh_Portfolio/suas-1.jpeg",
-  "/Charukhesh_Portfolio/suas-2.jpeg",
-  "/Charukhesh_Portfolio/suas-3.jpeg",
+  "/Charukhesh_Portfolio/suas1.jpeg",
+  "/Charukhesh_Portfolio/suas2.jpeg",
+  "/Charukhesh_Portfolio/suas3.jpeg",
 ];
 
 export default function SuasSection() {

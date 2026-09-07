@@ -127,7 +127,7 @@ export default function HomePage() {
       {/* ============ PROJECTS ============ */}
       <section id="projects" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
         <div className="mx-auto max-w-wide">
-          <SectionHeading num="02" title="Selected research & systems" note={`${flagshipProjects.length} projects`} />
+          <SectionHeading num="02" title="Flagship Research Projects" note={`${flagshipProjects.length} projects`} />
           <div>
             {flagshipProjects.map((p, i) => (
               <ProjectPanel key={p.slug} project={p} index={i + 1} />
@@ -152,7 +152,7 @@ export default function HomePage() {
       {/* ============ LEADERSHIP (SUAS) ============ */}
       <section id="suas" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
         <div className="mx-auto max-w-wide">
-          <SectionHeading num="03" title="Leadership & Robotics" note="Founding SUAS IITM" />
+          <SectionHeading num="03" title="Leadership & Founding Experience" note="Founding SUAS IITM" />
           <SuasSection />
         </div>
       </section>
