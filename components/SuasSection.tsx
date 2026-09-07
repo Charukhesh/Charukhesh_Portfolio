@@ -22,8 +22,8 @@ export default function SuasSection() {
   return (
     <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
       {/* Slideshow */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border-soft bg-panel shadow-lg">
-        <AnimatePresence mode="wait">
+      <div className="relative aspect-[5/4] w-full overflow-hidden rounded-4xl border border-border-soft bg-panel shadow-lg">
+        <AnimatePresence mode="wait"> 
           <motion.img
             key={index}
             src={images[index]}
