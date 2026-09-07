@@ -7,6 +7,19 @@ const drawVariant = {
   visible: { pathLength: 1, opacity: 1, transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] as const } }
 };
 
+<defs>
+  <marker
+    id="sindy-arrow"
+    markerWidth="8"
+    markerHeight="8"
+    refX="6"
+    refY="3"
+    orient="auto"
+  >
+    <path d="M0,0 L6,3 L0,6 Z" fill="#5fb8b0" />
+  </marker>
+</defs>
+
 function FlowLatentMPCViz() {
   return (
     <svg viewBox="0 0 480 300" className="h-full w-full">
@@ -223,403 +236,764 @@ function HRESViz() {
   );
 }
 
-function RiskAwareMPCVisual() {
+function RiskAwareMPCViz() {
   return (
-    <svg
-      viewBox="0 0 900 190"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-auto w-full"
-      fontFamily="IBM Plex Mono"
-    >
-      <defs>
-        <marker
-          id="risk-arrow"
-          markerWidth="8"
-          markerHeight="8"
-          refX="6"
-          refY="3"
-          orient="auto"
-        >
-          <path d="M0,0 L6,3 L0,6 Z" fill="#5a6068" />
-        </marker>
-      </defs>
-
-      <g fill="none" stroke="#3a4048" strokeWidth="1.3">
-        <rect x="20" y="60" width="145" height="70" rx="3" />
-        <rect x="205" y="60" width="160" height="70" rx="3" stroke="#5fb8b0" />
-        <rect x="405" y="25" width="180" height="65" rx="3" stroke="#d7a24a" />
-        <rect x="405" y="105" width="180" height="65" rx="3" />
-        <rect x="625" y="60" width="150" height="70" rx="3" />
-        <rect x="815" y="60" width="65" height="70" rx="3" />
+    <svg viewBox="0 0 480 300" className="h-full w-full">
+      {/* grid */}
+      <g stroke="#1c212a" strokeWidth={1}>
+        {[0, 60, 120, 180, 240].map((y) => (
+          <line key={y} x1="0" y1={y + 20} x2="480" y2={y + 20} />
+        ))}
       </g>
 
-      <g
-        stroke="#5a6068"
-        strokeWidth="1.2"
-        markerEnd="url(#risk-arrow)"
+      {/* uncertain obstacle region */}
+      <motion.ellipse
+        cx="260"
+        cy="135"
+        rx="55"
+        ry="38"
+        fill="#d7a24a10"
+        stroke="#d7a24a66"
+        strokeDasharray="4 4"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      />
+
+      <circle
+        cx="260"
+        cy="135"
+        r="12"
+        fill="#12151a"
+        stroke="#d7a24a"
+        strokeWidth={1.8}
+      />
+
+      {/* candidate trajectories */}
+      {[
+        "M45,245 C120,230 175,185 245,155 S350,125 425,80",
+        "M45,245 C125,220 180,150 235,125 S330,105 425,80",
+        "M45,245 C125,250 180,230 230,205 S330,160 425,80",
+      ].map((d, i) => (
+        <motion.path
+          key={i}
+          d={d}
+          fill="none"
+          stroke="#3a4048"
+          strokeWidth={1.4}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={drawVariant}
+          transition={{ duration: 1, delay: i * 0.15 }}
+        />
+      ))}
+
+      {/* selected risk-aware trajectory */}
+      <motion.path
+        d="M45,245 C125,225 175,215 225,185 C270,158 285,195 330,165 S385,110 425,80"
+        fill="none"
+        stroke="#d7a24a"
+        strokeWidth={2.6}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={drawVariant}
+        transition={{ duration: 1.3, delay: 0.45 }}
+      />
+
+      {/* UAV */}
+      <motion.g
+        initial={{ opacity: 0, scale: 0.7 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
       >
-        <line x1="165" y1="95" x2="203" y2="95" />
-        <line x1="365" y1="80" x2="403" y2="58" />
-        <line x1="365" y1="110" x2="403" y2="137" />
-        <line x1="585" y1="58" x2="623" y2="90" />
-        <line x1="585" y1="137" x2="623" y2="100" />
-        <line x1="775" y1="95" x2="813" y2="95" />
-      </g>
+        <circle cx="45" cy="245" r="6" fill="#e7e9ec" />
+        <line x1="35" y1="239" x2="55" y2="251" stroke="#e7e9ec" />
+        <line x1="55" y1="239" x2="35" y2="251" stroke="#e7e9ec" />
+      </motion.g>
 
-      <g fill="#dde2e7" fontSize="12">
-        <text x="38" y="88">Local perception</text>
-        <text x="38" y="105" fill="#767f8b">sensor observations</text>
-
-        <text x="223" y="88" fill="#5fb8b0">Occupancy grid</text>
-        <text x="223" y="105" fill="#767f8b">free / occupied / unknown</text>
-
-        <text x="423" y="53" fill="#d7a24a">A* global planner</text>
-        <text x="423" y="70" fill="#767f8b">reference trajectory</text>
-
-        <text x="423" y="133">Risk-aware MPC</text>
-        <text x="423" y="150" fill="#767f8b">chance constraints · 1% risk</text>
-
-        <text x="643" y="88">Control action</text>
-        <text x="643" y="105" fill="#767f8b">receding horizon</text>
-
-        <text x="825" y="88">UAV</text>
-        <text x="825" y="105" fill="#767f8b">motion</text>
-      </g>
+      {/* goal */}
+      <circle cx="425" cy="80" r="6" fill="#5fb8b0" />
 
       <text
-        x="450"
-        y="184"
-        textAnchor="middle"
+        x="20"
+        y="270"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
         fill="#767f8b"
-        fontSize="11"
       >
-        Gaussian obstacle uncertainty → dynamic clearance margins → probabilistic safety
+        UAV
+      </text>
+
+      <text
+        x="228"
+        y="116"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
+      >
+        uncertain obstacle
+      </text>
+
+      <text
+        x="390"
+        y="68"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#5fb8b0"
+      >
+        goal
+      </text>
+
+      <text
+        x="115"
+        y="292"
+        fontFamily="IBM Plex Mono"
+        fontSize="9.5"
+        fill="#5a6068"
+      >
+        noisy perception → chance constraint → risk-aware trajectory
       </text>
     </svg>
   );
 }
 
-function AdaptiveKFVisual() {
+function AdaptiveKFViz() {
   return (
-    <svg
-      viewBox="0 0 900 190"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-auto w-full"
-      fontFamily="IBM Plex Mono"
-    >
-      <defs>
-        <marker
-          id="kf-arrow"
-          markerWidth="8"
-          markerHeight="8"
-          refX="6"
-          refY="3"
-          orient="auto"
-        >
-          <path d="M0,0 L6,3 L0,6 Z" fill="#5a6068" />
-        </marker>
-      </defs>
-
-      <g fill="none" stroke="#3a4048" strokeWidth="1.3">
-        <rect x="20" y="60" width="150" height="70" rx="3" />
-        <rect x="215" y="60" width="145" height="70" rx="3" stroke="#5fb8b0" />
-        <rect x="405" y="20" width="180" height="65" rx="3" />
-        <rect x="405" y="105" width="180" height="65" rx="3" stroke="#d7a24a" />
-        <rect x="625" y="60" width="150" height="70" rx="3" />
-        <rect x="815" y="60" width="65" height="70" rx="3" />
+    <svg viewBox="0 0 480 300" className="h-full w-full">
+      <g stroke="#1c212a" strokeWidth={1}>
+        {[0, 60, 120, 180, 240].map((y) => (
+          <line key={y} x1="0" y1={y + 20} x2="480" y2={y + 20} />
+        ))}
       </g>
 
-      <g
-        stroke="#5a6068"
-        strokeWidth="1.2"
-        markerEnd="url(#kf-arrow)"
-      >
-        <line x1="170" y1="95" x2="213" y2="95" />
-        <line x1="360" y1="82" x2="403" y2="55" />
-        <line x1="360" y1="108" x2="403" y2="137" />
-        <line x1="585" y1="55" x2="623" y2="90" />
-        <line x1="585" y1="137" x2="623" y2="100" />
-        <line x1="775" y1="95" x2="813" y2="95" />
-      </g>
+      {/* wall */}
+      <line
+        x1="300"
+        y1="45"
+        x2="300"
+        y2="250"
+        stroke="#d7a24a"
+        strokeWidth={2}
+      />
 
-      <g fill="#dde2e7" fontSize="12">
-        <text x="38" y="88">Physical system</text>
-        <text x="38" y="105" fill="#767f8b">mass–spring–damper</text>
+      {/* true position trajectory */}
+      <motion.path
+        d="M45,205 C100,195 155,170 215,135 C255,112 285,95 300,100 C320,105 350,165 395,195"
+        fill="none"
+        stroke="#5fb8b0"
+        strokeWidth={2.2}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={drawVariant}
+        transition={{ duration: 1.3 }}
+      />
 
-        <text x="233" y="88" fill="#5fb8b0">Noisy observations</text>
-        <text x="233" y="105" fill="#767f8b">position + velocity</text>
+      {/* standard KF lag */}
+      <motion.path
+        d="M45,205 C105,198 160,175 215,140 C260,112 290,105 305,115 C330,135 350,160 395,180"
+        fill="none"
+        stroke="#3a4048"
+        strokeWidth={1.4}
+        strokeDasharray="5 4"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={drawVariant}
+        transition={{ duration: 1.2, delay: 0.3 }}
+      />
 
-        <text x="423" y="48">Standard / Adaptive KF</text>
-        <text x="423" y="65" fill="#767f8b">innovation-driven Q update</text>
+      {/* injected uncertainty */}
+      <motion.ellipse
+        cx="330"
+        cy="145"
+        rx="42"
+        ry="30"
+        fill="#d7a24a12"
+        stroke="#d7a24a"
+        strokeDasharray="4 4"
+        initial={{ opacity: 0, scale: 0.6 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      />
 
-        <text x="423" y="133" fill="#d7a24a">Targeted Injection KF</text>
-        <text x="423" y="150" fill="#767f8b">χ² test → velocity covariance</text>
+      {/* observations */}
+      {[55, 90, 125, 160, 195, 230, 265, 320, 350, 380].map(
+        (x, i) => {
+          const y =
+            x < 300
+              ? 205 - (x - 45) * 0.58 + (i % 2 ? 5 : -4)
+              : 100 + (x - 300) * 0.85 + (i % 2 ? 4 : -4);
 
-        <text x="643" y="88">State estimate</text>
-        <text x="643" y="105" fill="#767f8b">x̂ₖ · Pₖ</text>
+          return (
+            <motion.circle
+              key={i}
+              cx={x}
+              cy={y}
+              r="2.5"
+              fill="#aeb6c0"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.04 * i }}
+            />
+          );
+        }
+      )}
 
-        <text x="827" y="88">RLS</text>
-        <text x="827" y="105" fill="#767f8b">λₖ</text>
-      </g>
+      <circle cx="45" cy="205" r="5" fill="#e7e9ec" />
 
       <text
-        x="450"
-        y="184"
-        textAnchor="middle"
-        fill="#767f8b"
-        fontSize="11"
+        x="270"
+        y="38"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
       >
-        impulsive wall collision → innovation test → selective velocity uncertainty injection
+        wall collision
+      </text>
+
+      <text
+        x="320"
+        y="130"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
+      >
+        ↑ velocity
+      </text>
+
+      <text
+        x="20"
+        y="230"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#767f8b"
+      >
+        noisy observations
+      </text>
+
+      <text
+        x="115"
+        y="292"
+        fontFamily="IBM Plex Mono"
+        fontSize="9.5"
+        fill="#5a6068"
+      >
+        innovation spike → χ² detection → targeted velocity uncertainty
       </text>
     </svg>
   );
 }
 
-function SINDYRLSVisual() {
+function SINDYRLSViz() {
+  const cartX = 245;
+  const cartY = 205;
+  const pivotX = 245;
+  const pivotY = 180;
+
   return (
-    <svg
-      viewBox="0 0 900 190"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-auto w-full"
-      fontFamily="IBM Plex Mono"
-    >
-      <defs>
-        <marker
-          id="sindy-arrow"
-          markerWidth="8"
-          markerHeight="8"
-          refX="6"
-          refY="3"
-          orient="auto"
-        >
-          <path d="M0,0 L6,3 L0,6 Z" fill="#5a6068" />
-        </marker>
-      </defs>
+    <svg viewBox="0 0 480 300" className="h-full w-full">
+      {/* ground */}
+      <line
+        x1="55"
+        y1="235"
+        x2="425"
+        y2="235"
+        stroke="#3a4048"
+        strokeWidth={2}
+      />
 
-      <g fill="none" stroke="#3a4048" strokeWidth="1.3">
-        <rect x="20" y="60" width="145" height="70" rx="3" />
-        <rect x="205" y="60" width="165" height="70" rx="3" stroke="#5fb8b0" />
-        <rect x="410" y="60" width="165" height="70" rx="3" stroke="#d7a24a" />
-        <rect x="615" y="60" width="150" height="70" rx="3" />
-        <rect x="805" y="60" width="75" height="70" rx="3" />
-      </g>
+      {/* cart */}
+      <motion.g
+        initial={{ x: -15 }}
+        whileInView={{ x: 15 }}
+        viewport={{ once: true }}
+        transition={{
+          duration: 1.5,
+          repeat: 1,
+          repeatType: "reverse",
+        }}
+      >
+        <rect
+          x="210"
+          y="190"
+          width="70"
+          height="38"
+          rx="4"
+          fill="#12151a"
+          stroke="#5fb8b0"
+          strokeWidth={1.6}
+        />
 
-      <g
-        stroke="#5a6068"
-        strokeWidth="1.2"
+        <circle cx="225" cy="235" r="7" fill="#12151a" stroke="#5fb8b0" />
+        <circle cx="265" cy="235" r="7" fill="#12151a" stroke="#5fb8b0" />
+
+        {/* pendulum */}
+        <line
+          x1={pivotX}
+          y1={pivotY}
+          x2="285"
+          y2="100"
+          stroke="#d7a24a"
+          strokeWidth={3}
+        />
+
+        <circle
+          cx="285"
+          cy="100"
+          r="9"
+          fill="#12151a"
+          stroke="#d7a24a"
+          strokeWidth={1.7}
+        />
+      </motion.g>
+
+      {/* control force */}
+      <motion.path
+        d="M175,208 L205,208"
+        stroke="#5fb8b0"
+        strokeWidth={2}
         markerEnd="url(#sindy-arrow)"
-      >
-        <line x1="165" y1="95" x2="203" y2="95" />
-        <line x1="370" y1="95" x2="408" y2="95" />
-        <line x1="575" y1="95" x2="613" y2="95" />
-        <line x1="765" y1="95" x2="803" y2="95" />
-      </g>
-
-      <g fill="#dde2e7" fontSize="12">
-        <text x="38" y="88">Closed-loop data</text>
-        <text x="38" y="105" fill="#767f8b">cart + pendulum + LQR</text>
-
-        <text x="223" y="88" fill="#5fb8b0">Implicit SINDy</text>
-        <text x="223" y="105" fill="#767f8b">two-pass STLSQ</text>
-
-        <text x="428" y="88" fill="#d7a24a">Coupled dynamics</text>
-        <text x="428" y="105" fill="#767f8b">plant + controller</text>
-
-        <text x="633" y="88">RLS decoupling</text>
-        <text x="633" y="105" fill="#767f8b">friction + LQR gains</text>
-
-        <text x="823" y="88">Physical</text>
-        <text x="823" y="105">model</text>
-      </g>
+      />
 
       <text
-        x="450"
-        y="160"
-        textAnchor="middle"
-        fill="#767f8b"
-        fontSize="11"
+        x="125"
+        y="200"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#5fb8b0"
       >
-        Ghost Controller → structural discovery → controller–plant parameter separation
+        LQR force
+      </text>
+
+      {/* angle */}
+      <path
+        d="M245,150 A30,30 0 0 1 267,157"
+        fill="none"
+        stroke="#767f8b"
+      />
+
+      <text
+        x="270"
+        y="158"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#767f8b"
+      >
+        θ
+      </text>
+
+      {/* discovery concept */}
+      <motion.rect
+        x="55"
+        y="55"
+        width="125"
+        height="55"
+        rx="3"
+        fill="#12151a"
+        stroke="#3a4048"
+        initial={{ opacity: 0, y: -8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      />
+
+      <text
+        x="72"
+        y="78"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#aeb6c0"
+      >
+        closed-loop data
       </text>
 
       <text
-        x="450"
-        y="178"
-        textAnchor="middle"
-        fill="#5fb8b0"
-        fontSize="11"
+        x="72"
+        y="96"
+        fontFamily="IBM Plex Mono"
+        fontSize="9"
+        fill="#5a6068"
       >
-        &lt;4% identification error on hidden LQR gains
+        plant + controller
+      </text>
+
+      <motion.path
+        d="M180,82 C215,105 220,125 235,160"
+        fill="none"
+        stroke="#5a6068"
+        strokeWidth={1.2}
+        strokeDasharray="4 4"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+      />
+
+      <text
+        x="310"
+        y="70"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
+      >
+        RLS decoupling
+      </text>
+
+      <text
+        x="310"
+        y="87"
+        fontFamily="IBM Plex Mono"
+        fontSize="9"
+        fill="#767f8b"
+      >
+        friction + LQR gains
+      </text>
+
+      <text
+        x="115"
+        y="292"
+        fontFamily="IBM Plex Mono"
+        fontSize="9.5"
+        fill="#5a6068"
+      >
+        SINDy discovers structure → RLS separates controller from plant
       </text>
     </svg>
   );
 }
 
-function PlutusVisual() {
+function PlutusViz() {
   return (
-    <svg
-      viewBox="0 0 900 190"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-auto w-full"
-      fontFamily="IBM Plex Mono"
-    >
-      <defs>
-        <marker
-          id="plutus-arrow"
-          markerWidth="8"
-          markerHeight="8"
-          refX="6"
-          refY="3"
-          orient="auto"
-        >
-          <path d="M0,0 L6,3 L0,6 Z" fill="#5a6068" />
-        </marker>
-      </defs>
-
-      <g fill="none" stroke="#3a4048" strokeWidth="1.3">
-        <rect x="15" y="60" width="125" height="70" rx="3" />
-        <rect x="170" y="60" width="135" height="70" rx="3" stroke="#5fb8b0" />
-        <rect x="335" y="60" width="135" height="70" rx="3" stroke="#d7a24a" />
-        <rect x="500" y="60" width="135" height="70" rx="3" />
-        <rect x="665" y="60" width="110" height="70" rx="3" />
-        <rect x="805" y="60" width="75" height="70" rx="3" />
+    <svg viewBox="0 0 480 300" className="h-full w-full">
+      {/* probability distribution */}
+      <g stroke="#1c212a" strokeWidth={1}>
+        {[0, 60, 120, 180, 240].map((y) => (
+          <line key={y} x1="0" y1={y + 20} x2="480" y2={y + 20} />
+        ))}
       </g>
 
-      <g
-        stroke="#5a6068"
-        strokeWidth="1.2"
-        markerEnd="url(#plutus-arrow)"
-      >
-        <line x1="140" y1="95" x2="168" y2="95" />
-        <line x1="305" y1="95" x2="333" y2="95" />
-        <line x1="470" y1="95" x2="498" y2="95" />
-        <line x1="635" y1="95" x2="663" y2="95" />
-        <line x1="775" y1="95" x2="803" y2="95" />
-      </g>
+      <motion.path
+        d="M55,220
+           C95,218 110,205 130,175
+           C150,140 175,105 210,100
+           C245,95 265,130 285,165
+           C305,198 330,215 365,220"
+        fill="none"
+        stroke="#5fb8b0"
+        strokeWidth={2.2}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={drawVariant}
+        transition={{ duration: 1.2 }}
+      />
 
-      <g fill="#dde2e7" fontSize="11.5">
-        <text x="28" y="87">Market data</text>
-        <text x="28" y="104" fill="#767f8b">RFQ / FOK flow</text>
+      {/* fair value */}
+      <line
+        x1="220"
+        y1="75"
+        x2="220"
+        y2="235"
+        stroke="#d7a24a"
+        strokeDasharray="5 4"
+        strokeWidth={1.5}
+      />
 
-        <text x="185" y="87" fill="#5fb8b0">Parameter inference</text>
-        <text x="185" y="104" fill="#767f8b">betas · volatility</text>
+      <circle cx="220" cy="100" r="5" fill="#d7a24a" />
 
-        <text x="350" y="87" fill="#d7a24a">Monte Carlo</text>
-        <text x="350" y="104" fill="#767f8b">1,000 paths · fair value</text>
+      {/* bid */}
+      <motion.line
+        x1="180"
+        y1="245"
+        x2="180"
+        y2="190"
+        stroke="#5fb8b0"
+        strokeWidth={2}
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+      />
 
-        <text x="515" y="87">Risk / toxicity</text>
-        <text x="515" y="104" fill="#767f8b">edge · variance · Kelly</text>
+      {/* offer */}
+      <motion.line
+        x1="260"
+        y1="245"
+        x2="260"
+        y2="175"
+        stroke="#d7a24a"
+        strokeWidth={2}
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.85 }}
+      />
 
-        <text x="680" y="87">Inventory skew</text>
-        <text x="680" y="104" fill="#767f8b">85% capital cap</text>
-
-        <text x="819" y="87">Quotes</text>
-        <text x="819" y="104">/ fills</text>
-      </g>
+      {/* inventory */}
+      <motion.path
+        d="M325,235 C345,220 355,195 350,165"
+        fill="none"
+        stroke="#aeb6c0"
+        strokeWidth={1.5}
+        strokeDasharray="4 4"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+      />
 
       <text
-        x="450"
-        y="160"
-        textAnchor="middle"
+        x="25"
+        y="245"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
         fill="#767f8b"
-        fontSize="11"
       >
-        daily pricing cache → millisecond-scale pricing → solvency-aware execution
+        simulated outcomes
       </text>
 
       <text
-        x="450"
-        y="178"
-        textAnchor="middle"
-        fill="#5fb8b0"
-        fontSize="11"
+        x="187"
+        y="65"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
       >
-        survived all 20 adversarial simulation stages without bankruptcy
+        fair value
+      </text>
+
+      <text
+        x="165"
+        y="260"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#5fb8b0"
+      >
+        bid
+      </text>
+
+      <text
+        x="248"
+        y="260"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
+      >
+        offer
+      </text>
+
+      <text
+        x="315"
+        y="150"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#aeb6c0"
+      >
+        inventory
+      </text>
+
+      <text
+        x="110"
+        y="292"
+        fontFamily="IBM Plex Mono"
+        fontSize="9.5"
+        fill="#5a6068"
+      >
+        uncertainty → fair binary price → inventory-skewed quotes
       </text>
     </svg>
   );
 }
 
-function QualityCastVisual() {
+function QualityCastViz() {
   return (
-    <svg
-      viewBox="0 0 900 190"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-auto w-full"
-      fontFamily="IBM Plex Mono"
-    >
-      <defs>
-        <marker
-          id="quality-arrow"
-          markerWidth="8"
-          markerHeight="8"
-          refX="6"
-          refY="3"
-          orient="auto"
-        >
-          <path d="M0,0 L6,3 L0,6 Z" fill="#5a6068" />
-        </marker>
-      </defs>
+    <svg viewBox="0 0 480 300" className="h-full w-full">
+      {/* inspection image */}
+      <motion.rect
+        x="45"
+        y="70"
+        width="125"
+        height="125"
+        rx="4"
+        fill="#12151a"
+        stroke="#3a4048"
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+      />
 
-      <g fill="none" stroke="#3a4048" strokeWidth="1.3">
-        <rect x="15" y="60" width="120" height="70" rx="3" />
-        <rect x="165" y="60" width="130" height="70" rx="3" stroke="#5fb8b0" />
-        <rect x="325" y="60" width="130" height="70" rx="3" />
-        <rect x="485" y="60" width="130" height="70" rx="3" stroke="#d7a24a" />
-        <rect x="645" y="60" width="110" height="70" rx="3" />
-        <rect x="785" y="60" width="95" height="70" rx="3" />
-      </g>
+      {/* casting silhouette */}
+      <path
+        d="M75,170 L75,115 L100,95 L140,100 L150,125 L140,165 Z"
+        fill="none"
+        stroke="#aeb6c0"
+        strokeWidth={2}
+      />
 
-      <g
+      {/* defect */}
+      <motion.circle
+        cx="120"
+        cy="135"
+        r="10"
+        fill="#d7a24a18"
+        stroke="#d7a24a"
+        strokeWidth={1.5}
+        initial={{ opacity: 0, scale: 0.5 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.6 }}
+      />
+
+      {/* arrow */}
+      <line
+        x1="175"
+        y1="132"
+        x2="215"
+        y2="132"
         stroke="#5a6068"
-        strokeWidth="1.2"
-        markerEnd="url(#quality-arrow)"
-      >
-        <line x1="135" y1="95" x2="163" y2="95" />
-        <line x1="295" y1="95" x2="323" y2="95" />
-        <line x1="455" y1="95" x2="483" y2="95" />
-        <line x1="615" y1="95" x2="643" y2="95" />
-        <line x1="755" y1="95" x2="783" y2="95" />
-      </g>
+        strokeWidth={1.5}
+      />
 
-      <g fill="#dde2e7" fontSize="11.5">
-        <text x="31" y="87">Raw images</text>
-        <text x="31" y="104" fill="#767f8b">validation</text>
-
-        <text x="182" y="87" fill="#5fb8b0">Airflow + DVC</text>
-        <text x="182" y="104" fill="#767f8b">ETL · versioning</text>
-
-        <text x="342" y="87">PyTorch</text>
-        <text x="342" y="104" fill="#767f8b">training</text>
-
-        <text x="502" y="87" fill="#d7a24a">MLflow</text>
-        <text x="502" y="104" fill="#767f8b">registry · artifacts</text>
-
-        <text x="662" y="87">FastAPI</text>
-        <text x="662" y="104" fill="#767f8b">inference</text>
-
-        <text x="801" y="87">Monitor</text>
-        <text x="801" y="104" fill="#767f8b">+ HITL</text>
-      </g>
+      {/* classifier */}
+      <motion.rect
+        x="220"
+        y="75"
+        width="110"
+        height="110"
+        rx="4"
+        fill="#12151a"
+        stroke="#5fb8b0"
+        strokeWidth={1.5}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.3 }}
+      />
 
       <text
-        x="450"
-        y="160"
+        x="275"
+        y="110"
         textAnchor="middle"
-        fill="#767f8b"
+        fontFamily="IBM Plex Mono"
         fontSize="11"
+        fill="#5fb8b0"
       >
-        inference → Prometheus/Grafana → operator feedback → retraining
+        CV MODEL
       </text>
 
       <text
-        x="450"
-        y="178"
+        x="275"
+        y="132"
         textAnchor="middle"
-        fill="#5fb8b0"
-        fontSize="11"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#aeb6c0"
       >
-        reproducible data + model lineage + readiness validation
+        defect score
+      </text>
+
+      <text
+        x="275"
+        y="153"
+        textAnchor="middle"
+        fontFamily="IBM Plex Mono"
+        fontSize="11"
+        fill="#d7a24a"
+      >
+        REJECT
+      </text>
+
+      {/* result */}
+      <line
+        x1="330"
+        y1="132"
+        x2="370"
+        y2="132"
+        stroke="#5a6068"
+        strokeWidth={1.5}
+      />
+
+      <motion.rect
+        x="375"
+        y="85"
+        width="65"
+        height="90"
+        rx="4"
+        fill="#12151a"
+        stroke="#d7a24a"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.8 }}
+      />
+
+      <text
+        x="407"
+        y="115"
+        textAnchor="middle"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#d7a24a"
+      >
+        HUMAN
+      </text>
+
+      <text
+        x="407"
+        y="135"
+        textAnchor="middle"
+        fontFamily="IBM Plex Mono"
+        fontSize="9"
+        fill="#767f8b"
+      >
+        feedback
+      </text>
+
+      <text
+        x="407"
+        y="154"
+        textAnchor="middle"
+        fontFamily="IBM Plex Mono"
+        fontSize="9"
+        fill="#767f8b"
+      >
+        ↻ retrain
+      </text>
+
+      {/* feedback loop */}
+      <motion.path
+        d="M405,180 C405,235 275,245 275,190"
+        fill="none"
+        stroke="#3a4048"
+        strokeWidth={1.2}
+        strokeDasharray="4 4"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 1 }}
+      />
+
+      <text
+        x="60"
+        y="220"
+        fontFamily="IBM Plex Mono"
+        fontSize="10"
+        fill="#767f8b"
+      >
+        casting inspection image
+      </text>
+
+      <text
+        x="95"
+        y="292"
+        fontFamily="IBM Plex Mono"
+        fontSize="9.5"
+        fill="#5a6068"
+      >
+        defect → model decision → human feedback → reproducible retraining
       </text>
     </svg>
   );
@@ -630,11 +1004,11 @@ const VISUALS: Record<string, () => JSX.Element> = {
   "llm-scene-planner": SceneGraphViz,
   "thesis-tail-risk": StochasticControlViz,
   "hres-optimization": HRESViz,
-  "risk-aware-stochastic-mpc": RiskAwareMPCVisual,
-  "adaptive-kalman-rls": AdaptiveKFVisual,
-  "sindy-rls-cart-pendulum": SINDYRLSVisual,
-  "plutus-market-maker": PlutusVisual,
-  "qualitycast-mlops": QualityCastVisual
+  "risk-aware-stochastic-mpc": RiskAwareMPCViz,
+  "adaptive-kalman-rls": AdaptiveKFViz,
+  "sindy-rls-cart-pendulum": SINDYRLSViz,
+  "plutus-market-maker": PlutusViz,
+  "qualitycast-mlops": QualityCastViz
 };
 
 export default function ProjectVisual({ slug }: { slug: string }) {
