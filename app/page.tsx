@@ -14,7 +14,8 @@ export default function HomePage() {
     <main>
       {/* ============ HERO ============ */}
       <section className="border-b border-border-soft px-6 pb-16 pt-32 sm:pt-40">
-        <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* Changed grid ratio to give the right side (simulation + photo) more width (1.15fr) */}
+        <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
           
           {/* LEFT COLUMN: Text & Buttons */}
           <div>
@@ -34,7 +35,7 @@ export default function HomePage() {
               {profile.statement}
             </p>
             
-            {/* Buttons including new Email */}
+            {/* Buttons including Email and ResearchGate */}
             <div className="animate-rise flex flex-wrap gap-3" style={{ animationDelay: "0.2s" }}>
               <a
                 href="#research"
@@ -57,6 +58,14 @@ export default function HomePage() {
                 GITHUB
               </a>
               <a
+                href={profile.links.researchGate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
+              >
+                RESEARCH GATE
+              </a>
+              <a
                 href={profile.links.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -67,38 +76,23 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Bento Box Layout */}
-          <div className="animate-rise grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:grid-rows-2 lg:h-[340px]" style={{ animationDelay: "0.3s" }}>
+          {/* RIGHT COLUMN: Streamlined 2-Box Layout */}
+          <div className="animate-rise grid w-full grid-cols-1 gap-4 sm:grid-cols-5 sm:h-[340px]" style={{ animationDelay: "0.3s" }}>
             
-            {/* Box 1: HeroSim (Top Left) */}
-            <div className="col-span-1 sm:col-span-2 lg:col-span-3 lg:row-span-1 rounded-2xl border border-border-soft bg-panel overflow-hidden relative min-h-[160px] flex items-center justify-center p-2">
-              <div className="w-full h-full scale-[0.85] flex items-center justify-center origin-center">
+            {/* Box 1: HeroSim (Takes up 60% of the space) */}
+            <div className="col-span-1 sm:col-span-3 rounded-2xl border border-border-soft bg-panel p-4 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-full flex items-center justify-center">
                 <HeroSim />
               </div>
             </div>
             
-            {/* Box 2: Photo (Right Side, spans both rows) */}
-            <div className="col-span-1 sm:col-span-1 lg:col-span-2 lg:row-span-2 rounded-2xl border border-border-soft overflow-hidden relative min-h-[220px] lg:min-h-full group">
+            {/* Box 2: Photo (Takes up 40% of the space) */}
+            <div className="col-span-1 sm:col-span-2 rounded-2xl border border-border-soft overflow-hidden relative group min-h-[250px] sm:min-h-full">
               <img 
-                src="/Charukhesh_Portfolio/profile.jpg" 
+                src="/Charukhesh_Portfolio/photo.jpg" 
                 alt="Charukhesh B R" 
                 className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
               />
-            </div>
-
-            {/* Box 3: Status / Education (Bottom Left) */}
-            <div className="col-span-1 sm:col-span-1 lg:col-span-3 lg:row-span-1 rounded-2xl border border-border-soft bg-panel p-6 flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
-                </span>
-                <span className="font-mono text-xs tracking-wide text-accent">AVAILABLE FOR ROLES</span>
-              </div>
-              <div className="text-[13px] text-ink-dim font-mono leading-relaxed">
-                Dual Degree (B.Tech + M.Tech) <br/>
-                <span className="text-[#f2f4f6]">IIT Madras · CGPA: 9.14</span>
-              </div>
             </div>
 
           </div>
