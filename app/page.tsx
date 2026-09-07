@@ -1,8 +1,8 @@
 import HeroSim from "@/components/HeroSim";
 import ResearchMap from "@/components/ResearchMap";
 import ProjectPanel from "@/components/ProjectPanel";
-// 1. Swap AdvancedItem for the new toggle component
 import AdvancedProjectsToggle from "@/components/AdvancedProjectsToggle"; 
+import SuasSection from "@/components/SuasSection";
 import Timeline from "@/components/Timeline";
 import { Tag } from "@/components/Tag";
 import { profile } from "@/data/profile";
@@ -146,6 +146,14 @@ export default function HomePage() {
             <AdvancedProjectsToggle projects={advancedProjects} />
             
           </div>
+        </div>
+      </section>
+
+      {/* ============ LEADERSHIP (SUAS) ============ */}
+      <section id="suas" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
+        <div className="mx-auto max-w-wide">
+          <SectionHeading num="03" title="Leadership & Robotics" note="Founding SUAS IITM" />
+          <SuasSection />
         </div>
       </section>
 

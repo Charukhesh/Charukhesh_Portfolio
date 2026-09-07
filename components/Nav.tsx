@@ -8,9 +8,10 @@ import { profile } from "@/data/profile";
 const SECTIONS = [
   { id: "research", num: "01", label: "RESEARCH" },
   { id: "projects", num: "02", label: "PROJECTS" },
-  { id: "experience", num: "03", label: "EXPERIENCE" },
-  { id: "publications", num: "04", label: "PUBLICATIONS" },
-  { id: "about", num: "05", label: "ABOUT" }
+  { id: "suas", num: "03", label: "LEADERSHIP" },
+  { id: "experience", num: "04", label: "EXPERIENCE" },
+  { id: "publications", num: "05", label: "PUBLICATIONS" },
+  { id: "about", num: "06", label: "ABOUT" }
 ];
 
 export default function Nav() {
