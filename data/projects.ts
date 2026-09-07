@@ -44,6 +44,7 @@ export interface Project {
   hasCaseStudy: boolean;
 }
 
+
 // ---------------------------------------------------------------------------
 // FLAGSHIP — dedicated case studies live in /content/case-studies/{slug}.mdx
 // ---------------------------------------------------------------------------
@@ -128,28 +129,25 @@ export const flagshipProjects: Project[] = [
 
   {
     slug: "hres-optimization",
-    title:
-      "Contractual & Resource-Aware Capacity Optimization for Hybrid Renewable Energy Systems",
+    title: "Endogenous Multi-Objective Optimization and Risk Assessment of HRES",
     institution: "IIT Madras, with Hero Future Energies",
-    advisor: "Prof. Raghunathan R",
+    advisor: "Prof. Raghunathan Rengaswamy",
     category: ["Optimization", "Finance"],
     type: "Research",
     status: "industry",
     featured: true,
-    summary:
-      "A multi-objective sizing framework for hybrid renewable + storage systems embedding IRR, PPA penalties, tax shields and degradation directly into the optimization, backed by a synthetic renewable-generation model and long-horizon Monte Carlo reliability testing.",
+    summary: "A two-stage framework for sizing hybrid renewable energy systems that embeds IRR, asymmetric PPA penalties, and battery degradation directly into the optimization, rigorously stress tested via a high fidelity probabilistic weather generator.",
     methods: [
-      "Multi-objective HRES sizing",
-      "Delta-Distribution Mixture of Gaussians",
+      "Endogenous NSGA-II Sizing",
+      "Delta-Distribution GMM",
       "Conditional Probabilistic Clustering",
-      "25-year Monte Carlo simulation",
-      "KL-divergence convergence checks"
+      "15-year Monte Carlo Simulation",
+      "Kullback-Leibler Convergence"
     ],
-    result:
-      "Manuscript under review, Applied Energy (Elsevier); accepted for presentation, SGAI Conference, Lisbon 2026.",
+    result: "Demonstrated that deterministic sizing creates an efficiency trap, whereas probabilistic risk assessment quantifies the exact financial value of excess generation buffers.",
     repo: {
       url: null,
-      note: "Research collaboration — no public repository"
+      note: "Research collaboration (Proprietary)"
     },
     hasCaseStudy: true
   },

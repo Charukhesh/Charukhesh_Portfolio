@@ -1,66 +1,61 @@
 ---
-title: "Contractual & Resource-Aware HRES Capacity Optimization"
-subtitle: "With Hero Future Energies · Under review, Applied Energy · Energy Systems"
-badges: ["Validated — Monte Carlo simulation", "Industry collaboration (Hero Future Energies)"]
+title: "Endogenous Optimization and Risk Assessment of HRES"
+subtitle: "Optimization · Project Finance · Generative Weather Modeling"
+badges: ["Validated in Monte Carlo Simulation", "Industry Collaboration"]
 ---
 
 ## Overview
 
-Sizing a hybrid renewable-plus-storage plant is usually optimized against a levelized-cost objective that ignores
-contract structure. This project embeds the actual commercial terms,  IRR targets, PPA shortfall penalties, tax
-shields, and asset degradation, directly into the sizing optimization, and stress-tests reliability with a
-long-horizon Monte Carlo simulation rather than a single design-year estimate.
-
-## Problem formulation
-
-The sizing problem is posed as a multi-objective optimization over capacity decisions $x$ (solar, wind, storage):
-
-$$
-\max_{x} \; \text{IRR}(x) \quad \text{s.t.} \quad \mathbb{E}[\text{PPA shortfall penalty}(x)] \le \epsilon, \;\; \text{Reliability}(x) \ge \Delta R
-$$
-
-Renewable generation is not sampled from historical traces directly, but from a Delta-Distribution Mixture of
-Gaussians fit to produce noise-free synthetic profiles, with candidate mixtures compared via KL-divergence to
-check statistical convergence to the empirical distribution.
+Sizing a Hybrid Renewable Energy System (HRES) is traditionally optimized against levelized cost metrics that ignore strict contractual structures. This creates an efficiency trap where systems appear theoretically optimal but collapse under severe liquidated damages during actual operation. This project introduces a two-stage framework that first embeds commercial financial realities directly into the sizing optimization, and then rigorously stress tests the resulting architectures against thousands of synthetic 15-year meteorological lifespans.
 
 ## Architecture
 
 <div className="my-4 rounded border border-border-soft bg-panel2 p-4.5">
   <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" fontFamily="IBM Plex Mono" fontSize="12" className="block h-auto w-full">
     <g fill="none" stroke="#3a4048" strokeWidth="1.3">
-      <rect x="20" y="45" width="170" height="70" rx="3" stroke="#5fb8b0" />
-      <rect x="240" y="45" width="170" height="70" rx="3" />
-      <rect x="460" y="45" width="180" height="70" rx="3" stroke="#d7a24a" />
-      <rect x="690" y="45" width="180" height="70" rx="3" />
+      <rect x="20" y="45" width="160" height="70" rx="3" />
+      <rect x="210" y="45" width="190" height="70" rx="3" stroke="#5fb8b0" />
+      <rect x="430" y="45" width="180" height="70" rx="3" stroke="#d7a24a" />
+      <rect x="640" y="45" width="170" height="70" rx="3" />
     </g>
     <g stroke="#5a6068" strokeWidth="1.2">
-      <line x1="190" y1="80" x2="238" y2="80" />
-      <line x1="410" y1="80" x2="458" y2="80" />
-      <line x1="640" y1="80" x2="688" y2="80" />
+      <line x1="180" y1="80" x2="208" y2="80" />
+      <line x1="400" y1="80" x2="428" y2="80" />
+      <line x1="610" y1="80" x2="638" y2="80" />
     </g>
-    <text x="35" y="75" fill="#5fb8b0">Delta-Dist. Mixture</text>
-    <text x="35" y="90" fill="#767f8b">of Gaussians (synthetic gen.)</text>
-    <text x="255" y="75" fill="#dde2e7">Cond. Probabilistic</text>
-    <text x="255" y="90" fill="#767f8b">Clustering</text>
-    <text x="475" y="75" fill="#d7a24a">Multi-objective</text>
-    <text x="475" y="90" fill="#767f8b">HRES sizing (IRR, PPA, tax)</text>
-    <text x="705" y="75" fill="#dde2e7">25-yr Monte Carlo</text>
-    <text x="705" y="90" fill="#767f8b">reliability + KL check</text>
+    <text x="35" y="75" fill="#dde2e7">Endogenous Sizing</text>
+    <text x="35" y="90" fill="#767f8b">NSGA-II IRR targets</text>
+    
+    <text x="225" y="75" fill="#5fb8b0">Weather Generation</text>
+    <text x="225" y="90" fill="#5fb8b0">Delta-GMM & Clusters</text>
+    
+    <text x="445" y="75" fill="#d7a24a">Monte Carlo Sim</text>
+    <text x="445" y="90" fill="#767f8b">15-year lifespans</text>
+    
+    <text x="655" y="75" fill="#dde2e7">Risk Assessment</text>
+    <text x="655" y="90" fill="#767f8b">KL Div convergence</text>
   </svg>
 </div>
 
+## Technical approach
+
+The framework is divided into two distinct mathematical stages:
+
+**Stage I (Endogenous Sizing):** An NSGA-II evolutionary algorithm directly targets the Unlevered Project IRR. Unlike traditional decoupled models, the solver natively internalizes 15-minute asymmetric time block PPA penalties, zero foresight BESS degradation limits, and multi asset tax shields. 
+
+**Stage II (Probabilistic Resource Simulation):** To evaluate long term tail risks without breaking intrinsic meteorological memory, the framework generates synthetic weather. Solar irradiance is modeled via a Delta-Distribution Gaussian Mixture Model (GMM) to preserve diurnal ramps, while wind speeds utilize Conditional Probabilistic Clustering based on Ward's linkage to capture trend memory. A continuous Monte Carlo simulation evaluates unique 15-year scenarios, terminating only when the resulting downside risk probability distributions achieve a mathematical steady state (Kullback-Leibler Divergence < 0.001).
+
 ## Results
 
-Manuscript titled *"Contractual and resource-aware capacity optimization for hybrid renewable energy systems
-(HRES) with storage"* is currently under review at *Applied Energy* (Elsevier); the associated work was accepted
-for presentation at the SGAI Conference, Lisbon, Portugal, 2026.
+When subjected to probabilistic stress testing, deterministic equivalence broke down completely. Three Pareto optimal architectures targeting an 11% baseline IRR revealed profoundly divergent vulnerabilities. 
+
+A tightly fitted Lean architecture with zero excess energy buffer proved highly brittle, accumulating over 1.0 to 1.5 Million USD in unexpected weather driven liquidated damages and compressing its mean IRR to 10.63%. Conversely, an Oversized architecture utilized its massive excess generation buffer as a financial shock absorber, successfully riding out stochastic resource droughts to maintain a highly resilient synthetic mean IRR of 10.98%.
 
 ## Industrial application
 
 | | |
 |---|---|
-| **Industry** | Energy, independent power producers, renewable project finance |
-| **Problem** | Sizing hybrid renewable + storage assets against real contractual and financial exposure, not just levelized cost |
-| **How it helps** | Directly optimizing IRR net of PPA penalties and tax shields under long-horizon Monte Carlo reliability constraints gives asset owners a sizing decision that reflects actual downside risk, not an idealized average year |
-| **Deployment path** | Industry collaboration (Hero Future Energies) → Monte Carlo validation → operational sizing tool |
-| **Who cares** | Energy asset developers, project-finance teams, renewable IPPs sizing hybrid plants |
+| **Industry** | Utility scale renewable energy, independent power producers, project finance |
+| **Problem** | Sizing metrics that optimize for deterministic physical reliability fail to account for massive asymmetric financial penalties during real world operational droughts. |
+| **How it helps** | By mathematically quantifying downside financial vulnerability, developers can properly value excess energy buffers and select architectures based on true commercial survivability. |
+| **Deployment path** | Historical data ingestion → Synthetic multi decade probabilistic expansion → Risk adjusted architectural selection |

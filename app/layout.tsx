@@ -5,12 +5,12 @@ import Footer from "@/components/Footer";
 import Loader from "@/components/Loader";
 
 export const metadata: Metadata = {
-  title: "Charukhesh B R — AI/ML Research Engineer",
+  title: "Charukhesh B R | AI/ML Research Engineer",
   description:
-    "Charukhesh B R — AI/ML Research Engineer. Robot learning, generative models, stochastic control and state estimation. IIT Madras.",
+    "Charukhesh B R | AI/ML Research Engineer. Robot learning, generative models, stochastic control and state estimation. IIT Madras.",
   metadataBase: new URL("https://charukhesh.github.io/Charukhesh_Portfolio/"),
   openGraph: {
-    title: "Charukhesh B R — AI/ML Research Engineer",
+    title: "Charukhesh B R | AI/ML Research Engineer",
     description:
       "Research and engineering at the intersection of robotics, machine learning and real-world systems.",
     type: "website"

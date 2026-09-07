@@ -169,14 +169,16 @@ function StochasticControlViz() {
 }
 
 function HRESViz() {
-  const sources = [
-    { x: 40, y: 40, label: "solar" },
-    { x: 40, y: 100, label: "wind" },
-    { x: 40, y: 160, label: "battery" }
+  const inputs = [
+    { y: 35, label: "Solar Δ-GMM" },
+    { y: 85, label: "Wind Clusters" },
+    { y: 135, label: "BESS Degrad." }
   ];
+
   return (
     <svg viewBox="0 0 460 220" className="h-full w-full">
-      {sources.map((s, i) => (
+      {/* 1. WEATHER GENERATION (INPUTS) */}
+      {inputs.map((input, i) => (
         <motion.g
           key={i}
           initial={{ opacity: 0, x: -8 }}
@@ -184,53 +186,133 @@ function HRESViz() {
           viewport={{ once: true }}
           transition={{ delay: i * 0.15 }}
         >
-          <rect x={s.x - 22} y={s.y - 14} width={44} height={28} rx={4} fill="none" stroke="#5fb8b0" strokeWidth={1.2} />
-          <text x={s.x} y={s.y + 4} textAnchor="middle" fontFamily="IBM Plex Mono" fontSize="9" fill="#5fb8b0">
-            {s.label}
+          <rect x="15" y={input.y - 14} width="90" height="28" rx="4" fill="#1e2329" stroke="#3a4048" strokeWidth={1.2} />
+          <text x="60" y={input.y + 4} textAnchor="middle" fontFamily="IBM Plex Mono" fontSize="9" fill="#dde2e7">
+            {input.label}
           </text>
-          <line x1={s.x + 22} y1={s.y} x2={190} y2={100} stroke="#242a32" strokeWidth={1} />
         </motion.g>
       ))}
-      {/* optimization landscape contours */}
-      {[70, 50, 30].map((r, i) => (
-        <motion.ellipse
-          key={i}
-          cx="300"
-          cy="100"
-          rx={r + 40}
-          ry={r}
-          fill="none"
-          stroke="#d7a24a"
-          strokeWidth={1}
-          opacity={0.35 + i * 0.15}
-          initial={{ scale: 0.8, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 0.35 + i * 0.15 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 + i * 0.1 }}
-        />
-      ))}
-      {/* monte carlo scatter */}
-      {Array.from({ length: 24 }).map((_, i) => {
-        const angle = (i / 24) * Math.PI * 2;
-        const r = 20 + ((i * 37) % 55);
-        const x = 300 + Math.cos(angle) * r;
-        const y = 100 + Math.sin(angle) * r * 0.55;
-        return (
-          <motion.circle
-            key={i}
-            cx={x}
-            cy={y}
-            r={1.6}
-            fill="#aeb6c0"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 0.7 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 + (i % 12) * 0.03 }}
-          />
-        );
-      })}
-      <text x="20" y="205" fontFamily="IBM Plex Mono" fontSize="9.5" fill="#5a6068">
-        synthetic generation profiles → multi-objective sizing → 25-yr Monte Carlo reliability
+
+      {/* Connection Lines 1 -> 2 */}
+      <motion.g
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.5 }}
+        stroke="#3a4048"
+        strokeWidth={1}
+        fill="none"
+      >
+        <path d="M 105 35 L 125 35 L 125 85 L 155 85" />
+        <path d="M 105 85 L 155 85" />
+        <path d="M 105 135 L 125 135 L 125 85 L 155 85" />
+      </motion.g>
+
+      {/* 2. ENDOGENOUS SIZING (PARETO FRONT) */}
+      <motion.g
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.8 }}
+      >
+        {/* Axes */}
+        <polyline points="165,35 165,150 265,150" stroke="#5a6068" strokeWidth={1} fill="none" />
+        <text x="165" y="25" fontFamily="IBM Plex Mono" fontSize="8" fill="#767f8b">PPA Penalty</text>
+        <text x="265" y="145" textAnchor="end" fontFamily="IBM Plex Mono" fontSize="8" fill="#767f8b">CapEx</text>
+
+        {/* Pareto Curve */}
+        <path d="M 175 50 Q 185 130 255 135" stroke="#4a5058" strokeWidth={1.5} fill="none" />
+      </motion.g>
+
+      {/* Pareto Architectures */}
+      <motion.g initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 1.2 }}>
+        {/* Arch A: Lean / Risky */}
+        <circle cx="177" cy="62" r="3" fill="#d7a24a" />
+        <text x="184" y="65" fontFamily="IBM Plex Mono" fontSize="8" fill="#d7a24a">Lean (A)</text>
+        
+        {/* Arch C: Oversized / Safe */}
+        <circle cx="242" cy="133" r="3" fill="#5fb8b0" />
+        <text x="242" y="125" textAnchor="middle" fontFamily="IBM Plex Mono" fontSize="8" fill="#5fb8b0">Oversized (C)</text>
+      </motion.g>
+
+      {/* Connection Lines 2 -> 3 */}
+      <motion.path
+        d="M 275 90 L 300 90"
+        initial={{ pathLength: 0, opacity: 0 }}
+        whileInView={{ pathLength: 1, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1.5, duration: 0.5 }}
+        stroke="#3a4048"
+        strokeWidth={1}
+        fill="none"
+      />
+
+      {/* 3. MONTE CARLO RISK ASSESSMENT (CDFs) */}
+      <motion.g
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1.8 }}
+      >
+        {/* Axes */}
+        <polyline points="310,35 310,150 440,150" stroke="#5a6068" strokeWidth={1} fill="none" />
+        <text x="310" y="25" fontFamily="IBM Plex Mono" fontSize="8" fill="#767f8b">P(IRR &lt; x)</text>
+        <text x="440" y="145" textAnchor="end" fontFamily="IBM Plex Mono" fontSize="8" fill="#767f8b">15-yr IRR</text>
+
+        {/* Target IRR Line */}
+        <line x1="415" y1="35" x2="415" y2="150" stroke="#767f8b" strokeWidth={1} strokeDasharray="2 2" />
+        <text x="415" y="25" textAnchor="middle" fontFamily="IBM Plex Mono" fontSize="8" fill="#767f8b">Target</text>
+      </motion.g>
+
+      {/* CDF Curves showing deterministic collapse */}
+      {/* Safe/Oversized Curve - tight distribution */}
+      <motion.path
+        d="M 380 150 Q 410 145 415 45"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 2.2, duration: 1, ease: "easeOut" }}
+        stroke="#5fb8b0"
+        strokeWidth={1.5}
+        fill="none"
+      />
+      <motion.text
+        x="375" y="85"
+        fontFamily="IBM Plex Mono" fontSize="8" fill="#5fb8b0"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 2.6 }}
+      >
+        Arch C
+      </motion.text>
+
+      {/* Risky/Lean Curve - catastrophic tail */}
+      <motion.path
+        d="M 320 150 Q 350 120 415 45"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 2.6, duration: 1, ease: "easeOut" }}
+        stroke="#d7a24a"
+        strokeWidth={1.5}
+        fill="none"
+      />
+      <motion.text
+        x="320" y="115"
+        fontFamily="IBM Plex Mono" fontSize="8" fill="#d7a24a"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 3.2 }}
+      >
+        Arch A
+      </motion.text>
+      <motion.text
+        x="320" y="125"
+        fontFamily="IBM Plex Mono" fontSize="8" fill="#d7a24a"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 3.2 }}
+      >
+        (Risk Tail)
+      </motion.text>
+
+      {/* Global Caption */}
+      <text x="230" y="195" textAnchor="middle" fontFamily="IBM Plex Mono" fontSize="9" fill="#5a6068">
+        synthetic weather generation → endogenous NSGA-II sizing → 15-yr risk assessment (CDFs)
       </text>
     </svg>
   );
