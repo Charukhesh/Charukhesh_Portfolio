@@ -3,9 +3,8 @@
 import { useEffect, useRef } from "react";
 
 /**
- * "Autonomous system simulation" hero visual. Runs on a 2D canvas so it stays
- * lightweight (no WebGL/Three.js dependency). Renders a single static frame
- * for prefers-reduced-motion users instead of animating.
+ * "Autonomous System Simulation"
+ * Demonstrates: PD Control, MPC Trajectory Rollouts, Kalman Covariance, and Impulsive Disturbances.
  */
 export default function HeroSim() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,25 +32,43 @@ export default function HeroSim() {
     resize();
     window.addEventListener("resize", resize);
 
-    // mouse position acts as a subtle "goal" attractor
+    // Goal tracking (Mouse)
     let mouse = { x: width * 0.72, y: height * 0.32 };
     let targetMouse = { ...mouse };
+    
     function onMove(e: MouseEvent) {
       const rect = canvas!.getBoundingClientRect();
       targetMouse = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     }
     canvas.addEventListener("mousemove", onMove);
 
-    // agent state — loops along a soft path, gently pulled toward the goal
+    // Agent Physics State
     let t = 0;
+    let covariance = 0; // Represents state uncertainty (P matrix trace)
+    const agent = {
+      x: width * 0.3,
+      y: height * 0.6,
+      vx: 0,
+      vy: 0,
+    };
+
+    // Apply Impulsive Disturbance on Click (Adaptive KF project intuition)
+    function onClick() {
+      agent.vx += (Math.random() - 0.5) * 80;
+      agent.vy += (Math.random() - 0.5) * 80;
+      covariance = 60; // Instant uncertainty spike
+    }
+    canvas.addEventListener("mousedown", onClick);
+
+    const trail: { x: number; y: number }[] = [];
+    
+    // Background Particles
     const particles = Array.from({ length: 26 }, () => ({
       x: Math.random(),
       y: Math.random(),
       r: 0.6 + Math.random() * 1.4,
-      s: 0.05 + Math.random() * 0.12
+      s: 0.05 + Math.random() * 0.12,
     }));
-
-    const trail: { x: number; y: number }[] = [];
 
     function drawGrid() {
       ctx!.strokeStyle = "#1c212a";
@@ -75,12 +92,12 @@ export default function HeroSim() {
       ctx!.clearRect(0, 0, width, height);
       drawGrid();
 
-      // ease mouse
-      mouse.x += (targetMouse.x - mouse.x) * 0.04;
-      mouse.y += (targetMouse.y - mouse.y) * 0.04;
+      // Ease mouse target
+      mouse.x += (targetMouse.x - mouse.x) * 0.05;
+      mouse.y += (targetMouse.y - mouse.y) * 0.05;
 
-      // particles (latent-space specks)
-      ctx!.fillStyle = "#5fb8b055";
+      // Draw background particles
+      ctx!.fillStyle = "#5fb8b033";
       particles.forEach((p) => {
         p.y -= p.s * 0.002;
         if (p.y < 0) p.y = 1;
@@ -89,19 +106,46 @@ export default function HeroSim() {
         ctx!.fill();
       });
 
-      // agent position: lissajous-ish loop, blended toward the goal
-      const baseX = width * 0.28 + Math.sin(t * 0.6) * width * 0.14;
-      const baseY = height * 0.62 + Math.cos(t * 0.4) * height * 0.16;
-      const pull = 0.18;
-      const agent = {
-        x: baseX + (mouse.x - baseX) * pull,
-        y: baseY + (mouse.y - baseY) * pull
-      };
+      // --- DYNAMICS & CONTROL ---
+      // 1. Generate a nominal lissajous path
+      const nominalX = width * 0.4 + Math.sin(t * 0.5) * width * 0.15;
+      const nominalY = height * 0.5 + Math.cos(t * 0.3) * height * 0.15;
+      
+      // 2. MPC target is a blend of the nominal path and the mouse attractor
+      const targetX = nominalX + (mouse.x - nominalX) * 0.25;
+      const targetY = nominalY + (mouse.y - nominalY) * 0.25;
 
-      trail.push({ ...agent });
-      if (trail.length > 70) trail.shift();
+      // 3. PD Controller pulling agent to target
+      agent.vx += (targetX - agent.x) * 0.015; // Proportional gain
+      agent.vy += (targetY - agent.y) * 0.015;
+      agent.vx *= 0.88; // Damping (Derivative constraint)
+      agent.vy *= 0.88;
+      agent.x += agent.vx;
+      agent.y += agent.vy;
 
-      // trajectory trail
+      // 4. Uncertainty decay (Kalman filter converging after disturbance)
+      covariance += (0 - covariance) * 0.03;
+
+      // Update Trail
+      trail.push({ x: agent.x, y: agent.y });
+      if (trail.length > 60) trail.shift();
+
+      // --- RENDERING ---
+
+      // 1. MPC Candidate Rollouts (Flow-Latent MPC / Risk-Aware MPC)
+      ctx!.lineWidth = 1;
+      for (let i = -3; i <= 3; i++) {
+        if (i === 0) continue; // Skip optimal, drawn later
+        ctx!.beginPath();
+        ctx!.moveTo(agent.x, agent.y);
+        const cpX = agent.x + (mouse.x - agent.x) * 0.5 + (i * 25 * Math.sin(t));
+        const cpY = agent.y + (mouse.y - agent.y) * 0.5 + (i * 25 * Math.cos(t));
+        ctx!.quadraticCurveTo(cpX, cpY, mouse.x, mouse.y);
+        ctx!.strokeStyle = `rgba(95, 184, 176, ${0.15 - Math.abs(i) * 0.03})`;
+        ctx!.stroke();
+      }
+
+      // 2. Trajectory Trail (Past States)
       ctx!.beginPath();
       trail.forEach((p, i) => {
         if (i === 0) ctx!.moveTo(p.x, p.y);
@@ -113,63 +157,80 @@ export default function HeroSim() {
       ctx!.stroke();
       ctx!.globalAlpha = 1;
 
-      // predicted trajectory (dashed, extrapolated toward goal)
+      // 3. Optimal Planned Trajectory (Dashed)
       ctx!.setLineDash([4, 6]);
-      ctx!.strokeStyle = "#5fb8b0aa";
+      ctx!.strokeStyle = "#5fb8b0";
+      ctx!.lineWidth = 1.5;
       ctx!.beginPath();
       ctx!.moveTo(agent.x, agent.y);
       ctx!.lineTo(mouse.x, mouse.y);
       ctx!.stroke();
       ctx!.setLineDash([]);
 
-      // sensor rays from agent
-      ctx!.strokeStyle = "#3a4048";
+      // 4. 360° LiDAR Scan
+      ctx!.strokeStyle = "rgba(118, 127, 139, 0.2)";
       ctx!.lineWidth = 1;
-      for (let i = 0; i < 7; i++) {
-        const ang = (i / 6) * Math.PI - Math.PI / 2 + Math.sin(t * 0.5) * 0.15;
-        const len = 34 + Math.sin(t * 2 + i) * 6;
+      const scanOffset = t * 4;
+      for (let i = 0; i < 32; i++) {
+        const ang = scanOffset + (i / 32) * Math.PI * 2;
+        // Fake depth variance based on angle
+        const len = 35 + Math.sin(ang * 3) * 10 + Math.cos(ang * 5) * 5;
         ctx!.beginPath();
         ctx!.moveTo(agent.x, agent.y);
         ctx!.lineTo(agent.x + Math.cos(ang) * len, agent.y + Math.sin(ang) * len);
         ctx!.stroke();
       }
 
-      // goal marker
+      // 5. Covariance Ellipse (State Uncertainty)
       ctx!.beginPath();
-      ctx!.arc(mouse.x, mouse.y, 5, 0, Math.PI * 2);
+      const angle = Math.atan2(agent.vy, agent.vx);
+      ctx!.ellipse(agent.x, agent.y, 14 + covariance, 9 + covariance * 0.4, angle, 0, Math.PI * 2);
+      ctx!.strokeStyle = `rgba(215, 162, 74, ${0.3 + covariance / 100})`;
+      ctx!.lineWidth = 1;
+      ctx!.stroke();
+      // Fill flash on impulse
+      if (covariance > 5) {
+        ctx!.fillStyle = `rgba(215, 162, 74, ${covariance / 400})`;
+        ctx!.fill();
+      }
+
+      // 6. Goal Marker
+      ctx!.beginPath();
+      ctx!.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
       ctx!.strokeStyle = "#5fb8b0";
       ctx!.lineWidth = 1.5;
       ctx!.stroke();
       ctx!.beginPath();
-      ctx!.arc(mouse.x, mouse.y, 11, 0, Math.PI * 2);
-      ctx!.strokeStyle = "#5fb8b055";
+      ctx!.arc(mouse.x, mouse.y, 12 + Math.sin(t * 5) * 2, 0, Math.PI * 2);
+      ctx!.strokeStyle = "rgba(95, 184, 176, 0.4)";
       ctx!.stroke();
 
-      // agent body
+      // 7. Agent Core
       ctx!.beginPath();
-      ctx!.arc(agent.x, agent.y, 5.5, 0, Math.PI * 2);
-      ctx!.fillStyle = "#e7e9ec";
+      ctx!.arc(agent.x, agent.y, 4.5, 0, Math.PI * 2);
+      ctx!.fillStyle = "#f2f4f6";
       ctx!.fill();
       ctx!.beginPath();
-      ctx!.arc(agent.x, agent.y, 9.5, 0, Math.PI * 2);
+      ctx!.arc(agent.x, agent.y, 8.5, 0, Math.PI * 2);
       ctx!.strokeStyle = "#d7a24a";
-      ctx!.lineWidth = 1.4;
+      ctx!.lineWidth = 1.5;
       ctx!.stroke();
 
-      // technical label near agent
+      // 8. Technical Telemetry Labels
       ctx!.fillStyle = "#767f8b";
       ctx!.font = "10px 'IBM Plex Mono', monospace";
-      ctx!.fillText(`state s(t)  ·  t=${t.toFixed(1)}`, agent.x + 14, agent.y - 12);
+      ctx!.fillText(`v=[${agent.vx.toFixed(1)}, ${agent.vy.toFixed(1)}]`, agent.x + 18, agent.y - 18);
+      ctx!.fillText(`cov: ${(covariance).toFixed(1)}`, agent.x + 18, agent.y - 6);
+      
       ctx!.fillStyle = "#5fb8b0";
       ctx!.fillText("goal ẑ", mouse.x + 14, mouse.y - 12);
 
-      t += 0.012;
+      t += 0.016; // Time step
       raf = requestAnimationFrame(frame);
     }
 
     let raf = 0;
     if (reducedMotion) {
-      // static single frame, no rAF loop
       drawGrid();
       ctx!.fillStyle = "#e7e9ec";
       ctx!.beginPath();
@@ -187,14 +248,22 @@ export default function HeroSim() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousemove", onMove);
+      canvas.removeEventListener("mousedown", onClick);
     };
   }, []);
 
   return (
-    <div className="relative aspect-[6/5] w-full overflow-hidden rounded-lg border border-border-soft bg-panel2">
+    <div className="relative aspect-[6/5] w-full overflow-hidden rounded-lg border border-border-soft bg-panel2 group cursor-crosshair">
       <canvas ref={canvasRef} className="block h-full w-full" />
+      
+      {/* Footer Text */}
       <div className="pointer-events-none absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-wider text-muted">
-        autonomous system · simulation
+        MPC & Estimation · SIMULATION
+      </div>
+      
+      {/* Interactive Hint */}
+      <div className="pointer-events-none absolute top-3 right-3 font-mono text-[10px] tracking-wider text-accent opacity-0 transition-opacity duration-500 group-hover:opacity-80">
+        [ CLICK TO APPLY IMPULSE ]
       </div>
     </div>
   );

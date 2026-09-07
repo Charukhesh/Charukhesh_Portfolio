@@ -9,8 +9,7 @@ export const profile = {
     github: "https://github.com/Charukhesh",
     linkedin: "https://www.linkedin.com/in/charu2005/",
     researchGate: "https://www.researchgate.net/profile/Charukhesh-B-R",
-    // No PDF supplied yet — wire this to a hosted resume file when available.
-    resume: null as string | null
+    resume: "https://drive.google.com/file/d/1z4jhvDK-JpluSoCWFxM32jJbyO8A9KZG/view?usp=sharing"
   },
   researchInterests: [
     { label: "Robot Learning", active: true },

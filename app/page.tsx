@@ -54,7 +54,7 @@ export default function HomePage() {
               <div className="animate-rise mb-6 font-mono text-base text-ink-dim" style={{ animationDelay: "0.2s" }}>
                 AI / ML RESEARCH ENGINEER · IIT MADRAS
               </div>
-              <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.25s" }}>
+              <p className="animate-rise mb-8 max-w-4xl text-ink-dim" style={{ animationDelay: "0.25s" }}>
                 {profile.statement}
               </p>
               
@@ -159,7 +159,7 @@ export default function HomePage() {
       {/* ============ EXPERIENCE ============ */}
       <section id="experience" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
         <div className="mx-auto max-w-content">
-          <SectionHeading num="03" title="Experience timeline" note="click a node" />
+          <SectionHeading num="04" title="Experience timeline" note="click a node" />
           <Timeline />
         </div>
       </section>
@@ -167,7 +167,7 @@ export default function HomePage() {
       {/* ============ PUBLICATIONS ============ */}
       <section id="publications" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
         <div className="mx-auto max-w-content">
-          <SectionHeading num="04" title="Publications" note={`${publications.length} manuscript`} />
+          <SectionHeading num="05" title="Publications" note={`${publications.length} manuscript`} />
           {publications.map((pub, i) => (
             <div key={i} className="border-b border-border-soft py-5">
               <div className="mb-2 text-[16.5px] italic text-[#f2f4f6]">{pub.title}</div>
@@ -195,7 +195,7 @@ export default function HomePage() {
       {/* ============ ABOUT (compact) ============ */}
       <section id="about" className="scroll-mt-24 px-6 py-20">
         <div className="mx-auto max-w-wide">
-          <SectionHeading num="05" title="About" note="compact" />
+          <SectionHeading num="06" title="About" note="compact" />
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1fr]">
             <div>
               <div className="mb-4 font-mono text-[13px] text-ink-dim">
