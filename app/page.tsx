@@ -21,9 +21,9 @@ export default function HomePage() {
           
           {/* Top Left: IIT Madras Logo (Bigger) */}
           <img 
-            src="/Charukhesh_Portfolio/iitm-logo.jpg" 
+            src="/Charukhesh_Portfolio/iitmlogo.jpg" 
             alt="IIT Madras" 
-            className="animate-rise h-16 w-auto opacity-95 sm:h-20"
+            className="animate-rise h-16 w-auto opacity-95 sm:h-30"
             style={{ animationDelay: "0.0s" }}
           />
           
@@ -31,7 +31,7 @@ export default function HomePage() {
           <img 
             src="/Charukhesh_Portfolio/photo.jpeg" 
             alt="Charukhesh B R" 
-            className="animate-rise h-20 w-20 rounded-full border-2 border-border-soft object-cover shadow-lg sm:h-28 sm:w-28"
+            className="animate-rise h-20 w-20 rounded-full border-2 border-border-soft object-cover shadow-lg sm:h-40 sm:w-40"
             style={{ animationDelay: "0.05s" }}
           />
           
