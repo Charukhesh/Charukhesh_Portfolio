@@ -13,49 +13,54 @@ export default function HomePage() {
   return (
     <main>
       {/* ============ HERO ============ */}
-      <section className="border-b border-border-soft px-6 pb-16 pt-32 sm:pt-40">
-        <div className="mx-auto max-w-wide">
+      {/* Added 'relative' and increased top padding (pt-44 sm:pt-48) so the large photos never overlap the text */}
+      <section className="relative border-b border-border-soft px-6 pb-16 pt-44 sm:pt-48">
+        
+        {/* ABSOLUTE EXTREME CORNERS: Pinned to the edges of the website */}
+        <div className="absolute left-6 right-6 top-24 flex items-start justify-between sm:left-10 sm:right-10 xl:left-14 xl:right-14">
           
-          {/* TOP ROW: Logos & Avatars */}
-          <div className="animate-rise mb-12 flex items-center justify-between" style={{ animationDelay: "0.0s" }}>
-            {/* Top Left: IIT Madras Logo */}
-            <img 
-              src="/Charukhesh_Portfolio/iitm-logo.jpg" 
-              alt="IIT Madras" 
-              className="h-10 w-auto opacity-90 sm:h-12"
-            />
-            {/* Top Right: Profile Photo */}
-            <img 
-              src="/Charukhesh_Portfolio/photo.jpeg" 
-              alt="Charukhesh B R" 
-              className="h-14 w-14 rounded-full border border-border-soft object-cover grayscale transition-all duration-500 hover:grayscale-0 sm:h-16 sm:w-16"
-            />
-          </div>
+          {/* Top Left: IIT Madras Logo (Bigger) */}
+          <img 
+            src="/Charukhesh_Portfolio/iitm-logo.jpg" 
+            alt="IIT Madras" 
+            className="animate-rise h-16 w-auto opacity-95 sm:h-20"
+            style={{ animationDelay: "0.0s" }}
+          />
+          
+          {/* Top Right: Profile Photo (Bigger, Full Color) */}
+          <img 
+            src="/Charukhesh_Portfolio/photo.jpeg" 
+            alt="Charukhesh B R" 
+            className="animate-rise h-20 w-20 rounded-full border-2 border-border-soft object-cover shadow-lg sm:h-28 sm:w-28"
+            style={{ animationDelay: "0.05s" }}
+          />
+          
+        </div>
 
-          {/* MAIN HERO GRID */}
-          {/* Changed grid to give the left side slightly more room so buttons fit on one line */}
+        <div className="mx-auto max-w-wide">
+          {/* MAIN HERO GRID: Untouched so the simulation and text remain perfect */}
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             
             {/* LEFT COLUMN: Text & Buttons */}
             <div>
-              <div className="animate-rise mb-4 font-mono text-[13px] tracking-widest text-accent" style={{ animationDelay: "0.05s" }}>
+              <div className="animate-rise mb-4 font-mono text-[13px] tracking-widest text-accent" style={{ animationDelay: "0.1s" }}>
                 ROBOTICS · MACHINE LEARNING · CONTROL · INTELLIGENT SYSTEMS
               </div>
               <h1
                 className="animate-rise mb-5 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-[#f2f4f6] sm:text-6xl"
-                style={{ animationDelay: "0.1s" }}
+                style={{ animationDelay: "0.15s" }}
               >
                 CHARUKHESH B R
               </h1>
-              <div className="animate-rise mb-6 font-mono text-base text-ink-dim" style={{ animationDelay: "0.15s" }}>
+              <div className="animate-rise mb-6 font-mono text-base text-ink-dim" style={{ animationDelay: "0.2s" }}>
                 AI / ML RESEARCH ENGINEER · IIT MADRAS
               </div>
-              <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.2s" }}>
+              <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.25s" }}>
                 {profile.statement}
               </p>
               
-              {/* BUTTONS: Optimized padding & sizing to fit on one line on desktop */}
-              <div className="animate-rise flex flex-wrap items-center gap-2 xl:flex-nowrap xl:gap-3" style={{ animationDelay: "0.25s" }}>
+              {/* BUTTONS */}
+              <div className="animate-rise flex flex-wrap items-center gap-2 xl:flex-nowrap xl:gap-3" style={{ animationDelay: "0.3s" }}>
                 <a
                   href="#research"
                   className="whitespace-nowrap rounded-full border border-accent bg-accent px-3 py-2 font-mono text-[11px] tracking-wide text-bg transition-colors hover:bg-transparent hover:text-accent sm:px-4 sm:text-xs"
@@ -95,8 +100,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN: HeroSim Simulation (Untouched & perfectly visible) */}
-            <div className="animate-rise relative" style={{ animationDelay: "0.3s" }}>
+            {/* RIGHT COLUMN: HeroSim Simulation */}
+            <div className="animate-rise relative" style={{ animationDelay: "0.35s" }}>
               <div className="flex min-h-[300px] w-full items-center justify-center overflow-hidden rounded-2xl border border-border-soft bg-panel p-4 sm:min-h-[340px]">
                 <HeroSim />
               </div>
