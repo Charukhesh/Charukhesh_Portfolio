@@ -16,6 +16,15 @@ export default function HomePage() {
       <section className="border-b border-border-soft px-6 pb-16 pt-32 sm:pt-40">
         <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
+
+            <div className="animate-rise mb-6" style={{ animationDelay: "0.02s" }}>
+              <img 
+                src="/Charukhesh_Portfolio/photo.jpeg" 
+                alt="Charukhesh B R" 
+                className="h-20 w-20 rounded-full border border-border-soft object-cover grayscale transition-all hover:grayscale-0"
+              />
+            </div>
+
             <div className="animate-rise mb-4 font-mono text-[13px] tracking-widest text-accent">
               ROBOTICS · MACHINE LEARNING · CONTROL · INTELLIGENT SYSTEMS
             </div>
@@ -92,10 +101,10 @@ export default function HomePage() {
           </div>
 
           <div className="mt-20">
-            <h3 className="mb-2 font-display text-xl font-semibold text-[#f2f4f6]">Advanced engineering</h3>
-            <p className="mb-6 max-w-[62ch] text-ink-dim">
+            <h3 className="mb-2 font-display text-xl font-semibold text-[#f2f4f6]">Applied Research in Engineering Systems</h3>
+            <p className="mb-6 max-w-5xl text-ink-dim">
               Supporting work spanning computer vision, sequence modeling, estimation,
-              control and quantitative systems — implemented end-to-end rather than
+              control and quantitative systems implemented end-to-end rather than
               notebook-only.
             </p>
             

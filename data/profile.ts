@@ -2,9 +2,9 @@ export const profile = {
   name: "Charukhesh B R",
   role: "AI/ML Research Engineer",
   statement:
-    "Building intelligent systems at the intersection of robotics, machine learning and engineering — from latent-space planners for manipulation to stochastic control for physical assets under uncertainty.",
+    "Building intelligent systems at the intersection of robotics, machine learning and engineering from latent-space planners for manipulation to stochastic control for physical assets under uncertainty.",
   institution: "Indian Institute of Technology Madras",
-  program: "B.Tech Aerospace Engineering + M.Tech Data Science (Dual Degree), 9.14 CGPA, 2027",
+  program: "B.Tech Aerospace Engineering + Interdisciplanary M.Tech Data Science, 2027",
   links: {
     github: "https://github.com/Charukhesh",
     linkedin: "https://www.linkedin.com/in/charu2005/",
@@ -24,22 +24,19 @@ export const profile = {
   ],
   education: [
     {
-      degree: "B.Tech Aerospace Engineering + M.Tech Data Science (Dual Degree), IIT Madras",
-      detail: "9.14 CGPA · 2027"
+      degree: "B.Tech Aerospace Engineering + Interdisciplanary M.Tech Data Science, IIT Madras",
     },
-    { degree: "Class XII, CBSE", detail: "97.6%" },
-    { degree: "Class X, CBSE", detail: "95.2%" }
   ],
   achievements: [
-    "2nd runner-up, nationwide — James Dyson Award 2024, for a 5-stage UV filtration bottle with kinetic charging",
-    "Selected for NUS IRIS and Purdue SURF — both top-5% international research internship programs",
-    "Co-founded IIT Madras' SUAS team; led autonomous systems development to 8th of 70 international teams at SUAS 2025",
-    "Top 2% (of 1,500 teams) — 2025 Caterpillar Tech Challenge, for an ML-based P&D sizing system",
-    "CBSE Merit Certificate — top 0.1% nationwide in Mathematics, Class XII boards"
+    "Secured 2nd runner-up nationwide in the 2024 James Dyson Challenge by building a 5-stage UV filtration bottle with kinetic charging",
+    "Selected for highly competitive international research internship programs: NUS1 IRIS (Top 1%) and Purdue SURF (Top 3%) globally",
+    "Co-founded IIT Madras’ SUAS team and led autonomous systems development, ranking 8th out of 70 international teams in SUAS2 2025  ",
+    "Developed and deployed drone-based Computer Vision systems for real-time reconnaissance missions with the Indian Army - J&K Rifles",
+    "Ranked Top 2% (of 1500 teams) at the 2025 Caterpillar Tech Challenge for developing an ML-based PID gain tuning system"
   ],
   positions: [
     "Co-founder, SUAS — IIT Madras' unmanned autonomous vehicle development team",
-    "Teaching Assistant — Artificial Intelligence in Predictive Maintenance, Online M.Tech, Prof. Kalluri R",
+    "Teaching Assistant — Artificial Intelligence in Predictive Maintenance, Online M.Tech, Prof. Kallol R",
     "Lead, Pravahan/CoCAS — student autonomous UAV development for navigation and delivery"
   ],
   aboutNarrative:
