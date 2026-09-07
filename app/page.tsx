@@ -29,7 +29,7 @@ export default function HomePage() {
           
           {/* Top Right: Profile Photo (Bigger, Full Color) */}
           <img 
-            src="/Charukhesh_Portfolio/photo.jpeg" 
+            src="/Charukhesh_Portfolio/photo.jpeg"  
             alt="Charukhesh B R" 
             className="animate-rise h-20 w-20 rounded-full border-2 border-border-soft object-cover shadow-lg sm:h-40 sm:w-40"
             style={{ animationDelay: "0.05s" }}
