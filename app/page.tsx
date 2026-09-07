@@ -64,10 +64,10 @@ export default function HomePage() {
       <section id="research" className="scroll-mt-24 border-b border-border-soft px-6 py-20">
         <div className="mx-auto max-w-wide">
           <SectionHeading num="01" title="Research map" note="hover to explore" />
-          <p className="mb-8 max-w-[62ch] text-ink-dim">
-            Work spans learned policies for robotic manipulation, language-grounded planning over structured scene
-            representations, and stochastic control / estimation for physical and financial systems operating under
-            uncertainty.
+          <p className="mb-8 max-w-5xl text-ink-dim leading-7">
+            Work spans learned policies for robotic manipulation, language-grounded
+            planning over structured scene representations, and stochastic control /
+            estimation for physical and financial systems operating under uncertainty.
           </p>
           <ResearchMap />
         </div>

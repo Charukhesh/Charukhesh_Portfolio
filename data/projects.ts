@@ -53,7 +53,7 @@ export const flagshipProjects: Project[] = [
     title: "Flow-Latent MPC for Fast, Precise Robotic Manipulation",
     institution:
       "Purdue — Summer Undergraduate Research Fellowship (SURF)",
-    advisor: "Prof. Aniket Bera",
+    advisor: "Prof. Aniket B",
     category: ["Robotics", "Robot Learning"],
     type: "Research",
     status: "validated",
@@ -79,7 +79,7 @@ export const flagshipProjects: Project[] = [
     title: "LLM Planner over 3D Scene Graphs for Long-Horizon Manipulation",
     institution:
       "National University of Singapore — Internships & Research Immersion @ Singapore",
-    advisor: "Prof. Guillaume Adrien Sartoretti",
+    advisor: "Prof. Guillaume A S",
     category: ["Robotics", "LLM/NLP"],
     type: "Research",
     status: "validated",
@@ -105,7 +105,7 @@ export const flagshipProjects: Project[] = [
     title:
       "Dynamic Tail-Risk Hedging & Stochastic Control for Non-Stationary Energy Systems",
     institution: "IIT Madras — Master's Thesis (ongoing)",
-    advisor: "Prof. Raghunathan Rengaswamy",
+    advisor: "Prof. Raghunathan R",
     category: ["Control", "State Estimation", "Finance"],
     type: "Research",
     status: "active",
@@ -131,7 +131,7 @@ export const flagshipProjects: Project[] = [
     title:
       "Contractual & Resource-Aware Capacity Optimization for Hybrid Renewable Energy Systems",
     institution: "IIT Madras, with Hero Future Energies",
-    advisor: "Prof. Raghunathan Rengaswamy",
+    advisor: "Prof. Raghunathan R",
     category: ["Optimization", "Finance"],
     type: "Research",
     status: "industry",
@@ -160,7 +160,8 @@ export const flagshipProjects: Project[] = [
   {
     slug: "risk-aware-stochastic-mpc",
     title: "Risk-Aware MPC for UAV Motion Planning",
-    institution: "Independent / coursework",
+    institution: "IIT Madras",
+    advisor: "Prof. Guruprasad K R",
     category: ["Control", "Aerospace", "Robotics"],
     type: "Personal",
     status: "validated",
@@ -189,7 +190,8 @@ export const flagshipProjects: Project[] = [
   {
     slug: "adaptive-kalman-rls",
     title: "Adaptive Kalman Filtering + RLS",
-    institution: "Independent / coursework",
+    institution: "IIT Madras",
+    advisor: "Prof. Srikrishna B",
     category: ["State Estimation", "Control"],
     type: "Personal",
     status: "validated",
@@ -218,7 +220,8 @@ export const flagshipProjects: Project[] = [
   {
     slug: "sindy-rls-cart-pendulum",
     title: "SINDy-RLS — Data-Driven Discovery under Feedback Control",
-    institution: "Independent / coursework",
+    institution: "IIT Madras",
+    advisor: "Prof. Aniket K",
     category: ["State Estimation", "Control", "System Identification"],
     type: "Personal",
     status: "validated",
@@ -276,7 +279,7 @@ export const flagshipProjects: Project[] = [
   {
     slug: "qualitycast-mlops",
     title: "QualityCast-MLOps — Production-Grade Casting-Defect Detection",
-    institution: "Course project — ML Systems Design & Applications",
+    institution: "IIT Madras",
     advisor: "Prof. Sudarsan S",
     category: ["MLOps", "Computer Vision"],
     type: "Course",
