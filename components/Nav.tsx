@@ -59,6 +59,13 @@ export default function Nav() {
         </nav>
 
         <div className="flex items-center gap-2.5">
+          {/* Email Button added here */}
+          <a
+            href="mailto:ae22b028@smail.iitm.ac.in"
+            className="hidden rounded-full border border-border px-3 py-1.5 font-mono text-[11.5px] text-ink-dim hover:border-accent hover:text-accent sm:block"
+          >
+            Email
+          </a>
           <a
             href={profile.links.github}
             target="_blank"
@@ -89,6 +96,14 @@ export default function Nav() {
               <span className="opacity-60">{s.num}</span> / {s.label}
             </a>
           ))}
+          {/* Email Button added to the mobile dropdown menu */}
+          <a
+            href="mailto:ae22b028@smail.iitm.ac.in"
+            onClick={() => setOpen(false)}
+            className="rounded-lg px-3 py-2.5 font-mono text-[12.5px] text-ink-dim hover:bg-accent-soft hover:text-accent"
+          >
+            Email ↗
+          </a>
           <a
             href={profile.links.github}
             target="_blank"

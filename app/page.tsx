@@ -15,16 +15,9 @@ export default function HomePage() {
       {/* ============ HERO ============ */}
       <section className="border-b border-border-soft px-6 pb-16 pt-32 sm:pt-40">
         <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+          
+          {/* LEFT COLUMN: Text & Buttons */}
           <div>
-
-            <div className="animate-rise mb-6" style={{ animationDelay: "0.02s" }}>
-              <img 
-                src="/Charukhesh_Portfolio/photo.jpeg" 
-                alt="Charukhesh B R" 
-                className="h-20 w-20 rounded-full border border-border-soft object-cover grayscale transition-all hover:grayscale-0"
-              />
-            </div>
-
             <div className="animate-rise mb-4 font-mono text-[13px] tracking-widest text-accent">
               ROBOTICS · MACHINE LEARNING · CONTROL · INTELLIGENT SYSTEMS
             </div>
@@ -40,6 +33,8 @@ export default function HomePage() {
             <p className="animate-rise mb-8 max-w-[52ch] text-ink-dim" style={{ animationDelay: "0.15s" }}>
               {profile.statement}
             </p>
+            
+            {/* Buttons including new Email */}
             <div className="animate-rise flex flex-wrap gap-3" style={{ animationDelay: "0.2s" }}>
               <a
                 href="#research"
@@ -48,20 +43,18 @@ export default function HomePage() {
                 VIEW RESEARCH →
               </a>
               <a
+                href="mailto:ae22b028@smail.iitm.ac.in"
+                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-[#f2f4f6] hover:border-accent hover:text-accent"
+              >
+                EMAIL
+              </a>
+              <a
                 href={profile.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
               >
                 GITHUB
-              </a>
-              <a
-                href={profile.links.researchGate}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs tracking-wide text-ink-dim hover:border-accent hover:text-accent"
-              >
-                RESEARCH GATE
               </a>
               <a
                 href={profile.links.linkedin}
@@ -73,7 +66,42 @@ export default function HomePage() {
               </a>
             </div>
           </div>
-          <HeroSim />
+
+          {/* RIGHT COLUMN: Bento Box Layout */}
+          <div className="animate-rise grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:grid-rows-2 lg:h-[340px]" style={{ animationDelay: "0.3s" }}>
+            
+            {/* Box 1: HeroSim (Top Left) */}
+            <div className="col-span-1 sm:col-span-2 lg:col-span-3 lg:row-span-1 rounded-2xl border border-border-soft bg-panel overflow-hidden relative min-h-[160px] flex items-center justify-center p-2">
+              <div className="w-full h-full scale-[0.85] flex items-center justify-center origin-center">
+                <HeroSim />
+              </div>
+            </div>
+            
+            {/* Box 2: Photo (Right Side, spans both rows) */}
+            <div className="col-span-1 sm:col-span-1 lg:col-span-2 lg:row-span-2 rounded-2xl border border-border-soft overflow-hidden relative min-h-[220px] lg:min-h-full group">
+              <img 
+                src="/Charukhesh_Portfolio/profile.jpg" 
+                alt="Charukhesh B R" 
+                className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+              />
+            </div>
+
+            {/* Box 3: Status / Education (Bottom Left) */}
+            <div className="col-span-1 sm:col-span-1 lg:col-span-3 lg:row-span-1 rounded-2xl border border-border-soft bg-panel p-6 flex flex-col justify-center">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+                </span>
+                <span className="font-mono text-xs tracking-wide text-accent">AVAILABLE FOR ROLES</span>
+              </div>
+              <div className="text-[13px] text-ink-dim font-mono leading-relaxed">
+                Dual Degree (B.Tech + M.Tech) <br/>
+                <span className="text-[#f2f4f6]">IIT Madras · CGPA: 9.14</span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
